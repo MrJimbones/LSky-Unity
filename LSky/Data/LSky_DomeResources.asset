@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c75b0d96b3755b36bc879dad3fe4121, type: 3}
+  m_Name: LSky_DomeResources
+  m_EditorClassIdentifier: 
+  sphereLOD0: {fileID: 4300000, guid: 411311cf3d1c11747bf38eee1b3fd3f7, type: 2}
+  sphereLOD1: {fileID: 4300000, guid: b250b63290f1a6248964185185ad678a, type: 2}
+  sphereLOD2: {fileID: 4300000, guid: b0df072daa3e6c84faf38e447a29a3ec, type: 2}
+  sphereLOD3: {fileID: 4300000, guid: 95183bccf1eebd840953facfaeed1317, type: 2}
+  atmosphereLOD0: {fileID: 4300000, guid: 411311cf3d1c11747bf38eee1b3fd3f7, type: 2}
+  atmosphereLOD1: {fileID: 4300000, guid: 865e44580e4b74e4db58da706ed010f7, type: 3}
+  atmosphereLOD2: {fileID: 4300000, guid: ac5795024ed774e39bf95048f91daf0e, type: 3}
+  atmosphereLOD3: {fileID: 4300002, guid: 7046e6883650e4ddf9fc446ef0d78da8, type: 3}
+  hemisphereLOD0: {fileID: 4300000, guid: ce8cdc6904c974970883ac7f32c20caa, type: 3}
+  hemisphereLOD1: {fileID: 4300000, guid: de5d229bf252545369546d5f4348728e, type: 3}
+  hemisphereLOD2: {fileID: 4300000, guid: a3f9bd9376cf74ad1a4556ddf95f08db, type: 3}
+  hemisphereLOD3: {fileID: 4300000, guid: ce8cdc6904c974970883ac7f32c20caa, type: 3}
+  QuadMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  atmosphereShader: {fileID: 4800000, guid: 1f15922ba2efc4d52b1cb11a55f2c384, type: 3}
+  galaxyBackgroundShader: {fileID: 4800000, guid: d77a0199e1c6ee13a82108dc38de3864,
+    type: 3}
+  starsFieldShader: {fileID: 4800000, guid: ad0bb1eb0203afa0a81b3539e43d14be, type: 3}
+  sunShader: {fileID: 4800000, guid: db14857841d4c0661829f03ceb81bd4e, type: 3}
+  moonShader: {fileID: 4800000, guid: f4d150da204c8a34c848775b0065de99, type: 3}
+  ambientSkyboxShader: {fileID: 0}
+  atmosphereMaterial: {fileID: 2100000, guid: b8f0c5d98d28700b092c3575edece165, type: 2}
+  galaxyBackgroundMaterial: {fileID: 2100000, guid: e2c45858d4e98a1ba89da0e75209be65,
+    type: 2}
+  starsFieldMaterial: {fileID: 2100000, guid: 915df8678241ad4389dd0da1ef76dd29, type: 2}
+  sunMaterial: {fileID: 2100000, guid: 8a48f0367ba20ebc3ac6b71d79fa18cc, type: 2}
+  moonMaterial: {fileID: 2100000, guid: 5656e484b241b0d7487b149f094c07bb, type: 2}
+  ambientSkyboxMaterial: {fileID: 0}
