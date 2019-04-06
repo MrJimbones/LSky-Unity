@@ -69,6 +69,9 @@ namespace Rallec.LSky
         public float Size{ get{ return m_Parameters.size; } }
 
         /// <summary></summary>
+        public LSky_CelestialsCoords Coords{ get{ return m_Parameters.coords; } }
+
+        /// <summary></summary>
         public Vector3 MoonPosition
         { 
             get

@@ -76,7 +76,6 @@ namespace Rallec.LSky
 
                 #region [Material]
 
-                
                 // Check deep space.
                 if(m_Resources.galaxyBackgroundMaterial == null) return false;
                 if(m_Resources.starsFieldMaterial == null) return false;
@@ -109,6 +108,7 @@ namespace Rallec.LSky
 
         // Skydome.
         [SerializeField] private float m_DomeRadius = 10000f;
+        private float m_OldDomeRadius;
 
         // Global.
         public LSky_Global global = new LSky_Global();
@@ -133,6 +133,8 @@ namespace Rallec.LSky
         [SerializeField] private int m_MoonLayerIndex = 0;
         public LSky_Moon moon = new LSky_Moon();
 
+        private Vector3 m_OldSunPos, m_OldMoonPos;
+
         // Atmosphere.
         [SerializeField] private bool m_RenderAtmosphere = true;
         [SerializeField] private LSky_Quality4 m_AtmosphereMeshQuality = LSky_Quality4.High;
@@ -147,10 +149,17 @@ namespace Rallec.LSky
         [SerializeField] private float m_CloudsRotationSpeed = 3f;
         public LSky_Clouds clouds = new LSky_Clouds();
 
-        private float m_OldDomeRadius;
-        private Vector3 m_OldSunPos, m_OldMoonPos;
-
         private float m_CloudsYRot;
+
+        // Lighting.
+        [SerializeField] private bool m_SendSkybox = false;
+
+        [SerializeField] private LSky_DirLightParams m_SunLightParams = new LSky_DirLightParams();
+        [SerializeField] private LSky_DirLightParams m_MoonLightParams = new LSky_DirLightParams();
+        [LSky_AnimationCurveRange(0.0f, 0.0f, 1.0f, 1.0f)]
+        [SerializeField] private AnimationCurve m_SunMoonLightFade = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 1.0f);
+        private float SunMoonLightFadeEvaluete{ get{ return (1.0f -SunDirection.y) * 0.5f; } }
+        public LSky_Ambient ambient = new LSky_Ambient();
 
         #endregion
 
@@ -165,7 +174,6 @@ namespace Rallec.LSky
         // Stars field.
         private LSky_EmptyObjectInstantiate m_StarsFieldRef = new LSky_EmptyObjectInstantiate();
 
-        
         // Sun.
         private LSky_EmptyObjectInstantiate m_SunRef = new LSky_EmptyObjectInstantiate();
 
@@ -178,7 +186,10 @@ namespace Rallec.LSky
         // Clouds-
         private LSky_EmptyObjectInstantiate m_CloudsRef = new LSky_EmptyObjectInstantiate();
 
+        // Dir Light.
+        private LSky_DirLightIntantiate m_DirLightRef = new LSky_DirLightIntantiate();
 
+        /// <summary></summary>
         public bool CheckRef
         {
             get
@@ -189,6 +200,7 @@ namespace Rallec.LSky
                 if(!m_MoonRef.CheckComponents) return false;
                 if(!m_AtmosphereRef.CheckComponents) return false;
                 if(!m_CloudsRef.CheckComponents) return false;
+                if(!m_DirLightRef.CheckComponents) return false;
 
                 return true;
             }
@@ -218,6 +230,30 @@ namespace Rallec.LSky
             {
                 // - MoonMatrix.rotation * Vector3.forward.
                 return -m_MoonRef.transform.forward;
+            }
+        }
+
+        /// <summary></summary>
+        public bool IsDay
+        { 
+            get
+            {
+                if(Mathf.Abs(sun.Coords.altitude) > 1.7f)
+                    return false;
+
+                return true;
+            }
+        }
+
+        /// <summary></summary>
+        public bool DirLightEnbled
+        {
+            get
+            {
+                if(!IsDay && (Mathf.Abs(moon.Coords.altitude) > 1.7f))
+                    return false;
+
+                return true;
             }
         }
 
@@ -267,6 +303,8 @@ namespace Rallec.LSky
             atmosphere.InitPropertyIDs();
             clouds.InitPropertyIDs();
            
+            if(m_SendSkybox)
+                UnityEngine.RenderSettings.skybox = m_Resources.ambientSkyboxMaterial;
 
         }
 
@@ -291,6 +329,9 @@ namespace Rallec.LSky
 
             // Set clouds.
             m_Resources.cloudsMaterial.shader = m_Resources.cloudsShader;
+
+            // Set Skyvox
+            //m_Resources.ambientSkyboxMaterial.shader = m_Resources.ambientSkyboxShader;
 
         }
 
@@ -320,6 +361,10 @@ namespace Rallec.LSky
             m_CloudsRef.Instantiate(this.name, "Clouds Tr");
             m_CloudsRef.InitTransform(m_Transform, Vector3.zero);
 
+            // Directional light.
+            m_DirLightRef.InstantiateLight(this.name, "Dir Light");
+            m_DirLightRef.InitTransform(m_Transform, Vector3.zero);
+
         }
 
         #endregion
@@ -335,6 +380,8 @@ namespace Rallec.LSky
             UpdateCelestialsTransform();
             UpdateCloudsTransform();
             RenderDome();
+            UpdateLight();
+            UpdateAmbient();
         }
 
         public void RenderDome()
@@ -478,7 +525,7 @@ namespace Rallec.LSky
 
         private void UpdateCloudsTransform()
         {
-            // sIZE.
+            
             m_CloudsRef.transform.localScale = new Vector3(m_DomeRadius, m_DomeRadius * m_CloudsDomeHeight, m_DomeRadius);
 
             m_CloudsYRot += m_CloudsRotationSpeed * Time.deltaTime;
@@ -490,6 +537,32 @@ namespace Rallec.LSky
                 m_CloudsYRot, 
                 m_CloudsRef.transform.localEulerAngles.z
             );
+        }
+
+        private void UpdateLight()
+        {
+            if(IsDay)
+            {
+                m_DirLightRef.transform.localPosition = sun.SunPosition;
+                m_DirLightRef.transform.LookAt(m_Transform);
+                m_DirLightRef.light.color = m_SunLightParams.color;
+                m_DirLightRef.light.intensity = m_SunLightParams.intensity;
+
+            }
+            else
+            {
+                m_DirLightRef.transform.localPosition = moon.MoonPosition;
+                m_DirLightRef.transform.LookAt(m_Transform);
+                m_DirLightRef.light.color = m_MoonLightParams.color;
+                m_DirLightRef.light.intensity = m_MoonLightParams.intensity * m_SunMoonLightFade.Evaluate(SunMoonLightFadeEvaluete);
+
+            }
+            m_DirLightRef.light.enabled = DirLightEnbled;
+        }
+
+        private void UpdateAmbient()
+        {
+            ambient.UpdateAmbient();
         }
 
         #endregion

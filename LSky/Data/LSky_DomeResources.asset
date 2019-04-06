@@ -17,12 +17,12 @@ MonoBehaviour:
   sphereLOD2: {fileID: 4300000, guid: b0df072daa3e6c84faf38e447a29a3ec, type: 2}
   sphereLOD3: {fileID: 4300000, guid: 95183bccf1eebd840953facfaeed1317, type: 2}
   atmosphereLOD0: {fileID: 4300000, guid: 411311cf3d1c11747bf38eee1b3fd3f7, type: 2}
-  atmosphereLOD1: {fileID: 4300000, guid: 865e44580e4b74e4db58da706ed010f7, type: 3}
-  atmosphereLOD2: {fileID: 4300000, guid: ac5795024ed774e39bf95048f91daf0e, type: 3}
-  atmosphereLOD3: {fileID: 4300002, guid: 7046e6883650e4ddf9fc446ef0d78da8, type: 3}
-  hemisphereLOD0: {fileID: 4300000, guid: ce8cdc6904c974970883ac7f32c20caa, type: 3}
+  atmosphereLOD1: {fileID: 4300000, guid: b250b63290f1a6248964185185ad678a, type: 2}
+  atmosphereLOD2: {fileID: 4300000, guid: 411311cf3d1c11747bf38eee1b3fd3f7, type: 2}
+  atmosphereLOD3: {fileID: 4300000, guid: b333cc565b9eeb646a2d89e7dffe55aa, type: 2}
+  hemisphereLOD0: {fileID: 4300000, guid: a3f9bd9376cf74ad1a4556ddf95f08db, type: 3}
   hemisphereLOD1: {fileID: 4300000, guid: de5d229bf252545369546d5f4348728e, type: 3}
-  hemisphereLOD2: {fileID: 4300000, guid: a3f9bd9376cf74ad1a4556ddf95f08db, type: 3}
+  hemisphereLOD2: {fileID: 4300000, guid: ce8cdc6904c974970883ac7f32c20caa, type: 3}
   hemisphereLOD3: {fileID: 4300000, guid: ce8cdc6904c974970883ac7f32c20caa, type: 3}
   QuadMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   atmosphereShader: {fileID: 4800000, guid: 1f15922ba2efc4d52b1cb11a55f2c384, type: 3}

@@ -47,7 +47,8 @@
         o.texcoord = TRANSFORM_TEX(v.texcoord, lsky_CloudsTex);
              
         o.col.rgb = lsky_CloudsTint.rgb * lsky_CloudsIntensity * LSKY_GLOBALEXPOSURE;
-        o.col.a   = normalize(v.vertex.xyz).y * 10.0;
+    
+        o.col.a  = normalize(v.vertex.xyz - float3(0.0, 0.01e-3, 0.0)).y*2;
 
         return o;
     }
@@ -57,16 +58,35 @@
         half4 col = half4(0.0, 0.0, 0.0, 1.0);
 
         half noise = tex2D(lsky_CloudsTex, i.texcoord).r;
-        half coverage = (noise-lsky_CloudsCoverage);
+        half2 coverage = saturate(noise-lsky_CloudsCoverage);
 
         // Get clouds color.
-        col.rgb = i.col.rgb * (1.0 - coverage * 0.5);
+        col.rgb = i.col.rgb * (1.0 - coverage.r * 0.5);
+
+        // Get alpha.
+        col.a = saturate(coverage.g * lsky_CloudsDensity * i.col.a);
+
+        col.a += 1.0 - exp(-col.a);
+
+        return saturate(col);
+    }
+
+    // For panorama texture(WIP)
+    half4 frag2(v2f i) : SV_TARGET
+    {
+        half4 col = half4(0.0, 0.0, 0.0, 1.0);
+
+        half2 tex = tex2D(lsky_CloudsTex, i.texcoord).rg;
+
+        half coverage = LSky_Pow2(tex.g, lsky_CloudsCoverage);
+
+        // Get clouds color.
+        col.rgb = i.col.rgb * tex.r;
 
         // Get alpha.
         col.a = saturate(coverage * lsky_CloudsDensity * i.col.a);
 
-        col.a += 1.0 - exp(-col.a);
-
+        //col.a += 1.0 - exp(-col.a);
         return saturate(col);
     }
 
