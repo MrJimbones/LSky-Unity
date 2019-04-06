@@ -1,15 +1,15 @@
 # LSky Dynamic Skydome for Unity Engine.
 -------------
 - This system is being built based on my previous assets LSky v3.0 and CSky, but looking for it to be more solid.
-- I will support this asset in my spare time, until 2019.3 is available, since I will be using it for prototypes while I build a more complex system.
+- I will support this asset in my spare time, until 2019.3 is available, since I will be using it for prototypes while I build a more complete system(Celeste Sky).
 
 - If there is an error, there will be a new issue.
 --------------
 
-State:
+Status:
 -------------
 
-- State: WIP.
+- Status: WIP.
 - Support: Built in Render/Monobehaviour, 2017-2018.
 -------------
 
@@ -25,8 +25,8 @@ Outer Space:
 --------------
 Atmosphere:
 --------------
-- Atmospheric Scattering based on Preetham and Hoffman papers.
-- Night Support.
+- Atmospheric scattering based on Preetham and Hoffman papers.
+- Night support.
 - Artistic control.
 --------------
 Clouds:
@@ -35,26 +35,26 @@ Clouds:
 --------------
 Color:
 --------------
-- HDR/LDR Support.
-- Gamma/Linear Support.
-- Forward/Deferred Support.
+- HDR/LDR support.
+- Gamma/Linear support.
+- Forward/Deferred support.
 --------------
 Date Time:
 --------------
 - Gregorian calendar support.
-- Date Time manager based on timeline.
-- System Synchronization.
-- Delegate Events.
-- Unity Events.
+- DateTime manager based on timeline.
+- System synchronization.
+- Delegate events.
+- Unity events.
 --------------
 Skydome:
 --------------
-- Exclude/Render Layers Support.
+- Exclude/Render layers support.
 --------------
 Utility:
 --------------
 - Editor: Separator.
 - Editor: Curve range field property drawer.
 - Reflection probes refresh scripts.
-- Editor: Foldout Header
+- Editor: Foldout header
 --------------
