@@ -59,6 +59,9 @@ namespace Rallec.LSky
         public Shader sunShader;
         public Shader moonShader;
 
+        [Header("Clouds Shaders")]
+        public Shader cloudsShader;
+
         [Header("Ambient Skybox")]
         public Shader ambientSkyboxShader;
 
@@ -76,6 +79,9 @@ namespace Rallec.LSky
         [Header("Near Space Materials")]
         public Material sunMaterial;
         public Material moonMaterial;
+
+        [Header("Clouds Materials")]
+        public Material cloudsMaterial;
 
         [Header("Ambient Skybox")]
         public Material ambientSkyboxMaterial;

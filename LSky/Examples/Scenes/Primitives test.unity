@@ -20,9 +20,9 @@ RenderSettings:
   m_FogDensity: 0.07
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.1275212, g: 0.2831488, b: 0.5087176, a: 1}
-  m_AmbientEquatorColor: {r: 0.5399882, g: 0.67962563, b: 0.7842004, a: 1}
-  m_AmbientGroundColor: {r: 0.23091719, g: 0.30491796, b: 0.35674256, a: 1}
+  m_AmbientSkyColor: {r: 0.042207252, g: 0.08016407, b: 0.12223043, a: 1}
+  m_AmbientEquatorColor: {r: 0.17779967, g: 0.018496834, b: 0.034271847, a: 1}
+  m_AmbientGroundColor: {r: 0.0060206507, g: 0, b: 0.0027222945, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
@@ -380,13 +380,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282840810}
-  m_LocalRotation: {x: 0, y: 0.994151, z: -0, w: -0.1079992}
+  m_LocalRotation: {x: 0.009337648, y: 0.9904282, z: 0.08595463, w: -0.10759478}
   m_LocalPosition: {x: 1.2, y: 1.3, z: 5.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 192.4, z: 0}
+  m_LocalEulerAnglesHint: {x: -9.92, y: 192.4, z: 0}
 --- !u!114 &282840816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,9 +667,9 @@ MonoBehaviour:
   galaxyBackground:
     m_Parameters:
       cubemap: {fileID: 8900000, guid: 1cde0e200e792cb4491204276a656490, type: 3}
-      tint: {r: 0.745283, g: 0.10467438, b: 0, a: 1}
+      tint: {r: 1, g: 0.00000015894572, b: 0, a: 1}
       intensity: 1
-      contrast: 0
+      contrast: 0.289
   m_RenderStarsField: 0
   m_StarsFieldLayerIndex: 0
   starsField:
@@ -685,12 +685,12 @@ MonoBehaviour:
   sun:
     m_Parameters:
       coords:
-        azimuth: 0.13
-        altitude: -1.57
-      size: 0.31
+        azimuth: 0.34
+        altitude: -1.46
+      size: 0.07
       tex: {fileID: 2800000, guid: 96cea440592acd4c088fb9447cc5f100, type: 3}
       tint: {r: 1, g: 0.14532904, b: 0, a: 1}
-      intensity: 10
+      intensity: 1000
   m_RenderMoon: 1
   m_MoonLayerIndex: 0
   moon:
@@ -714,7 +714,7 @@ MonoBehaviour:
     betaRayUpdate: 2
     betaMieUpdate: 2
     parameters:
-      applyFastTonemaping: 1
+      applyFastTonemaping: 0
       contrast: 0.5
       groundColor: {r: 0.4056604, g: 0.37249318, b: 0.3559096, a: 0.40784314}
       wavelength:
@@ -734,15 +734,28 @@ MonoBehaviour:
       sunMie:
         tint: {r: 1, g: 0.30980396, b: 0.38034466, a: 1}
         anisotropy: 0.75
-        scattering: 1.5
+        scattering: 2
       moonMie:
         tint: {r: 0.38679248, g: 0.7208313, b: 1, a: 1}
         anisotropy: 0.8
         scattering: 0.01
     betaRay: {x: 0.000013970747, y: 0.000036657344, z: 0.00005312306}
     betaMie: {x: 0.000002383351, y: 0.0000035096682, z: 0.0000028166694}
-    sunDir: {x: -0.12963411, y: 0.0007962659, z: -0.9915616}
+    sunDir: {x: -0.3314423, y: 0.11056972, z: -0.93697405}
     moonDir: {x: 0.27949828, y: 0.32479626, z: -0.903542}
+  m_RenderClouds: 1
+  m_CloudsLayerIndex: 0
+  m_CloudsDomeHeight: 0.612
+  m_CloudsRotationSpeed: 1
+  clouds:
+    m_Parameters:
+      tex: {fileID: 2800000, guid: c4321831d463a0444a69c79b792889a5, type: 3}
+      texSize: {x: 0.1, y: 0.1}
+      texOffset: {x: 0, y: 0}
+      tint: {r: 1, g: 0.3679245, b: 0.3679245, a: 1}
+      intensity: 0.9
+      density: 0.3
+      coverage: 0
 --- !u!4 &754817510
 Transform:
   m_ObjectHideFlags: 0
@@ -759,6 +772,7 @@ Transform:
   - {fileID: 1659397960}
   - {fileID: 1598989566}
   - {fileID: 73593841}
+  - {fileID: 1634224533}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -869,7 +883,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1309069310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -963,13 +977,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1526980365}
-  m_LocalRotation: {x: 0.25454402, y: 0.017839953, z: -0.012154531, w: 0.96682024}
-  m_LocalPosition: {x: 0, y: 3.43, z: 3.789}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.066457294, y: 0.027055424, z: 0.67417264, w: 0.7350801}
+  m_LocalPosition: {x: -0.12962659, y: 0.010796174, z: -0.9915041}
+  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 29.514002, y: 1.8640001, z: -0.94900006}
+  m_LocalEulerAnglesHint: {x: 3.51, y: 7.4480004, z: 85.27901}
 --- !u!1 &1598989565
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,9 +1007,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598989565}
-  m_LocalRotation: {x: 0.046071284, y: 0.04578916, z: 0.70344317, w: 0.7077772}
-  m_LocalPosition: {x: -0.1296341, y: 0.0007962743, z: -0.9915616}
-  m_LocalScale: {x: 0.31, y: 0.31, z: 0.31}
+  m_LocalRotation: {x: 0.1440234, y: 0.10377976, z: 0.57532716, w: 0.79842705}
+  m_LocalPosition: {x: -0.33144227, y: 0.110569745, z: -0.93697405}
+  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_Children: []
   m_Father: {fileID: 754817510}
   m_RootOrder: 3
@@ -1029,6 +1043,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 754817510}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1634224532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1634224533}
+  m_Layer: 0
+  m_Name: Clouds Tr
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1634224533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634224532}
+  m_LocalRotation: {x: 0, y: 0.006283144, z: 0, w: 0.9999803}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 10000, y: 6120, z: 10000}
+  m_Children: []
+  m_Father: {fileID: 754817510}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1659397959
 GameObject:
