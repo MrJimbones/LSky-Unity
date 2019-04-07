@@ -121,7 +121,11 @@ inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMieP
     #endif
 }
 
+#ifdef LSKY_COMPUTE_MIE_PHASE
 inline half3 LSky_ComputeAtmosphere(float3 pos, out float3 sunMiePhase, out float3 moonMiePhase)
+#else
+inline half3 LSky_ComputeAtmosphere(float3 pos)
+#endif
 {
     // Result color.
     half3 col = half3(0.0, 0.0, 0.0);
@@ -135,11 +139,14 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, out float3 sunMiePhase, out floa
     // Get uo side mask.
     fixed skyMask = 1.0-LSky_GroundMask(pos.y);
 
+    #ifdef LSKY_COMPUTE_MIE_PHASE
     // Compute sun mie phase in up side.
     sunMiePhase = LSky_PartialMiePhase(cosTheta.x, lsky_PartialSunMiePhase, lsky_SunMieScattering) * lsky_SunMieTint.rgb * skyMask;
 
     // Compute moon mie phase in up side.
     moonMiePhase = LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering) * lsky_MoonMieTint.rgb * skyMask; 
+   
+    #endif
 
     // Get optical depth.
     #ifdef SHADER_API_MOBILE
@@ -148,8 +155,16 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, out float3 sunMiePhase, out floa
         CustomOpticalDepth(pos.y, srm.xy);
     #endif
 
+    #ifdef LSKY_COMPUTE_MIE_PHASE
     // Compute atmospheric scattering.
     col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, sunMiePhase, moonMiePhase);
+
+    #else
+
+    fixed3 mp = fixed3(0.0, 0.0, 0.0);
+    col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, mp, mp);
+
+    #endif
 
     // Apply color correction.
     AtmosphereColorCorrection(col.rgb, lsky_GroundColor.rgb, LSKY_GLOBALEXPOSURE, lsky_AtmosphereContrast);

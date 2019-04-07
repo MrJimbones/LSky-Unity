@@ -70,14 +70,16 @@ namespace Rallec.LSky
                 if(m_Resources.cloudsShader == null) return false;
 
                 // Ambient skybox
-                //if(m_Resources.ambientSkyboxShader == null) return false;
+                if(m_Resources.ambientSkyboxShader == null) return false;
 
                 #endregion
 
                 #region [Material]
 
-                // Check deep space.
+                // Check galaxy backgriund.
                 if(m_Resources.galaxyBackgroundMaterial == null) return false;
+
+                // Check stars field.
                 if(m_Resources.starsFieldMaterial == null) return false;
 
                 // Check sun.
@@ -93,10 +95,9 @@ namespace Rallec.LSky
                 if(m_Resources.cloudsMaterial == null) return false;
 
                 // Ambient skybox.
-                //if(m_Resources.ambientSkyboxMaterial == null) return false;
+                if(m_Resources.ambientSkyboxMaterial == null) return false;
 
                 #endregion
-
 
                 return true;
             }
@@ -112,6 +113,9 @@ namespace Rallec.LSky
 
         // Global.
         public LSky_Global global = new LSky_Global();
+
+        [LSky_AnimationCurveRange(0.0f, 0.0f, 1.0f, 1.0f, 6)]
+        [SerializeField] private AnimationCurve m_DeepSpaceExposure = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 1.0f);
 
         // Galaxy background.
         [SerializeField] private bool m_RenderGalaxyBackground = false;
@@ -156,9 +160,9 @@ namespace Rallec.LSky
 
         [SerializeField] private LSky_DirLightParams m_SunLightParams = new LSky_DirLightParams();
         [SerializeField] private LSky_DirLightParams m_MoonLightParams = new LSky_DirLightParams();
-        [LSky_AnimationCurveRange(0.0f, 0.0f, 1.0f, 1.0f)]
+        [LSky_AnimationCurveRange(0.0f, 0.0f, 1.0f, 1.0f, 6)]
         [SerializeField] private AnimationCurve m_SunMoonLightFade = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 1.0f);
-        private float SunMoonLightFadeEvaluete{ get{ return (1.0f -SunDirection.y) * 0.5f; } }
+        private float SunEvaluateTime{ get{ return (1.0f -SunDirection.y) * 0.5f; } }
         public LSky_Ambient ambient = new LSky_Ambient();
 
         #endregion
@@ -257,6 +261,9 @@ namespace Rallec.LSky
             }
         }
 
+        /// <summary></summary>
+        public float DeepSpaceExposure{ get{return m_DeepSpaceExposure.Evaluate(SunEvaluateTime); } }
+
         #endregion
 
         #region [Methods|Initialize]
@@ -302,10 +309,6 @@ namespace Rallec.LSky
             moon.InitPropertyIDs();
             atmosphere.InitPropertyIDs();
             clouds.InitPropertyIDs();
-           
-            if(m_SendSkybox)
-                UnityEngine.RenderSettings.skybox = m_Resources.ambientSkyboxMaterial;
-
         }
 
         private void SetShadersToMaterials()
@@ -331,7 +334,7 @@ namespace Rallec.LSky
             m_Resources.cloudsMaterial.shader = m_Resources.cloudsShader;
 
             // Set Skyvox
-            //m_Resources.ambientSkyboxMaterial.shader = m_Resources.ambientSkyboxShader;
+            m_Resources.ambientSkyboxMaterial.shader = m_Resources.ambientSkyboxShader;
 
         }
 
@@ -377,6 +380,12 @@ namespace Rallec.LSky
         {
             if(!m_IsReady) return;
 
+            if(m_SendSkybox)
+            {
+                UnityEngine.RenderSettings.skybox = m_Resources.ambientSkyboxMaterial;
+                m_SendSkybox = false;
+            }
+
             UpdateCelestialsTransform();
             UpdateCloudsTransform();
             RenderDome();
@@ -402,7 +411,7 @@ namespace Rallec.LSky
             if(m_RenderGalaxyBackground)
             {
                 // Set params.
-                galaxyBackground.SetParams(m_Resources.galaxyBackgroundMaterial);
+                galaxyBackground.SetParams(m_Resources.galaxyBackgroundMaterial, DeepSpaceExposure);
 
                 // Draw mesh.
                 Graphics.DrawMesh(
@@ -416,7 +425,7 @@ namespace Rallec.LSky
             if(m_RenderStarsField)
             {
                 // Set params.
-                starsField.SetParams(m_Resources.starsFieldMaterial);
+                starsField.SetParams(m_Resources.starsFieldMaterial, DeepSpaceExposure);
 
                 // Draw mesh.
                 Graphics.DrawMesh(
@@ -554,7 +563,7 @@ namespace Rallec.LSky
                 m_DirLightRef.transform.localPosition = moon.MoonPosition;
                 m_DirLightRef.transform.LookAt(m_Transform);
                 m_DirLightRef.light.color = m_MoonLightParams.color;
-                m_DirLightRef.light.intensity = m_MoonLightParams.intensity * m_SunMoonLightFade.Evaluate(SunMoonLightFadeEvaluete);
+                m_DirLightRef.light.intensity = m_MoonLightParams.intensity * m_SunMoonLightFade.Evaluate(SunEvaluateTime);
 
             }
             m_DirLightRef.light.enabled = DirLightEnbled;
@@ -562,7 +571,7 @@ namespace Rallec.LSky
 
         private void UpdateAmbient()
         {
-            ambient.UpdateAmbient();
+            ambient.UpdateAmbient(SunEvaluateTime);
         }
 
         #endregion

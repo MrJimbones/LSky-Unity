@@ -32,7 +32,7 @@ MonoBehaviour:
   sunShader: {fileID: 4800000, guid: db14857841d4c0661829f03ceb81bd4e, type: 3}
   moonShader: {fileID: 4800000, guid: f4d150da204c8a34c848775b0065de99, type: 3}
   cloudsShader: {fileID: 4800000, guid: 70b36c90ab3399d37a224c436b4254fc, type: 3}
-  ambientSkyboxShader: {fileID: 0}
+  ambientSkyboxShader: {fileID: 4800000, guid: 926eadc368ba42dd8a50c83f7e5daf7a, type: 3}
   atmosphereMaterial: {fileID: 2100000, guid: b8f0c5d98d28700b092c3575edece165, type: 2}
   galaxyBackgroundMaterial: {fileID: 2100000, guid: e2c45858d4e98a1ba89da0e75209be65,
     type: 2}
@@ -40,4 +40,5 @@ MonoBehaviour:
   sunMaterial: {fileID: 2100000, guid: 8a48f0367ba20ebc3ac6b71d79fa18cc, type: 2}
   moonMaterial: {fileID: 2100000, guid: 5656e484b241b0d7487b149f094c07bb, type: 2}
   cloudsMaterial: {fileID: 2100000, guid: 4d742f51e0868986cb0a52a234123726, type: 2}
-  ambientSkyboxMaterial: {fileID: 0}
+  ambientSkyboxMaterial: {fileID: 2100000, guid: bfa322d9cda488ee692f4f2a57b82801,
+    type: 2}

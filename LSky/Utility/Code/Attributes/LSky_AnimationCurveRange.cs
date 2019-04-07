@@ -21,12 +21,15 @@ namespace Rallec.LSky.Utility
         public readonly float timeEnd;
         public readonly float valueEnd;
 
-        public LSky_AnimationCurveRange(float _timeStart, float _valueStart, float _timeEnd, float _valueEnd)
+        public readonly int colorIndex;
+
+        public LSky_AnimationCurveRange(float _timeStart, float _valueStart, float _timeEnd, float _valueEnd, int _colorIndex)
         {
             this.timeStart  = _timeStart;
             this.valueStart = _valueStart;
             this.timeEnd    = _timeEnd;
             this.valueEnd   = _valueEnd;
+            this.colorIndex = _colorIndex;
         }
 
     }

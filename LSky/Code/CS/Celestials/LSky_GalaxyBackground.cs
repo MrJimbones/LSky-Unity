@@ -1,7 +1,7 @@
 ﻿/////////////////////////////////////////////////
-/// Rallec Game Kit.
+/// LSky
 ///----------------------------------------------
-/// Celeste Sky Core
+/// Deep Space
 ///----------------------------------------------
 /// Galaxy background.
 ///----------------------------------------------
@@ -21,8 +21,7 @@ namespace Rallec.LSky
         public Color tint;
         public float intensity;
 
-        [Range(0.0f, 1.0f)] 
-        public float contrast;
+        [Range(0.0f, 1.0f)] public float contrast;
 
         public LSky_GalaxyBackgroundParams(Cubemap _cubemap, Color _tint, float _intensity, float _contrast)
         {
@@ -79,24 +78,34 @@ namespace Rallec.LSky
             m_CubemapID   = Shader.PropertyToID("lsky_GalaxyBackgroundCubemap");
             m_TintID      = Shader.PropertyToID("lsky_GalaxyBackgroundTint");
             m_IntensityID = Shader.PropertyToID("lsky_GalaxyBackgroundIntensity");
-            m_ContrastID = Shader.PropertyToID("lsky_GalaxyBackgroundContrast");
+            m_ContrastID  = Shader.PropertyToID("lsky_GalaxyBackgroundContrast");
+        }
+
+        /// <summary> Set parameters to material. </summary>
+        public void SetParams(Material material, float intensity = 1f)
+        {
+            material.SetTexture(m_CubemapID, m_Parameters.cubemap);
+            material.SetColor(m_TintID, m_Parameters.tint);
+            material.SetFloat(m_IntensityID, m_Parameters.intensity * intensity);
+            material.SetFloat(m_ContrastID, m_Parameters.contrast);
         }
 
         /// <summary></summary>
-        public void SetParams(Material material)
+        public LSky_GalaxyBackgroundParams Parameters
         {
-            // Set cubemap.
-            material.SetTexture(m_CubemapID, m_Parameters.cubemap);
-
-            // Set color.
-            material.SetColor(m_TintID, m_Parameters.tint);
-
-            // Set intensity
-            material.SetFloat(m_IntensityID, m_Parameters.intensity);
-
-            // Set contrast.
-            material.SetFloat(m_ContrastID, m_Parameters.contrast);
+            get
+            {
+                return m_Parameters;
+            }
+            set
+            {
+                m_Parameters.cubemap   = value.cubemap;
+                m_Parameters.tint      = value.tint;
+                m_Parameters.intensity = value.intensity;
+                m_Parameters.contrast  = value.contrast;
+            }
         }
+
     }
 
 }

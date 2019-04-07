@@ -46,8 +46,6 @@ namespace Rallec.LSky
             this.intensity = Mathf.Lerp(this.intensity, b.intensity, time);
             this.contrast = Mathf.Lerp(this.contrast, b.contrast, time);
         }
-        
-
     }
     
     /// <summary></summary>
@@ -64,12 +62,6 @@ namespace Rallec.LSky
             intensity  = 1.0f,
             contrast   = 0.3f
         };
-
-        /// <summary></summary>
-        public float Size{ get{ return m_Parameters.size; } }
-
-        /// <summary></summary>
-        public LSky_CelestialsCoords Coords{ get{ return m_Parameters.coords; } }
 
         /// <summary></summary>
         public Vector3 MoonPosition
@@ -107,7 +99,6 @@ namespace Rallec.LSky
 
         #endregion
 
-
         #region [SetParams]
 
         public void SetParams(Material material)
@@ -118,6 +109,16 @@ namespace Rallec.LSky
             material.SetFloat(m_IntensityID, m_Parameters.intensity);
             material.SetFloat(m_ContrastID, m_Parameters.contrast);
         }
+
+        #endregion
+
+        #region [Accessors]
+
+        /// <summary></summary>
+        public float Size{ get{ return m_Parameters.size; } }
+
+        /// <summary></summary>
+        public LSky_CelestialsCoords Coords{ get{ return m_Parameters.coords; } }
 
         #endregion
 

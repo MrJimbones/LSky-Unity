@@ -35,9 +35,9 @@ namespace Rallec.LSky
         public UnityEngine.Rendering.AmbientMode ambientMode;
 
         public float updateTime;
-        public Color skyColor, equatorColor, groundColor;
+        public Gradient skyColor, equatorColor, groundColor;
 
-        public LSky_AmbientParams(UnityEngine.Rendering.AmbientMode _ambientMode, float _updateTime, Color _skyColor, Color _equatorColor, Color _groundColor)
+        public LSky_AmbientParams(UnityEngine.Rendering.AmbientMode _ambientMode, float _updateTime, Gradient _skyColor, Gradient _equatorColor, Gradient _groundColor)
         {
             this.ambientMode  = _ambientMode;
             this.updateTime   = _updateTime;
@@ -56,16 +56,16 @@ namespace Rallec.LSky
         {
             ambientMode  = UnityEngine.Rendering.AmbientMode.Flat,
             updateTime   = 0.5f,
-            skyColor     = Color.white,
-            equatorColor = Color.white,
-            groundColor  = Color.black
+            skyColor     = new Gradient(),
+            equatorColor = new Gradient(),
+            groundColor  = new Gradient()
 
         };
 
         private float m_AmbientRefreshTimer;
 
         /// <summary></summary>
-        public void UpdateAmbient()
+        public void UpdateAmbient(float evaluateTime)
         {
             RenderSettings.ambientMode = m_AmbientParams.ambientMode;
 
@@ -77,15 +77,15 @@ namespace Rallec.LSky
                 {
                     case UnityEngine.Rendering.AmbientMode.Flat:
 
-                    RenderSettings.ambientSkyColor = m_AmbientParams.skyColor;
+                    RenderSettings.ambientSkyColor = m_AmbientParams.skyColor.Evaluate(evaluateTime);
 
                     break;
 
                     case UnityEngine.Rendering.AmbientMode.Trilight:
 
-                    RenderSettings.ambientSkyColor     = m_AmbientParams.skyColor;
-                    RenderSettings.ambientEquatorColor = m_AmbientParams.equatorColor;
-                    RenderSettings.ambientGroundColor  = m_AmbientParams.groundColor;
+                    RenderSettings.ambientSkyColor     = m_AmbientParams.skyColor.Evaluate(evaluateTime);
+                    RenderSettings.ambientEquatorColor = m_AmbientParams.equatorColor.Evaluate(evaluateTime);
+                    RenderSettings.ambientGroundColor  = m_AmbientParams.groundColor.Evaluate(evaluateTime);
 
                     break;
 
@@ -98,10 +98,25 @@ namespace Rallec.LSky
                 }
                 m_AmbientRefreshTimer = 0.0f;
             }
-          
-
         }
 
+        /// <summary></summary>
+        public LSky_AmbientParams AmbientParams
+        {
+            get
+            {
+                return m_AmbientParams;
+            }
+            set
+            {
+                m_AmbientParams.ambientMode  = value.ambientMode;
+                m_AmbientParams.updateTime   = value.updateTime;
+                m_AmbientParams.skyColor     = value.skyColor;
+                m_AmbientParams.equatorColor = value.equatorColor;
+                m_AmbientParams.groundColor  = value.groundColor;
+
+            }
+        }
 
     }
 

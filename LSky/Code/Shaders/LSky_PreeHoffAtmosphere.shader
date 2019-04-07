@@ -4,6 +4,8 @@
 
     CGINCLUDE
 
+    #define LSKY_COMPUTE_MIE_PHASE 1
+
     // Includes.
     #include "UnityCG.cginc"
     #include "LSky_Common.hlsl"
@@ -39,7 +41,9 @@
         o.nvertex = normalize(v.vertex.xyz);
 
         #ifndef LSKY_PER_PIXEL_ATMOSPHERE
+            #ifdef LSKY_COMPUTE_MIE_PHASE
             o.scatter.rgb = LSky_ComputeAtmosphere(o.nvertex.xyz, o.sunMiePhase, o.moonMiePhase.rgb);
+            #endif
         #endif
 
         return o;

@@ -19,7 +19,12 @@ namespace Rallec.LSky
 
         #region [Fields|General]
 
-        public float globalExposure = 1.0f;
+        [SerializeField] private float m_GlobalExposure = 1.0f;
+
+        public float GlobalExposure
+        {
+            get{ return m_GlobalExposure; }
+        }
 
         #endregion
 
@@ -58,52 +63,44 @@ namespace Rallec.LSky
         public void InitializePropertyIDs()
         {
             m_GlobalExposurePropertyID = Shader.PropertyToID("lsky_GlobalExposure");
-
             m_WorldSunDirectionID  = Shader.PropertyToID("lsky_WorldSunDirection");
             m_WorldMoonDirectionID = Shader.PropertyToID("lsky_WorldMoonDirection");
             m_LocalSunDirectionID  = Shader.PropertyToID("lsky_LocalSunDirection");
             m_LocalMoonDirectionID = Shader.PropertyToID("lsky_LocalMoonDirection");
-
             m_ObjectToWorldID = Shader.PropertyToID("lsky_ObjectToWorld");
             m_WorldToObjectID = Shader.PropertyToID("lsky_WorldToObject");
-
         }
 
         #endregion
 
         #region [Set Params]
 
-        /// <summary></summary>
+        /// <summary> Set parameters to material. </summary>
+        /// <param="transform"> Dome transform.  </param>
         public void SetParams(Transform transform)
         {
-            // Set global exposure.
-            Shader.SetGlobalFloat(m_GlobalExposurePropertyID, globalExposure);
+            Shader.SetGlobalFloat(m_GlobalExposurePropertyID, m_GlobalExposure);
 
             // Set matrices.
             Shader.SetGlobalMatrix(m_ObjectToWorldID, transform.localToWorldMatrix);
             Shader.SetGlobalMatrix(m_WorldToObjectID, transform.worldToLocalMatrix);
-
         }
 
-        /// <summary></summary>
+        /// <summary> Set parameters to material. </summary>
         public void SetParams(Transform transform, Vector3 sunDir, Vector3 moonDir)
         {
-            // Set global exposure.
-            Shader.SetGlobalFloat(m_GlobalExposurePropertyID, globalExposure);
+
+            Shader.SetGlobalFloat(m_GlobalExposurePropertyID, m_GlobalExposure);
 
             // Set matrices.
             Shader.SetGlobalMatrix(m_ObjectToWorldID, transform.localToWorldMatrix);
             Shader.SetGlobalMatrix(m_WorldToObjectID, transform.worldToLocalMatrix);
 
-            // Set sun direction.
+            // Set celestial direction.
             Shader.SetGlobalVector(m_WorldSunDirectionID, sunDir);
             Shader.SetGlobalVector(m_LocalSunDirectionID, transform.InverseTransformDirection(sunDir));
-
-
-            // Set moon direction-
             Shader.SetGlobalVector(m_WorldMoonDirectionID, moonDir);
             Shader.SetGlobalVector(m_LocalMoonDirectionID, transform.InverseTransformDirection(moonDir));
-
         }
 
         #endregion

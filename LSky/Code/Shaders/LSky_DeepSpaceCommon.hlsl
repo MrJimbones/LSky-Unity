@@ -47,7 +47,7 @@ inline half3 LSky_StarsFieldCubemap(float3 coords, float3 noiseCoords, half3 col
 
     // Stars field scintillation.
     half noise = texCUBE(lsky_StarsFieldNoiseCubemap, noiseCoords).r;
-    res.rgb = lerp(res.rgb, res.rgb*noise, lsky_StarsFieldScintillation);
+    res.rgb = lerp(res.rgb, 2.0*res.rgb*noise, lsky_StarsFieldScintillation);
 
     // Intensity.
     res.rgb *= lsky_StarsFieldTint.rgb * col.rgb * lsky_StarsFieldIntensity;

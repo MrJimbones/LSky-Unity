@@ -115,7 +115,7 @@ namespace Rallec.LSky
         }
 
         /// <summary></summary>
-        public void SetParams(Material material)
+        public void SetParams(Material material, float intensity = 1.0f)
         {
             // Set cubemap.
             material.SetTexture(m_CubemapID, m_Parameters.cubemap);
@@ -127,7 +127,7 @@ namespace Rallec.LSky
             material.SetColor(m_TintID, m_Parameters.tint);
 
             // Set intensity
-            material.SetFloat(m_IntensityID, m_Parameters.intensity);
+            material.SetFloat(m_IntensityID, m_Parameters.intensity*intensity);
 
             // Set contrast.
             //material.SetFloat(m_ContrastID, m_Parameters.contrast);
