@@ -19,9 +19,9 @@ namespace Rallec.LSky
     {
 
         public float intensity;
-        public Color color;
+        public Gradient color;
 
-        public LSky_DirLightParams(float _intensity, Color _color)
+        public LSky_DirLightParams(float _intensity, Gradient _color)
         {
             this.intensity = _intensity;
             this.color = _color;

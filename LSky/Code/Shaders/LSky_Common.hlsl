@@ -70,9 +70,20 @@ uniform half lsky_GlobalExposure;
 #endif
 
 // Simple and fast tonemaping.
+
+inline half LSky_FastTonemaping(half x, half exposure)
+{
+    return 1.0 - exp(exposure * - x);
+}
+
 inline half3 LSky_FastTonemaping(half3 col, half exposure)
 {
     return 1.0 - exp(exposure * -col.rgb);
+}
+
+inline half4 LSky_FastTonemaping(half4 col, half exposure)
+{
+    return 1.0 - exp(exposure * -col);
 }
 
 // Exponent.

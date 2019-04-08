@@ -163,6 +163,7 @@ namespace Rallec.LSky
         [LSky_AnimationCurveRange(0.0f, 0.0f, 1.0f, 1.0f, 6)]
         [SerializeField] private AnimationCurve m_SunMoonLightFade = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 1.0f);
         private float SunEvaluateTime{ get{ return (1.0f -SunDirection.y) * 0.5f; } }
+        private float MoonEvaluteTime{ get { return (1.0f -MoonDirection.y) * 0.5f; } }
         public LSky_Ambient ambient = new LSky_Ambient();
 
         #endregion
@@ -535,7 +536,7 @@ namespace Rallec.LSky
         private void UpdateCloudsTransform()
         {
             
-            m_CloudsRef.transform.localScale = new Vector3(m_DomeRadius, m_DomeRadius * m_CloudsDomeHeight, m_DomeRadius);
+            m_CloudsRef.transform.localScale = new Vector3(m_CloudsRef.transform.localScale.x,m_CloudsDomeHeight,  m_CloudsRef.transform.localScale.z);
 
             m_CloudsYRot += m_CloudsRotationSpeed * Time.deltaTime;
             m_CloudsYRot = Mathf.Repeat(m_CloudsYRot, 360);
@@ -554,7 +555,7 @@ namespace Rallec.LSky
             {
                 m_DirLightRef.transform.localPosition = sun.SunPosition;
                 m_DirLightRef.transform.LookAt(m_Transform);
-                m_DirLightRef.light.color = m_SunLightParams.color;
+                m_DirLightRef.light.color = m_SunLightParams.color.Evaluate(SunEvaluateTime);
                 m_DirLightRef.light.intensity = m_SunLightParams.intensity;
 
             }
@@ -562,7 +563,7 @@ namespace Rallec.LSky
             {
                 m_DirLightRef.transform.localPosition = moon.MoonPosition;
                 m_DirLightRef.transform.LookAt(m_Transform);
-                m_DirLightRef.light.color = m_MoonLightParams.color;
+                m_DirLightRef.light.color = m_MoonLightParams.color.Evaluate(MoonEvaluteTime);
                 m_DirLightRef.light.intensity = m_MoonLightParams.intensity * m_SunMoonLightFade.Evaluate(SunEvaluateTime);
 
             }

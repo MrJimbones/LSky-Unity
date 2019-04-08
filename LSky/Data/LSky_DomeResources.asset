@@ -20,10 +20,10 @@ MonoBehaviour:
   atmosphereLOD1: {fileID: 4300000, guid: b250b63290f1a6248964185185ad678a, type: 2}
   atmosphereLOD2: {fileID: 4300000, guid: 411311cf3d1c11747bf38eee1b3fd3f7, type: 2}
   atmosphereLOD3: {fileID: 4300000, guid: b333cc565b9eeb646a2d89e7dffe55aa, type: 2}
-  hemisphereLOD0: {fileID: 4300000, guid: a3f9bd9376cf74ad1a4556ddf95f08db, type: 3}
-  hemisphereLOD1: {fileID: 4300000, guid: de5d229bf252545369546d5f4348728e, type: 3}
-  hemisphereLOD2: {fileID: 4300000, guid: ce8cdc6904c974970883ac7f32c20caa, type: 3}
-  hemisphereLOD3: {fileID: 4300000, guid: ce8cdc6904c974970883ac7f32c20caa, type: 3}
+  hemisphereLOD0: {fileID: 4300000, guid: 3d8e5c91682d1276aa9524cbd925cc77, type: 3}
+  hemisphereLOD1: {fileID: 4300002, guid: 67c02f4b3084d5e63839c98e2e160588, type: 3}
+  hemisphereLOD2: {fileID: 4300000, guid: a61674e7b75a25710b52e0534727817c, type: 3}
+  hemisphereLOD3: {fileID: 4300000, guid: a61674e7b75a25710b52e0534727817c, type: 3}
   QuadMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   atmosphereShader: {fileID: 4800000, guid: 1f15922ba2efc4d52b1cb11a55f2c384, type: 3}
   galaxyBackgroundShader: {fileID: 4800000, guid: d77a0199e1c6ee13a82108dc38de3864,
