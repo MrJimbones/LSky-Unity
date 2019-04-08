@@ -60,9 +60,11 @@ namespace Rallec.LSky
         };
 
         /// <summary></summary>
-        public float Size{ get{ return m_Parameters.size; } }
-
-        public LSky_CelestialsCoords Coords{ get{ return m_Parameters.coords; } }
+        public LSky_SunParams Parameters
+        {
+            get{ return m_Parameters; }
+            set{ m_Parameters = value; }
+        }
 
         public Vector3 SunPosition{ get{ return LSky_Mathf.SphericalToCartesian(m_Parameters.coords.altitude, m_Parameters.coords.azimuth); } }
 

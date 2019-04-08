@@ -150,10 +150,9 @@ namespace Rallec.LSky
         [SerializeField] private bool m_RenderClouds = true;
         [SerializeField] private int m_CloudsLayerIndex = 0;
         [SerializeField, Range(0.0f, 1.0f)] private float m_CloudsDomeHeight = 1.0f;
-        [SerializeField] private float m_CloudsRotationSpeed = 3f;
+        [SerializeField] private float m_CloudsDomeYPos = 0.0f;
+        [SerializeField] private float m_CloudsOrientation = 3f;
         public LSky_Clouds clouds = new LSky_Clouds();
-
-        private float m_CloudsYRot;
 
         // Lighting.
         [SerializeField] private bool m_SendSkybox = false;
@@ -243,7 +242,7 @@ namespace Rallec.LSky
         { 
             get
             {
-                if(Mathf.Abs(sun.Coords.altitude) > 1.7f)
+                if(Mathf.Abs(sun.Parameters.coords.altitude) > 1.7f)
                     return false;
 
                 return true;
@@ -255,7 +254,7 @@ namespace Rallec.LSky
         {
             get
             {
-                if(!IsDay && (Mathf.Abs(moon.Coords.altitude) > 1.7f))
+                if(!IsDay && (Mathf.Abs(moon.Parameters.coords.altitude) > 1.7f))
                     return false;
 
                 return true;
@@ -477,9 +476,9 @@ namespace Rallec.LSky
 
                 // Set params.
                 if(m_SetGlobalAtmosphereParams)
-                    atmosphere.SetGlobalParams();
+                    atmosphere.SetGlobalParams(SunEvaluateTime);
                 else
-                    atmosphere.SetParams(m_Resources.atmosphereMaterial);
+                    atmosphere.SetParams(m_Resources.atmosphereMaterial, SunEvaluateTime);
 
                 // Draw mesh.
                 Graphics.DrawMesh(
@@ -493,10 +492,13 @@ namespace Rallec.LSky
             // Render clouds.
             if(m_RenderClouds)
             {
-                // Set params.
-                clouds.SetParams(m_Resources.cloudsMaterial);
+                
+                if(atmosphere.moonRayleighMode == LSky_CelestialRayleighMode.CelestialContribution)
+                    clouds.SetParams(m_Resources.cloudsMaterial, SunEvaluateTime, true, MoonEvaluteTime);
+                else
+                    clouds.SetParams(m_Resources.cloudsMaterial, SunEvaluateTime, false);
 
-                // Draw mesh.
+                
                 Graphics.DrawMesh(
                     GetHemisphereMesh(LSky_Quality4.Low),
                     m_CloudsRef.transform.localToWorldMatrix,
@@ -519,7 +521,7 @@ namespace Rallec.LSky
             }
 
             // SUn size.
-            m_SunRef.transform.localScale = sun.Size * Vector3.one;
+            m_SunRef.transform.localScale = sun.Parameters.size * Vector3.one;
 
             // Moon position.
             if(m_OldMoonPos != moon.MoonPosition)
@@ -530,21 +532,19 @@ namespace Rallec.LSky
             }
 
             // Moon size.
-            m_MoonRef.transform.localScale = moon.Size * Vector3.one;
+            m_MoonRef.transform.localScale = moon.Parameters.size * Vector3.one;
         }
 
         private void UpdateCloudsTransform()
         {
             
+            m_CloudsRef.transform.localPosition = new Vector3(m_CloudsRef.transform.localPosition.x, m_CloudsDomeYPos,  m_CloudsRef.transform.localPosition.z);
             m_CloudsRef.transform.localScale = new Vector3(m_CloudsRef.transform.localScale.x,m_CloudsDomeHeight,  m_CloudsRef.transform.localScale.z);
-
-            m_CloudsYRot += m_CloudsRotationSpeed * Time.deltaTime;
-            m_CloudsYRot = Mathf.Repeat(m_CloudsYRot, 360);
 
             // Rotation.
             m_CloudsRef.transform.localRotation = Quaternion.Euler(
                 m_CloudsRef.transform.localEulerAngles.x, 
-                m_CloudsYRot, 
+                m_CloudsOrientation, 
                 m_CloudsRef.transform.localEulerAngles.z
             );
         }
@@ -572,7 +572,10 @@ namespace Rallec.LSky
 
         private void UpdateAmbient()
         {
-            ambient.UpdateAmbient(SunEvaluateTime);
+            if(atmosphere.moonRayleighMode == LSky_CelestialRayleighMode.CelestialContribution)
+                ambient.UpdateAmbient(SunEvaluateTime, true, MoonEvaluteTime);
+            else
+                ambient.UpdateAmbient(SunEvaluateTime, false);
         }
 
         #endregion

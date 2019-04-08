@@ -70,7 +70,7 @@
             Cull Front
             ZWrite Off
             ZTest Lequal
-            //Blend One One
+            Blend One One
             Fog{ Mode Off }
 
             CGPROGRAM

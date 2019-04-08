@@ -36,14 +36,22 @@ namespace Rallec.LSky
 
         public float updateTime;
         public Gradient skyColor, equatorColor, groundColor;
+        public Gradient skyMoonColor, equatorMoonColor, groundMoonColor;
 
-        public LSky_AmbientParams(UnityEngine.Rendering.AmbientMode _ambientMode, float _updateTime, Gradient _skyColor, Gradient _equatorColor, Gradient _groundColor)
+        public LSky_AmbientParams(
+            UnityEngine.Rendering.AmbientMode _ambientMode, float _updateTime,
+            Gradient _skyColor, Gradient _equatorColor, Gradient _groundColor,
+            Gradient _skyMoonColor, Gradient _equatorMoonColor, Gradient _groundMoonColor
+        )
         {
             this.ambientMode  = _ambientMode;
             this.updateTime   = _updateTime;
             this.skyColor     = _skyColor;
             this.equatorColor = _equatorColor;
             this.groundColor  = _groundColor;
+            this.skyMoonColor = _skyMoonColor;
+            this.equatorMoonColor = _equatorMoonColor;
+            this.groundMoonColor  = _groundMoonColor;
         }
 
     }
@@ -58,14 +66,16 @@ namespace Rallec.LSky
             updateTime   = 0.5f,
             skyColor     = new Gradient(),
             equatorColor = new Gradient(),
-            groundColor  = new Gradient()
-
+            groundColor  = new Gradient(),
+            skyMoonColor     = new Gradient(),
+            equatorMoonColor = new Gradient(),
+            groundMoonColor  = new Gradient()
         };
 
         private float m_AmbientRefreshTimer;
 
         /// <summary></summary>
-        public void UpdateAmbient(float evaluateTime)
+        public void UpdateAmbient(float evaluateTime, bool evaluateMoon, float moonEvaluateTime = 1.0f)
         {
             RenderSettings.ambientMode = m_AmbientParams.ambientMode;
 
@@ -79,6 +89,10 @@ namespace Rallec.LSky
 
                     RenderSettings.ambientSkyColor = m_AmbientParams.skyColor.Evaluate(evaluateTime);
 
+                    // Add moon contribution.
+                    if(evaluateMoon)
+                        RenderSettings.ambientSkyColor += m_AmbientParams.skyMoonColor.Evaluate(moonEvaluateTime);
+
                     break;
 
                     case UnityEngine.Rendering.AmbientMode.Trilight:
@@ -86,6 +100,14 @@ namespace Rallec.LSky
                     RenderSettings.ambientSkyColor     = m_AmbientParams.skyColor.Evaluate(evaluateTime);
                     RenderSettings.ambientEquatorColor = m_AmbientParams.equatorColor.Evaluate(evaluateTime);
                     RenderSettings.ambientGroundColor  = m_AmbientParams.groundColor.Evaluate(evaluateTime);
+
+                    // Add moon contribution.
+                    if(evaluateMoon)
+                    {
+                        RenderSettings.ambientSkyColor     += m_AmbientParams.skyMoonColor.Evaluate(moonEvaluateTime);
+                        RenderSettings.ambientEquatorColor += m_AmbientParams.equatorMoonColor.Evaluate(moonEvaluateTime);
+                        RenderSettings.ambientGroundColor  += m_AmbientParams.groundMoonColor.Evaluate(moonEvaluateTime);
+                    }
 
                     break;
 

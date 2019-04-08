@@ -115,10 +115,11 @@ namespace Rallec.LSky
         #region [Accessors]
 
         /// <summary></summary>
-        public float Size{ get{ return m_Parameters.size; } }
-
-        /// <summary></summary>
-        public LSky_CelestialsCoords Coords{ get{ return m_Parameters.coords; } }
+        public LSky_MoonParams Parameters
+        {
+            get{ return m_Parameters; }
+            set{ m_Parameters = value; }
+        }
 
         #endregion
 

@@ -93,17 +93,8 @@ namespace Rallec.LSky
         /// <summary></summary>
         public LSky_GalaxyBackgroundParams Parameters
         {
-            get
-            {
-                return m_Parameters;
-            }
-            set
-            {
-                m_Parameters.cubemap   = value.cubemap;
-                m_Parameters.tint      = value.tint;
-                m_Parameters.intensity = value.intensity;
-                m_Parameters.contrast  = value.contrast;
-            }
+            get{ return m_Parameters; }
+            set{ m_Parameters = value; }
         }
 
     }

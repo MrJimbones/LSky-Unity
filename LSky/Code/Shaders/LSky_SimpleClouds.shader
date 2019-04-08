@@ -34,6 +34,9 @@
     uniform half lsky_CloudsDensity;
     uniform half lsky_CloudsCoverage;
 
+    // Speed.
+    uniform half lsky_CloudsSpeed, lsky_CloudsSpeed2;
+
     v2f vert(appdata_base v)
     {
         v2f o;
@@ -43,29 +46,28 @@
         UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
         o.vertex   = LSky_DomeToClipPos(v.vertex);
-       
         o.texcoord = TRANSFORM_TEX(v.texcoord, lsky_CloudsTex);
              
         o.col.rgb = lsky_CloudsTint.rgb * lsky_CloudsIntensity * LSKY_GLOBALEXPOSURE;
-    
-        o.col.a  = normalize(v.vertex.xyz-float3(0.0, 0.05, 0.0)).y*2;
+        o.col.a   = normalize(v.vertex.xyz-float3(0.0, 0.05, 0.0)).y*2;
 
         return o;
     }
 
     half4 frag2(v2f i) : SV_TARGET
     {
-        half4 col = half4(0.0, 0.0, 0.0, 1.0);
+        half4 col   = half4(0.0, 0.0, 0.0, 1.0);
+        half noise  = tex2D(lsky_CloudsTex, i.texcoord + _Time.x * lsky_CloudsSpeed).r;
+        half noise2 = tex2D(lsky_CloudsTex, i.texcoord + _Time.x * lsky_CloudsSpeed2).r;
 
-        half4 noise = tex2D(lsky_CloudsTex, i.texcoord);
-        half coverage = saturate(smoothstep(noise.r, 0.0, lsky_CloudsCoverage));
+        half coverage = saturate(( (noise+noise2) * 0.5) - lsky_CloudsCoverage);
 
         col.rgb = i.col.rgb * (1.0 - coverage * lsky_CloudsTint.a);
         
         col.a = saturate(coverage * lsky_CloudsDensity * i.col.a);
         
-        //col += LSky_FastTonemaping(col, 1.0);
-        //col.a = saturate(col.a);
+        col.a += LSky_FastTonemaping(col.a, 1.0);
+        col.a = saturate(col.a);
     
         return col;
     }
@@ -96,6 +98,7 @@
 
             ENDCG
         }
+
     }
 
 }

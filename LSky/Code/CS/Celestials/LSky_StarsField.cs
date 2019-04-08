@@ -60,6 +60,13 @@ namespace Rallec.LSky
             scintillation      = 1.0f,
             scintillationSpeed = 25f
         };
+
+        /// <summary></summary>
+        public LSky_StarsFieldParams Parameters
+        {
+            get{ return m_Parameters; }
+            set{ m_Parameters = value; }
+        }
       
         #region [PropertyIDs]
 

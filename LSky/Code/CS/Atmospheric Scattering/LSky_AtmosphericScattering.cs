@@ -127,7 +127,7 @@ namespace Rallec.LSky
 
         // Sun/Day.
         [Range(0.0f, 150f)] public float sunBrightness;    
-        public Color sunAtmosphereTint;
+        public Gradient sunAtmosphereTint;
 
         // Moon/NIght.
         [Range(0.0f, 1.0f)] public float moonContribution;
@@ -153,13 +153,13 @@ namespace Rallec.LSky
 
         public LSky_AtmosphericScatteringParams(
 
-            bool _applyFastTonemaping, float _contrast, 
-            Color _groundColor,        LSky_WavelengthParams _wavelength, 
-            float _scattering,         float _atmosphereHaziness,
-            float _atmosphereZenith,   float _rayleighZenithLength, 
-            float _sunBrightness,      Color _sunAtmosphereTint, 
-            float _moonContribution,   Color _moonAtmosphereTint,
-            float _turbidity,          float _mieZenithLength,
+            bool _applyFastTonemaping,   float _contrast, 
+            Color _groundColor,          LSky_WavelengthParams _wavelength, 
+            float _scattering,           float _atmosphereHaziness,
+            float _atmosphereZenith,     float _rayleighZenithLength, 
+            float _sunBrightness,        Gradient _sunAtmosphereTint, 
+            float _moonContribution,     Color _moonAtmosphereTint,
+            float _turbidity,            float _mieZenithLength,
             LSky_MiePhaseValues _sunMie, LSky_MiePhaseValues _moonMie
         )
         {
@@ -211,7 +211,7 @@ namespace Rallec.LSky
             atmosphereZenith = 0.0f,
             rayleighZenithLength = 8.4e3f,
             sunBrightness = 30f,
-            sunAtmosphereTint = Color.white,
+            sunAtmosphereTint = new Gradient(),
             moonContribution = 0.3f,
             moonAtmosphereTint = Color.white,
             turbidity = 0.0001f,
@@ -445,6 +445,14 @@ namespace Rallec.LSky
             get{ return PartialHenyeyGreenstein(parameters.moonMie.anisotropy); }
         }
 
+        
+        /// <summary></summary>
+        public LSky_AtmosphericScatteringParams Parameters
+        { 
+            get{ return parameters; } 
+            set{ parameters = value; }
+        }
+
         #endregion
 
         #region [References]
@@ -516,7 +524,7 @@ namespace Rallec.LSky
         #region [Methods|SetParams]
 
         /// <summary> Set Glonal Parameters to materials </summary>
-        public void SetGlobalParams()
+        public void SetGlobalParams(float sunEvaluateTime)
         {
             
             // General Settings.
@@ -540,7 +548,7 @@ namespace Rallec.LSky
 
             // Rayleigh.
             //-------------------------------------------------------------------------------------------------------------------------
-            Shader.SetGlobalColor(SunAtmosphereTintID, parameters.sunAtmosphereTint); // Set day atmosphere tint.
+            Shader.SetGlobalColor(SunAtmosphereTintID, parameters.sunAtmosphereTint.Evaluate(sunEvaluateTime)); // Set day atmosphere tint.
 
             switch(moonRayleighMode)
             {
@@ -606,7 +614,7 @@ namespace Rallec.LSky
         }
 
         /// <summary> Set Glonal Parameters to materials </summary>
-        public void SetParams(Material material)
+        public void SetParams(Material material, float sunEvaluateTime)
         {
             
             // General Settings.
@@ -630,7 +638,7 @@ namespace Rallec.LSky
 
             // Rayleigh.
             //-------------------------------------------------------------------------------------------------------------------------
-            material.SetColor(SunAtmosphereTintID, parameters.sunAtmosphereTint); // Set day atmosphere tint.
+            material.SetColor(SunAtmosphereTintID, parameters.sunAtmosphereTint.Evaluate(sunEvaluateTime)); // Set day atmosphere tint.
 
             switch(moonRayleighMode)
             {
@@ -888,7 +896,7 @@ namespace Rallec.LSky
             sm = t + f * (parameters.mieZenithLength - t);
         }
 
-        public Color AtmosphericScattering(float sr, float sm, float sunCosTheta, float moonCosTheta, bool enableMiePhase)
+        public Color AtmosphericScattering(float sr, float sm, float sunCosTheta, float moonCosTheta, bool enableMiePhase, float sunEvaluateTime)
         {
 
             // Combined Extinction Factor.
@@ -924,10 +932,10 @@ namespace Rallec.LSky
             sunBRMT.y = (sunBRT.y + sunBMT.y) / (betaRay.y + betaMie.y);
             sunBRMT.z = (sunBRT.z + sunBMT.z) / (betaRay.z + betaMie.z);
 
-            Vector3 sunScatter;
-            sunScatter.x = DayIntensity * (sunBRMT.x * combExcFac.x) * parameters.sunAtmosphereTint.r; 
-            sunScatter.y = DayIntensity * (sunBRMT.y * combExcFac.y) * parameters.sunAtmosphereTint.g; 
-            sunScatter.z = DayIntensity * (sunBRMT.z * combExcFac.z) * parameters.sunAtmosphereTint.b; 
+            Vector3 sunScatter; Color sunAtmosphereTint = parameters.sunAtmosphereTint.Evaluate(sunEvaluateTime);
+            sunScatter.x = DayIntensity * (sunBRMT.x * combExcFac.x) * sunAtmosphereTint.r; 
+            sunScatter.y = DayIntensity * (sunBRMT.y * combExcFac.y) * sunAtmosphereTint.g; 
+            sunScatter.z = DayIntensity * (sunBRMT.z * combExcFac.z) * sunAtmosphereTint.b; 
 
             Color result = new Color(0.0f, 0.0f, 0.0f, 1.0f);
             if(moonRayleighMode != LSky_CelestialRayleighMode.Off)
