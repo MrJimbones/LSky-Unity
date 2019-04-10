@@ -91,7 +91,7 @@ inline void NielsenOpticalDepth(float y, inout float2 srm)
 }
 */
 
-inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMiePhase, float3 moonMiePhase)
+inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMiePhase, float3 moonMiePhase, float depth)
 {
     // Combined Extinction Factor.
     float3 fex  = exp(-(lsky_BetaRay * srm.x + lsky_BetaMie * srm.y));
@@ -104,7 +104,7 @@ inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMieP
 
     // Sun/Day.
     //-------------------------------------------------------------------------------------
-    float3 sunBRT  = lsky_BetaRay * sunRayleighPhase;
+    float3 sunBRT  = lsky_BetaRay * sunRayleighPhase * (depth * LSKY_RAYLEIGHDEPTHMULTIPLIER);
     float3 sunBMT  = sunMiePhase * lsky_BetaMie;
     float3 sunBRMT = (sunBRT + sunBMT) / (lsky_BetaRay + lsky_BetaMie);
 
@@ -113,7 +113,7 @@ inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMieP
     // Moon/Night.
     //------------------------------------------------------------------------------------
     #ifdef LSKY_ENABLE_MOON_RAYLEIGH
-        half3 moonScatter = lsky_NightIntensity.x * (1.0-fex) * lsky_MoonAtmosphereTint; // Simple night rayleigh.
+        half3 moonScatter = lsky_NightIntensity.x * (1.0-fex) * lsky_MoonAtmosphereTint * (depth * LSKY_RAYLEIGHDEPTHMULTIPLIER); // Simple night rayleigh.
         moonScatter += moonMiePhase;
         return sunScatter + moonScatter; // Return day scattering + nigth scattering.
     #else
@@ -122,9 +122,9 @@ inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMieP
 }
 
 #ifdef LSKY_COMPUTE_MIE_PHASE
-inline half3 LSky_ComputeAtmosphere(float3 pos, out float3 sunMiePhase, out float3 moonMiePhase)
+inline half3 LSky_ComputeAtmosphere(float3 pos, out float3 sunMiePhase, out float3 moonMiePhase, float depth)
 #else
-inline half3 LSky_ComputeAtmosphere(float3 pos)
+inline half3 LSky_ComputeAtmosphere(float3 pos, float depth)
 #endif
 {
     // Result color.
@@ -141,10 +141,10 @@ inline half3 LSky_ComputeAtmosphere(float3 pos)
 
     #ifdef LSKY_COMPUTE_MIE_PHASE
     // Compute sun mie phase in up side.
-    sunMiePhase = LSky_PartialMiePhase(cosTheta.x, lsky_PartialSunMiePhase, lsky_SunMieScattering) * lsky_SunMieTint.rgb * skyMask;
+    sunMiePhase = (depth * LSKY_SUNMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.x, lsky_PartialSunMiePhase, lsky_SunMieScattering) * lsky_SunMieTint.rgb * skyMask;
 
     // Compute moon mie phase in up side.
-    moonMiePhase = LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering) * lsky_MoonMieTint.rgb * skyMask; 
+    moonMiePhase = (depth * LSKY_SUNMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering) * lsky_MoonMieTint.rgb * skyMask; 
    
     #endif
 
@@ -156,13 +156,12 @@ inline half3 LSky_ComputeAtmosphere(float3 pos)
     #endif
 
     #ifdef LSKY_COMPUTE_MIE_PHASE
-    // Compute atmospheric scattering.
-    col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, sunMiePhase, moonMiePhase);
-
+        // Compute atmospheric scattering.
+        col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, sunMiePhase, moonMiePhase, depth);
     #else
 
-    fixed3 mp = fixed3(0.0, 0.0, 0.0);
-    col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, mp, mp);
+        fixed3 mp = fixed3(0.0, 0.0, 0.0);
+        col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, mp, mp, depth);
 
     #endif
 
@@ -170,7 +169,9 @@ inline half3 LSky_ComputeAtmosphere(float3 pos)
     AtmosphereColorCorrection(col.rgb, lsky_GroundColor.rgb, LSKY_GLOBALEXPOSURE, lsky_AtmosphereContrast);
     
     // Apply ground.
+    #ifdef LSKY_ENABLE_GROUND
     col.rgb = applyGroundColor(pos.y, col.rgb);
+    #endif
 
     // return final color.
     return col;

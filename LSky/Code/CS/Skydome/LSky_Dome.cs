@@ -3,7 +3,7 @@
 ///----------------------------------------------
 /// Dome.
 ///----------------------------------------------
-/// Description: Skydome
+/// Description: Skydome Manager.
 /////////////////////////////////////////////////
 
 using System;
@@ -18,6 +18,8 @@ namespace Rallec.LSky
 
         #region [Resources]
 
+        [Header("Resources")]
+
         [SerializeField] private LSky_DomeResources m_Resources = null;
 
         [SerializeField] private bool m_IsReady = false;
@@ -26,76 +28,52 @@ namespace Rallec.LSky
             get
             {
                 #region [Mesh]
-                // Check this resource.
+
+                // Check all meshes.
                 if(m_Resources == null) return false;
                 
-                // Check sphere.
                 if(m_Resources.sphereLOD0 == null) return false;
                 if(m_Resources.sphereLOD1 == null) return false;
                 if(m_Resources.sphereLOD2 == null) return false;
                 if(m_Resources.sphereLOD3 == null) return false;
 
-                // Check hemisphere.
                 if(m_Resources.hemisphereLOD0 == null) return false;
                 if(m_Resources.hemisphereLOD1 == null) return false;
                 if(m_Resources.hemisphereLOD2 == null) return false;
                 if(m_Resources.hemisphereLOD3 == null) return false;
 
-                // Check atmosphere.
                 if(m_Resources.atmosphereLOD0 == null) return false;
                 if(m_Resources.atmosphereLOD1 == null) return false;
                 if(m_Resources.atmosphereLOD2 == null) return false;
                 if(m_Resources.atmosphereLOD3 == null) return false;
 
-                // Check quad
                 if(m_Resources.QuadMesh == null) return false;
+
                 #endregion
 
                 #region [Shaders]
 
-                // Check atmosphere
-                if(m_Resources.atmosphereShader == null) return false;
-
-                // Check deep space.
+                // Check all shaders.
+                if(m_Resources.atmosphereShader == null)       return false;
                 if(m_Resources.galaxyBackgroundShader == null) return false;
-                if(m_Resources.starsFieldShader == null) return false;
-
-                // Check sun.
-                if(m_Resources.sunShader == null) return false;
-
-                // Check moon.
-                if(m_Resources.moonShader == null) return false;
-
-                // Chack Clouds.
-                if(m_Resources.cloudsShader == null) return false;
-
-                // Ambient skybox
-                if(m_Resources.ambientSkyboxShader == null) return false;
+                if(m_Resources.starsFieldShader == null)       return false;
+                if(m_Resources.sunShader == null)              return false;
+                if(m_Resources.moonShader == null)             return false;
+                if(m_Resources.cloudsShader == null)           return false;
+                if(m_Resources.ambientSkyboxShader == null)    return false;
 
                 #endregion
 
                 #region [Material]
 
-                // Check galaxy backgriund.
+                // Check all shaders.
                 if(m_Resources.galaxyBackgroundMaterial == null) return false;
-
-                // Check stars field.
-                if(m_Resources.starsFieldMaterial == null) return false;
-
-                // Check sun.
-                if(m_Resources.sunMaterial == null) return false;
-
-                // Check moon.
-                if(m_Resources.moonMaterial == null) return false;
-
-                // Check atmosphere.
-                if(m_Resources.atmosphereMaterial == null) return false;
-
-                // Check clouds.
-                if(m_Resources.cloudsMaterial == null) return false;
-
-                // Ambient skybox.
-                if(m_Resources.ambientSkyboxMaterial == null) return false;
+                if(m_Resources.starsFieldMaterial == null)       return false;
+                if(m_Resources.sunMaterial == null)              return false;
+                if(m_Resources.moonMaterial == null)             return false;
+                if(m_Resources.atmosphereMaterial == null)       return false;
+                if(m_Resources.cloudsMaterial == null)           return false;
+                if(m_Resources.ambientSkyboxMaterial == null)    return false;
 
                 #endregion
 
@@ -107,12 +85,16 @@ namespace Rallec.LSky
 
         #region [Fields]
 
+        [Header("Global")]
+
         // Skydome.
         [SerializeField] private float m_DomeRadius = 10000f;
         private float m_OldDomeRadius;
 
         // Global.
         public LSky_Global global = new LSky_Global();
+
+        [Header("Deep Space")]
 
         [LSky_AnimationCurveRange(0.0f, 0.0f, 1.0f, 1.0f, 6)]
         [SerializeField] private AnimationCurve m_DeepSpaceExposure = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 1.0f);
@@ -127,6 +109,8 @@ namespace Rallec.LSky
         [SerializeField] private int m_StarsFieldLayerIndex = 0;
         public LSky_StarsFieldCubemap starsField = new LSky_StarsFieldCubemap();
 
+        [Header("Near Space")]
+
         // Sun.
         [SerializeField] private bool m_RenderSun = true;
         [SerializeField] private int m_SunLayerIndex = 0;
@@ -139,6 +123,8 @@ namespace Rallec.LSky
 
         private Vector3 m_OldSunPos, m_OldMoonPos;
 
+        [Header("Atmosphere")]
+
         // Atmosphere.
         [SerializeField] private bool m_RenderAtmosphere = true;
         [SerializeField] private LSky_Quality4 m_AtmosphereMeshQuality = LSky_Quality4.High;
@@ -146,6 +132,7 @@ namespace Rallec.LSky
         [SerializeField] private bool m_SetGlobalAtmosphereParams = true;
         public LSky_AtmosphericScattering atmosphere = new LSky_AtmosphericScattering();
 
+        [Header("Clouds")]
         // Clouds.
         [SerializeField] private bool m_RenderClouds = true;
         [SerializeField] private int m_CloudsLayerIndex = 0;
@@ -153,7 +140,8 @@ namespace Rallec.LSky
         [SerializeField] private float m_CloudsDomeYPos = 0.0f;
         [SerializeField] private float m_CloudsOrientation = 3f;
         public LSky_Clouds clouds = new LSky_Clouds();
-
+        
+        [Header("Lighting")]
         // Lighting.
         [SerializeField] private bool m_SendSkybox = false;
 
@@ -169,28 +157,13 @@ namespace Rallec.LSky
 
         #region [References|Transform]
 
-        // Dome global transform.
         private Transform m_Transform = null;
-
-        // Galaxy background.
         private LSky_EmptyObjectInstantiate m_GalaxyBackgroundRef = new LSky_EmptyObjectInstantiate();
-
-        // Stars field.
         private LSky_EmptyObjectInstantiate m_StarsFieldRef = new LSky_EmptyObjectInstantiate();
-
-        // Sun.
         private LSky_EmptyObjectInstantiate m_SunRef = new LSky_EmptyObjectInstantiate();
-
-        // Moon.
         private LSky_EmptyObjectInstantiate m_MoonRef = new LSky_EmptyObjectInstantiate();
-
-        // Atmosphere.
         private LSky_EmptyObjectInstantiate m_AtmosphereRef = new LSky_EmptyObjectInstantiate();
-
-        // Clouds-
         private LSky_EmptyObjectInstantiate m_CloudsRef = new LSky_EmptyObjectInstantiate();
-
-        // Dir Light.
         private LSky_DirLightIntantiate m_DirLightRef = new LSky_DirLightIntantiate();
 
         /// <summary></summary>
@@ -199,12 +172,12 @@ namespace Rallec.LSky
             get
             {
                 if(!m_GalaxyBackgroundRef.CheckComponents) return false;
-                if(!m_StarsFieldRef.CheckComponents) return false;
-                if(!m_SunRef.CheckComponents) return false;
-                if(!m_MoonRef.CheckComponents) return false;
-                if(!m_AtmosphereRef.CheckComponents) return false;
-                if(!m_CloudsRef.CheckComponents) return false;
-                if(!m_DirLightRef.CheckComponents) return false;
+                if(!m_StarsFieldRef.CheckComponents)       return false;
+                if(!m_SunRef.CheckComponents)              return false;
+                if(!m_MoonRef.CheckComponents)             return false;
+                if(!m_AtmosphereRef.CheckComponents)       return false;
+                if(!m_CloudsRef.CheckComponents)           return false;
+                if(!m_DirLightRef.CheckComponents)         return false;
 
                 return true;
             }
@@ -262,7 +235,7 @@ namespace Rallec.LSky
         }
 
         /// <summary></summary>
-        public float DeepSpaceExposure{ get{return m_DeepSpaceExposure.Evaluate(SunEvaluateTime); } }
+        public float DeepSpaceExposure{ get{ return m_DeepSpaceExposure.Evaluate(SunEvaluateTime); } }
 
         #endregion
 
@@ -295,10 +268,7 @@ namespace Rallec.LSky
         private void Start()
         {
 
-            // Init dome size.
             ScaleDome();
-
-            // Initialize
             atmosphere.Initialize();
 
             // Initialize property ID's.
@@ -315,27 +285,13 @@ namespace Rallec.LSky
         {
             // if(!CheckResources) return;
 
-            // Set galaxy background.
             m_Resources.galaxyBackgroundMaterial.shader = m_Resources.galaxyBackgroundShader;
-
-            // Set stars field.
-            m_Resources.starsFieldMaterial.shader = m_Resources.starsFieldShader;
-
-            // Set sun.
-            m_Resources.sunMaterial.shader = m_Resources.sunShader;
-
-            // Set moon.
-            m_Resources.moonMaterial.shader = m_Resources.moonShader;
-
-            // Set atmosphere shader.
-            m_Resources.atmosphereMaterial.shader = m_Resources.atmosphereShader; 
-
-            // Set clouds.
-            m_Resources.cloudsMaterial.shader = m_Resources.cloudsShader;
-
-            // Set Skyvox
-            m_Resources.ambientSkyboxMaterial.shader = m_Resources.ambientSkyboxShader;
-
+            m_Resources.starsFieldMaterial.shader       = m_Resources.starsFieldShader;
+            m_Resources.sunMaterial.shader              = m_Resources.sunShader;
+            m_Resources.moonMaterial.shader             = m_Resources.moonShader;
+            m_Resources.atmosphereMaterial.shader       = m_Resources.atmosphereShader; 
+            m_Resources.cloudsMaterial.shader           = m_Resources.cloudsShader;
+            m_Resources.ambientSkyboxMaterial.shader    = m_Resources.ambientSkyboxShader;
         }
 
         private void BuildDome()
@@ -397,23 +353,18 @@ namespace Rallec.LSky
         {
             //if(!m_IsReady) return;
 
-            // Update Dome Size.
             if(m_OldDomeRadius != m_DomeRadius)
             {
                 ScaleDome(); // Debug.Log("Escale");
                 m_OldDomeRadius = m_DomeRadius;
             }
 
-            // Global Params.
             global.SetParams(m_Transform, SunDirection, MoonDirection);
 
-            // Render galaxy background.
             if(m_RenderGalaxyBackground)
             {
-                // Set params.
                 galaxyBackground.SetParams(m_Resources.galaxyBackgroundMaterial, DeepSpaceExposure);
 
-                // Draw mesh.
                 Graphics.DrawMesh(
                     m_Resources.sphereLOD3,
                     m_GalaxyBackgroundRef.transform.localToWorldMatrix,
@@ -421,13 +372,10 @@ namespace Rallec.LSky
                 );
             }
 
-            // Render stars field.
             if(m_RenderStarsField)
             {
-                // Set params.
                 starsField.SetParams(m_Resources.starsFieldMaterial, DeepSpaceExposure);
 
-                // Draw mesh.
                 Graphics.DrawMesh(
                     m_Resources.sphereLOD3,
                     m_StarsFieldRef.transform.localToWorldMatrix,
@@ -436,13 +384,10 @@ namespace Rallec.LSky
                 );
             }
 
-            // Render sun.
             if(m_RenderSun)
             {
-                // Set params.
                 sun.SetParams(m_Resources.sunMaterial);
 
-                // Draw Mesh.
                 Graphics.DrawMesh(
                     GetQuadMesh(),
                     m_SunRef.transform.localToWorldMatrix,
@@ -451,13 +396,10 @@ namespace Rallec.LSky
                 );
             }
 
-            // Render moon.
             if(m_RenderMoon)
             {
-                // Set params.
                 moon.SetParams(m_Resources.moonMaterial);
 
-                // Draw mesh.
                 Graphics.DrawMesh(
                     GetSphereMesh(LSky_Quality4.Low),
                     m_MoonRef.transform.localToWorldMatrix,
@@ -467,20 +409,17 @@ namespace Rallec.LSky
 
             }
 
-            // Render atmosphere.
             if(m_RenderAtmosphere)
             {
 
-                atmosphere.sunDir = SunDirection;
+                atmosphere.sunDir  = SunDirection;
                 atmosphere.moonDir = MoonDirection;
 
-                // Set params.
                 if(m_SetGlobalAtmosphereParams)
                     atmosphere.SetGlobalParams(SunEvaluateTime);
                 else
                     atmosphere.SetParams(m_Resources.atmosphereMaterial, SunEvaluateTime);
 
-                // Draw mesh.
                 Graphics.DrawMesh(
                     GetAtmosphereMesh(m_AtmosphereMeshQuality),
                     m_AtmosphereRef.transform.localToWorldMatrix,
@@ -489,7 +428,6 @@ namespace Rallec.LSky
                 );
             }
 
-            // Render clouds.
             if(m_RenderClouds)
             {
                 
@@ -498,7 +436,6 @@ namespace Rallec.LSky
                 else
                     clouds.SetParams(m_Resources.cloudsMaterial, SunEvaluateTime, false);
 
-                
                 Graphics.DrawMesh(
                     GetHemisphereMesh(LSky_Quality4.Low),
                     m_CloudsRef.transform.localToWorldMatrix,
@@ -512,26 +449,20 @@ namespace Rallec.LSky
         
         private void UpdateCelestialsTransform()
         {
-            // Sun position.
             if(m_OldSunPos != sun.SunPosition)
             {
                 m_SunRef.transform.localPosition = sun.SunPosition;
                 m_SunRef.transform.LookAt(m_Transform, Vector3.forward);
                 m_OldSunPos = sun.SunPosition;
             }
-
-            // SUn size.
             m_SunRef.transform.localScale = sun.Parameters.size * Vector3.one;
 
-            // Moon position.
             if(m_OldMoonPos != moon.MoonPosition)
             {
                 m_MoonRef.transform.localPosition = moon.MoonPosition;
                 m_MoonRef.transform.LookAt(m_Transform, Vector3.forward);
                 m_OldMoonPos = moon.MoonPosition;
             }
-
-            // Moon size.
             m_MoonRef.transform.localScale = moon.Parameters.size * Vector3.one;
         }
 
@@ -541,7 +472,6 @@ namespace Rallec.LSky
             m_CloudsRef.transform.localPosition = new Vector3(m_CloudsRef.transform.localPosition.x, m_CloudsDomeYPos,  m_CloudsRef.transform.localPosition.z);
             m_CloudsRef.transform.localScale = new Vector3(m_CloudsRef.transform.localScale.x,m_CloudsDomeHeight,  m_CloudsRef.transform.localScale.z);
 
-            // Rotation.
             m_CloudsRef.transform.localRotation = Quaternion.Euler(
                 m_CloudsRef.transform.localEulerAngles.x, 
                 m_CloudsOrientation, 

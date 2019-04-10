@@ -60,14 +60,17 @@
         half noise  = tex2D(lsky_CloudsTex, i.texcoord + _Time.x * lsky_CloudsSpeed).r;
         half noise2 = tex2D(lsky_CloudsTex, i.texcoord + _Time.x * lsky_CloudsSpeed2).r;
 
-        half coverage = saturate(( (noise+noise2) * 0.5) - lsky_CloudsCoverage);
+        half coverage = saturate( ((noise+noise2) * 0.5) - lsky_CloudsCoverage);
 
-        col.rgb = i.col.rgb * (1.0 - coverage * lsky_CloudsTint.a);
+        col.rgb =  (1.0 - coverage * lsky_CloudsTint.a);
         
         col.a = saturate(coverage * lsky_CloudsDensity * i.col.a);
-        
-        col.a += LSky_FastTonemaping(col.a, 1.0);
-        col.a = saturate(col.a);
+
+        //col = LSky_FastTonemaping(col, LSKY_GLOBALEXPOSURE);
+        //col.a += col.a;
+        //col.a = saturate(col.a);
+
+        col.rgb *= i.col.rgb;
     
         return col;
     }
@@ -85,8 +88,7 @@
 
             Cull Front
             ZWrite Off
-            //ZTest Lequal
-            //Blend One One
+            ZTest Lequal
             Blend SrcAlpha OneMinusSrcAlpha
             Fog{ Mode Off }
 

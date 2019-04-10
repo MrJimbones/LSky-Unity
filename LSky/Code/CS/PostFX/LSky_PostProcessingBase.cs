@@ -13,8 +13,8 @@ using UnityEngine;
 namespace Rallec.LSky
 {
 
-    [RequireComponent(typeof(Camera)), ImageEffectAllowedInSceneView]
-    public abstract partial class RGK_PostProcessingBase : MonoBehaviour
+    [RequireComponent(typeof(Camera))]
+    public abstract partial class LSky_PostProcessingBase : MonoBehaviour
     {
 
         // Camera.
@@ -24,7 +24,7 @@ namespace Rallec.LSky
 
         // Resources.
         //----------------------------------------
-        protected Shader m_Shader = null;
+        [SerializeField] protected Shader m_Shader = null;
         public Shader FXShader
         {
             get{ return m_Shader; }
@@ -42,6 +42,8 @@ namespace Rallec.LSky
                 return m_Material;
             }
         }
+
+        [SerializeField] protected bool m_IsReady = false;
 
         protected bool CheckResources
         {
@@ -61,6 +63,9 @@ namespace Rallec.LSky
             get
             {
 
+                // Depth mode.
+                m_Camera.depthTextureMode |= DepthTextureMode.Depth;
+
                 // Check image effect support.
                 if(!SystemInfo.supportsImageEffects)
                     return false;
@@ -73,18 +78,20 @@ namespace Rallec.LSky
                 if(!FXMaterial.shader.isSupported)
                     return false;
 
-                // Depth mode.
-                m_Camera.depthTextureMode |= DepthTextureMode.Depth;
-                
                 return true;
             }
 
         }
 
-        protected virtual void Awake()
+        protected virtual void Start()
         {
             m_Camera = GetComponent<Camera>();
             m_CameraTransform = m_Camera.transform;
+
+            if(CheckResources && CheckSupport)
+            {
+                m_IsReady = true;
+            }
         }
 
         /// <summary></summary>

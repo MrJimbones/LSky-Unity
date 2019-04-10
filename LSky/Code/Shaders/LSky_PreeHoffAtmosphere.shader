@@ -5,6 +5,9 @@
     CGINCLUDE
 
     #define LSKY_COMPUTE_MIE_PHASE 1
+    #define LSKY_SUNMIEPHASEDEPTHMULTIPLIER 1
+    #define LSKY_RAYLEIGHDEPTHMULTIPLIER 1
+    #define LSKY_ENABLE_GROUND 1
 
     // Includes.
     #include "UnityCG.cginc"
@@ -42,7 +45,7 @@
 
         #ifndef LSKY_PER_PIXEL_ATMOSPHERE
             #ifdef LSKY_COMPUTE_MIE_PHASE
-            o.scatter.rgb = LSky_ComputeAtmosphere(o.nvertex.xyz, o.sunMiePhase, o.moonMiePhase.rgb);
+            o.scatter.rgb = LSky_ComputeAtmosphere(o.nvertex.xyz, o.sunMiePhase, o.moonMiePhase.rgb, 1.0);
             #endif
         #endif
 
@@ -58,7 +61,7 @@
             col.rgb = i.scatter;
         #else
             i.nvertex.xyz = normalize(i.nvertex.xyz);
-            col.rgb = LSky_ComputeAtmosphere(i.nvertex.xyz, i.sunMiePhase, i.moonMiePhase.rgb);
+            col.rgb = LSky_ComputeAtmosphere(i.nvertex.xyz, i.sunMiePhase, i.moonMiePhase.rgb, 1.0);
         #endif
 
         return col;

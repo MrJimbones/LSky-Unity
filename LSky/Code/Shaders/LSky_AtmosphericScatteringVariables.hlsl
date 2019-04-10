@@ -19,7 +19,7 @@ uniform half3 lsky_MoonAtmosphereTint;
 uniform half lsky_RayleighDepthMultiplier;
 
 #ifndef LSKY_RAYLEIGHDEPTHMULTIPLIER 
-    #define LSKY_RAYLEIGHDEPTHMULTIPLIER(depth) depth * lsky_RayleighDepthMultiplier
+#       define LSKY_RAYLEIGHDEPTHMULTIPLIER lsky_RayleighDepthMultiplier
 #endif
 
 
@@ -40,7 +40,7 @@ uniform float3 lsky_PartialMoonMiePhase;
 uniform half lsky_SunMiePhaseDepthMultiplier;
 
 #ifndef LSKY_SUNMIEPHASEDEPTHMULTIPLIER 
-    #define LSKY_SUNMIEPHASEDEPTHMULTIPLIER(depth) depth * lsky_SunMiePhaseDepthMultiplier
+#   define LSKY_SUNMIEPHASEDEPTHMULTIPLIER lsky_SunMiePhaseDepthMultiplier
 #endif
 
 // Moon
@@ -52,7 +52,7 @@ uniform half  lsky_MoonMieScattering;
 uniform half lsky_MoonMiePhaseDepthMultiplier;
 
 #ifndef LSKY_MOONMIEPHASEDEPTHMULTIPLIER 
-    #define LSKY_MOONMIEPHASEDEPTHMULTIPLIER(depth) depth * lsky_MoonMiePhaseDepthMultiplier
+#   define LSKY_MOONMIEPHASEDEPTHMULTIPLIER lsky_MoonMiePhaseDepthMultiplier
 #endif
 
 #endif // LSKY: ATMOSPHERIC SCATTERING VARIABLES INCLUDED.

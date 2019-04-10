@@ -17,13 +17,13 @@
 // Mie Phase
 //-------------------------------------------------
 #ifndef LSKY_MIE_PHASE_MULTIPLIER
-    #define LSKY_MIE_PHASE_MULTIPLIER LSKY_INVPI4 
+#   define LSKY_MIE_PHASE_MULTIPLIER LSKY_INVPI4 
 #endif
 
 // Rayleigh Phase.
 //------------------------------------------------
 #ifndef LSKY_RAYLEIGH_PHASE_MULTIPLIER
-    #define LSKY_RAYLEIGH_PHASE_MULTIPLIER LSKY_3PI16
+#   define LSKY_RAYLEIGH_PHASE_MULTIPLIER LSKY_3PI16
 #endif
 
 //----------------------------------------- Rayleigh Phase -----------------------------------------
