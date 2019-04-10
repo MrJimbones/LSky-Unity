@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.07
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.36219406, g: 0.41842672, b: 0.42916206, a: 1}
-  m_AmbientEquatorColor: {r: 0.28805387, g: 0.11573595, b: 0.14573401, a: 1}
-  m_AmbientGroundColor: {r: 0.08951327, g: 0.021626174, b: 0.029227644, a: 1}
+  m_AmbientSkyColor: {r: 0.44886678, g: 0.5369912, b: 0.56662637, a: 1}
+  m_AmbientEquatorColor: {r: 0.5018388, g: 0.4092629, b: 0.4310632, a: 1}
+  m_AmbientGroundColor: {r: 0.18821073, g: 0.16147201, b: 0.16770808, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: bfa322d9cda488ee692f4f2a57b82801, type: 2}
   m_HaloStrength: 0.5
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1526980366}
-  m_IndirectSpecularColor: {r: 0.41089353, g: 0.36719546, b: 0.43486977, a: 1}
+  m_IndirectSpecularColor: {r: 0.3396106, g: 0.37803486, b: 0.4504916, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Shader: {fileID: 4800000, guid: a79cee82c7b1acac1b7fdf081a541e12, type: 3}
   m_IsReady: 1
-  m_Density: 42
+  m_Density: 100
   m_RayleighDepthMultiplier: 0.7
   m_SunMiePhaseDepthMultiplier: 0.5
   m_MoonMiePhaseDepthMultiplier: 0.5
@@ -671,8 +671,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 699109518}
-  m_LocalRotation: {x: 0.040185403, y: 0.09975196, z: -0.004031989, w: 0.99419236}
-  m_LocalPosition: {x: -0.19802123, y: 0.08070844, z: -0.9768694}
+  m_LocalRotation: {x: 0.039933667, y: 0.14931624, z: -0.0060353843, w: 0.9879644}
+  m_LocalPosition: {x: -0.29455617, y: 0.08070844, z: -0.95221996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 754817510}
@@ -815,11 +815,11 @@ MonoBehaviour:
   sun:
     m_Parameters:
       coords:
-        azimuth: 0.2
+        azimuth: 0.3
         altitude: -1.49
       size: 0.1
       tex: {fileID: 2800000, guid: 96cea440592acd4c088fb9447cc5f100, type: 3}
-      tint: {r: 1, g: 0.064797714, b: 0, a: 1}
+      tint: {r: 1, g: 0.14259277, b: 0, a: 1}
       intensity: 1000
   m_RenderMoon: 1
   m_MoonLayerIndex: 0
@@ -845,13 +845,13 @@ MonoBehaviour:
     betaMieUpdate: 2
     parameters:
       applyFastTonemaping: 0
-      contrast: 0.25
-      groundColor: {r: 1, g: 1, b: 1, a: 0}
+      contrast: 0.134
+      groundColor: {r: 0.3773585, g: 0.3339846, b: 0.32039872, a: 0.85490197}
       wavelength:
-        red: 680
-        green: 498
-        blue: 440
-      scattering: 0.7
+        red: 650
+        green: 570
+        blue: 475
+      scattering: 1
       atmosphereHaziness: 1
       atmosphereZenith: 0
       rayleighZenithLength: 8400
@@ -890,26 +890,26 @@ MonoBehaviour:
       turbidity: 0.01
       mieZenithLength: 1250
       sunMie:
-        tint: {r: 1, g: 0.62165725, b: 0.49056602, a: 1}
+        tint: {r: 1, g: 0.6032413, b: 0.49056602, a: 1}
         anisotropy: 0.75
-        scattering: 1.46
+        scattering: 1.75
       moonMie:
         tint: {r: 0.38679248, g: 0.7208313, b: 1, a: 1}
         anisotropy: 0.8
         scattering: 0.01
-    betaRay: {x: 0.0000058070354, y: 0.000020187048, z: 0.000033126795}
-    betaMie: {x: 0.0000015365812, y: 0.0000026044856, z: 0.0000022242523}
-    sunDir: {x: -0.19802117, y: 0.08070844, z: -0.97686934}
+    betaRay: {x: 0.0000069556327, y: 0.000011762257, z: 0.000024390221}
+    betaMie: {x: 0.0000016816924, y: 0.0000019880663, z: 0.000001908544}
+    sunDir: {x: -0.2945562, y: 0.08070846, z: -0.95221996}
     moonDir: {x: 0.28552717, y: 0.2578501, z: -0.92303175}
-  m_RenderClouds: 1
+  m_RenderClouds: 0
   m_CloudsLayerIndex: 10
   m_CloudsDomeHeight: 0.06
   m_CloudsDomeYPos: 0.12
   m_CloudsOrientation: 13.06
   clouds:
     m_Parameters:
-      tex: {fileID: 2800000, guid: c4321831d463a0444a69c79b792889a5, type: 3}
-      texSize: {x: 0.5, y: 0.5}
+      tex: {fileID: 2800000, guid: 779866668e015bc4c9c39d404c6e22da, type: 3}
+      texSize: {x: 2, y: 2}
       texOffset: {x: 0, y: 5.64}
       tint:
         serializedVersion: 2
@@ -917,7 +917,7 @@ MonoBehaviour:
         key1: {r: 0.5967568, g: 0.7392983, b: 0.8011823, a: 0.8745098}
         key2: {r: 1, g: 0.60770583, b: 0.40790418, a: 0.8235294}
         key3: {r: 1, g: 0.5406196, b: 0.4056604, a: 0.56078434}
-        key4: {r: 0.11569952, g: 0.12543017, b: 0.18867922, a: 0.56078434}
+        key4: {r: 0.23050907, g: 0.24368103, b: 0.3490566, a: 0.56078434}
         key5: {r: 0.7529412, g: 0.6039216, b: 0.72156864, a: 0.56078434}
         key6: {r: 0.7529412, g: 0.6039216, b: 0.72156864, a: 0.56078434}
         key7: {r: 0.7529412, g: 0.6039216, b: 0.72156864, a: 0.56078434}
@@ -971,7 +971,7 @@ MonoBehaviour:
         m_NumAlphaKeys: 2
       intensity: 1
       density: 3
-      coverage: 0.7
+      coverage: 0.694
       speed: 0.01
       speed2: 0.05
   m_SendSkybox: 0
@@ -1081,7 +1081,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   ambient:
     m_AmbientParams:
-      ambientMode: 0
+      ambientMode: 3
       updateTime: 0.5
       skyColor:
         serializedVersion: 2
@@ -1509,8 +1509,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598989565}
-  m_LocalRotation: {x: 0.089248, y: 0.060000926, z: 0.5546936, w: 0.82507557}
-  m_LocalPosition: {x: -0.19802123, y: 0.08070844, z: -0.9768694}
+  m_LocalRotation: {x: 0.12288859, y: 0.09374661, z: 0.5992342, w: 0.78551155}
+  m_LocalPosition: {x: -0.29455617, y: 0.08070844, z: -0.95221996}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 754817510}

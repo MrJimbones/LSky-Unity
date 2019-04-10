@@ -6,6 +6,7 @@
 
     #define LSKY_COMPUTE_MIE_PHASE 1
     #define LSKY_PER_PIXEL_ATMOSPHERE 1
+    #define LSKY_ENABLE_POST_FX 1
 
     // Includes.
     #include "UnityCG.cginc"
@@ -104,7 +105,7 @@
     {
 
         half4 col = LSky_PPSceneColor(_MainTex, i.uv);
-        float depth = LSky_PPSceneDepth(i.uv);
+        float depth = LSky_PPSceneDepth(i.uv_depth);
 
         float3 viewDir = (depth * i.interpolatedRay.xyz);
         float3 viewPos = _WorldSpaceCameraPos + viewDir;

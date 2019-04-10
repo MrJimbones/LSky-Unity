@@ -382,7 +382,7 @@ namespace Rallec.LSky
         /// <summary> Sunset/Dawn atmosphere horizon. </summary>
         public float SunsetDawnHorizon
         {
-            get{ return LSky_Mathf.Saturate(Mathf.Clamp01(1.0f - (sunDir.y-0.1f))); }
+            get{ return LSky_Mathf.Saturate(Mathf.Clamp(1.0f - (sunDir.y), 0.0f, 1f)); }
         }
 
         /// <summary></summary>

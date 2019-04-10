@@ -60,9 +60,17 @@ inline void CustomOpticalDepth(float y, inout float2 srm)
 {
 
     y = saturate(y * lsky_AtmosphereHaziness); 
+    
 
+    #ifdef LSKY_ENABLE_POST_FX
+    float zenith = acos(y);
+    zenith = cos(zenith) + 0.40 * pow(93.885 - ((zenith * 180) / UNITY_PI), -1.253);
+    #else
     float zenith = acos(y);
     zenith = cos(zenith) + 0.15 * pow(93.885 - ((zenith * 180) / UNITY_PI), -1.253);
+    #endif
+
+    
     zenith = 1.0/(zenith + lsky_AtmosphereZenith);
 
     srm.x = zenith * LSKY_RAYLEIGH_ZENITH_LENGTH;
@@ -137,14 +145,18 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth)
     float2 cosTheta = float2(dot(pos.xyz, lsky_LocalSunDirection.xyz), dot(pos.xyz, lsky_LocalMoonDirection.xyz)); 
 
     // Get uo side mask.
-    fixed skyMask = 1.0-LSky_GroundMask(pos.y);
+    fixed skyMask = 1.0;
+    
+    #ifndef LSKY_ENABLE_POST_FX
+    skyMask = 1.0-LSky_GroundMask(pos.y);
+    #endif
 
     #ifdef LSKY_COMPUTE_MIE_PHASE
     // Compute sun mie phase in up side.
-    sunMiePhase = (depth * LSKY_SUNMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.x, lsky_PartialSunMiePhase, lsky_SunMieScattering) * lsky_SunMieTint.rgb * skyMask;
+    sunMiePhase = (depth*LSKY_SUNMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.x, lsky_PartialSunMiePhase, lsky_SunMieScattering) * lsky_SunMieTint.rgb * skyMask;
 
     // Compute moon mie phase in up side.
-    moonMiePhase = (depth * LSKY_SUNMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering) * lsky_MoonMieTint.rgb * skyMask; 
+    moonMiePhase = (depth * LSKY_MOONMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering) * lsky_MoonMieTint.rgb * skyMask; 
    
     #endif
 
@@ -169,7 +181,7 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth)
     AtmosphereColorCorrection(col.rgb, lsky_GroundColor.rgb, LSKY_GLOBALEXPOSURE, lsky_AtmosphereContrast);
     
     // Apply ground.
-    #ifdef LSKY_ENABLE_GROUND
+    #ifndef LSKY_ENABLE_POST_FX
     col.rgb = applyGroundColor(pos.y, col.rgb);
     #endif
 

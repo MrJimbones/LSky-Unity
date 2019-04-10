@@ -7,8 +7,7 @@
     #define LSKY_COMPUTE_MIE_PHASE 1
     #define LSKY_SUNMIEPHASEDEPTHMULTIPLIER 1
     #define LSKY_RAYLEIGHDEPTHMULTIPLIER 1
-    #define LSKY_ENABLE_GROUND 1
-
+    //#define LSKY_ENABLE_POST_FX 0
     // Includes.
     #include "UnityCG.cginc"
     #include "LSky_Common.hlsl"

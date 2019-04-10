@@ -19,7 +19,6 @@ namespace Rallec.LSky
         #region [Resources]
 
         [Header("Resources")]
-
         [SerializeField] private LSky_DomeResources m_Resources = null;
 
         [SerializeField] private bool m_IsReady = false;
