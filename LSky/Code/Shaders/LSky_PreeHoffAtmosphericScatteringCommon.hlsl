@@ -58,19 +58,10 @@ inline void OpticalDepth(float y, inout float2 srm)
 // Optical depth with small changes for more customization.
 inline void CustomOpticalDepth(float y, inout float2 srm)
 {
-
     y = saturate(y * lsky_AtmosphereHaziness); 
-    
 
-    #ifdef LSKY_ENABLE_POST_FX
-    float zenith = acos(y);
-    zenith = cos(zenith) + 0.40 * pow(93.885 - ((zenith * 180) / UNITY_PI), -1.253);
-    #else
     float zenith = acos(y);
     zenith = cos(zenith) + 0.15 * pow(93.885 - ((zenith * 180) / UNITY_PI), -1.253);
-    #endif
-
-    
     zenith = 1.0/(zenith + lsky_AtmosphereZenith);
 
     srm.x = zenith * LSKY_RAYLEIGH_ZENITH_LENGTH;
@@ -130,9 +121,9 @@ inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMieP
 }
 
 #ifdef LSKY_COMPUTE_MIE_PHASE
-inline half3 LSky_ComputeAtmosphere(float3 pos, out float3 sunMiePhase, out float3 moonMiePhase, float depth)
+inline half3 LSky_ComputeAtmosphere(float3 pos, out float3 sunMiePhase, out float3 moonMiePhase, float depth, float dist)
 #else
-inline half3 LSky_ComputeAtmosphere(float3 pos, float depth)
+inline half3 LSky_ComputeAtmosphere(float3 pos, float depth, float dist)
 #endif
 {
     // Result color.
@@ -141,9 +132,6 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth)
     // sR, sM
     float2 srm;
 
-    // Get dot product of the sun and moon.
-    float2 cosTheta = float2(dot(pos.xyz, lsky_LocalSunDirection.xyz), dot(pos.xyz, lsky_LocalMoonDirection.xyz)); 
-
     // Get uo side mask.
     fixed skyMask = 1.0;
     
@@ -151,13 +139,20 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth)
     skyMask = 1.0-LSky_GroundMask(pos.y);
     #endif
 
+    // Get dot product of the sun and moon.
+    float2 cosTheta = float2(dot(pos.xyz, lsky_LocalSunDirection.xyz), dot(pos.xyz, lsky_LocalMoonDirection.xyz)); 
+
     #ifdef LSKY_COMPUTE_MIE_PHASE
     // Compute sun mie phase in up side.
     sunMiePhase = (depth*LSKY_SUNMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.x, lsky_PartialSunMiePhase, lsky_SunMieScattering) * lsky_SunMieTint.rgb * skyMask;
 
     // Compute moon mie phase in up side.
-    moonMiePhase = (depth * LSKY_MOONMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering) * lsky_MoonMieTint.rgb * skyMask; 
+    moonMiePhase = (depth*LSKY_MOONMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering) * lsky_MoonMieTint.rgb * skyMask; 
    
+    #endif
+
+    #ifdef LSKY_ENABLE_POST_FX
+    pos = saturate(pos*lsky_FogHaziness);
     #endif
 
     // Get optical depth.
@@ -169,11 +164,11 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth)
 
     #ifdef LSKY_COMPUTE_MIE_PHASE
         // Compute atmospheric scattering.
-        col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, sunMiePhase, moonMiePhase, depth);
+        col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, sunMiePhase, moonMiePhase, dist);
     #else
 
         fixed3 mp = fixed3(0.0, 0.0, 0.0);
-        col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, mp, mp, depth);
+        col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, mp, mp, dist);
 
     #endif
 

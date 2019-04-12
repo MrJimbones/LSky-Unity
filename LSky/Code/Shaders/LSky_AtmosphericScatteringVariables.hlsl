@@ -55,4 +55,6 @@ uniform half lsky_MoonMiePhaseDepthMultiplier;
 #   define LSKY_MOONMIEPHASEDEPTHMULTIPLIER lsky_MoonMiePhaseDepthMultiplier
 #endif
 
+uniform float lsky_FogHaziness;
+
 #endif // LSKY: ATMOSPHERIC SCATTERING VARIABLES INCLUDED.

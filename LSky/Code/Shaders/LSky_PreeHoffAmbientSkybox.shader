@@ -42,7 +42,7 @@
         fixed3 _one = fixed3(0.0, 0.0, 0.0);
 
         #ifndef LSKY_COMPUTE_MIE_PHASE
-        o.scatter.rgb = LSky_ComputeAtmosphere(o.nvertex.xyz, 1.0);
+        o.scatter.rgb = LSky_ComputeAtmosphere(o.nvertex.xyz, 1.0, 1.0);
         #endif
         
         return o;

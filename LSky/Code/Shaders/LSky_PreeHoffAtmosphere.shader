@@ -6,6 +6,7 @@
 
     #define LSKY_COMPUTE_MIE_PHASE 1
     #define LSKY_SUNMIEPHASEDEPTHMULTIPLIER 1
+    #define LSKY_MOONMIEPHASEDEPTHMULTIPLIER 1
     #define LSKY_RAYLEIGHDEPTHMULTIPLIER 1
     //#define LSKY_ENABLE_POST_FX 0
     // Includes.
@@ -44,7 +45,7 @@
 
         #ifndef LSKY_PER_PIXEL_ATMOSPHERE
             #ifdef LSKY_COMPUTE_MIE_PHASE
-            o.scatter.rgb = LSky_ComputeAtmosphere(o.nvertex.xyz, o.sunMiePhase, o.moonMiePhase.rgb, 1.0);
+            o.scatter.rgb = LSky_ComputeAtmosphere(o.nvertex.xyz, o.sunMiePhase, o.moonMiePhase.rgb, 1.0, 1.0);
             #endif
         #endif
 

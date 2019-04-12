@@ -94,7 +94,6 @@ namespace Rallec.LSky
         public LSky_Global global = new LSky_Global();
 
         [Header("Deep Space")]
-
         [LSky_AnimationCurveRange(0.0f, 0.0f, 1.0f, 1.0f, 6)]
         [SerializeField] private AnimationCurve m_DeepSpaceExposure = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 1.0f);
 
@@ -109,7 +108,6 @@ namespace Rallec.LSky
         public LSky_StarsFieldCubemap starsField = new LSky_StarsFieldCubemap();
 
         [Header("Near Space")]
-
         // Sun.
         [SerializeField] private bool m_RenderSun = true;
         [SerializeField] private int m_SunLayerIndex = 0;
@@ -123,8 +121,6 @@ namespace Rallec.LSky
         private Vector3 m_OldSunPos, m_OldMoonPos;
 
         [Header("Atmosphere")]
-
-        // Atmosphere.
         [SerializeField] private bool m_RenderAtmosphere = true;
         [SerializeField] private LSky_Quality4 m_AtmosphereMeshQuality = LSky_Quality4.High;
         [SerializeField] private int m_AtmosphereLayerIndex = 0;
@@ -132,7 +128,6 @@ namespace Rallec.LSky
         public LSky_AtmosphericScattering atmosphere = new LSky_AtmosphericScattering();
 
         [Header("Clouds")]
-        // Clouds.
         [SerializeField] private bool m_RenderClouds = true;
         [SerializeField] private int m_CloudsLayerIndex = 0;
         [SerializeField, Range(0.0f, 1.0f)] private float m_CloudsDomeHeight = 1.0f;
@@ -141,9 +136,7 @@ namespace Rallec.LSky
         public LSky_Clouds clouds = new LSky_Clouds();
         
         [Header("Lighting")]
-        // Lighting.
         [SerializeField] private bool m_SendSkybox = false;
-
         [SerializeField] private LSky_DirLightParams m_SunLightParams = new LSky_DirLightParams();
         [SerializeField] private LSky_DirLightParams m_MoonLightParams = new LSky_DirLightParams();
         [LSky_AnimationCurveRange(0.0f, 0.0f, 1.0f, 1.0f, 6)]
@@ -242,10 +235,9 @@ namespace Rallec.LSky
 
         private void Awake()
         {
-            // Cache transform.
+
             m_Transform = this.transform;
 
-            // Check resources.
             if(!CheckResources)
             {
                 enabled = false;
@@ -254,10 +246,8 @@ namespace Rallec.LSky
             }
             m_IsReady = CheckResources;
 
-            // Set shaders to respective materials.
             SetShadersToMaterials();
 
-            // Build dome.
             if(!CheckRef)
             {
                 BuildDome();
@@ -282,8 +272,6 @@ namespace Rallec.LSky
 
         private void SetShadersToMaterials()
         {
-            // if(!CheckResources) return;
-
             m_Resources.galaxyBackgroundMaterial.shader = m_Resources.galaxyBackgroundShader;
             m_Resources.starsFieldMaterial.shader       = m_Resources.starsFieldShader;
             m_Resources.sunMaterial.shader              = m_Resources.sunShader;
@@ -295,41 +283,36 @@ namespace Rallec.LSky
 
         private void BuildDome()
         {
-            // Galaxy background.
+           
             m_GalaxyBackgroundRef.Instantiate(this.name, "Galaxy Background Tr");
             m_GalaxyBackgroundRef.InitTransform(m_Transform, Vector3.zero);
 
-            // Stars field.
             m_StarsFieldRef.Instantiate(this.name, "Stars Field Tr");
             m_StarsFieldRef.InitTransform(m_Transform, Vector3.zero);
 
-            // Sun-
             m_SunRef.Instantiate(this.name, "Sun Tr");
             m_SunRef.InitTransform(m_Transform, Vector3.zero);
 
-            // Moon.
             m_MoonRef.Instantiate(this.name, "Moon Tr");
             m_MoonRef.InitTransform(m_Transform, Vector3.zero);
 
-            // Atmosphere.
             m_AtmosphereRef.Instantiate(this.name, "Atmosphere Tr");
             m_AtmosphereRef.InitTransform(m_Transform, Vector3.zero);
 
-            // Clouds.
             m_CloudsRef.Instantiate(this.name, "Clouds Tr");
             m_CloudsRef.InitTransform(m_Transform, Vector3.zero);
 
-            // Directional light.
             m_DirLightRef.InstantiateLight(this.name, "Dir Light");
             m_DirLightRef.InitTransform(m_Transform, Vector3.zero);
-
         }
-
         #endregion
 
         #region [Methods|Render]
 
-        private void LateUpdate(){ UpdateDome(); }
+        private void LateUpdate()
+        { 
+            UpdateDome();
+        }
 
         public void UpdateDome()
         {
@@ -350,11 +333,10 @@ namespace Rallec.LSky
 
         public void RenderDome()
         {
-            //if(!m_IsReady) return;
 
             if(m_OldDomeRadius != m_DomeRadius)
             {
-                ScaleDome(); // Debug.Log("Escale");
+                ScaleDome();
                 m_OldDomeRadius = m_DomeRadius;
             }
 
@@ -363,7 +345,6 @@ namespace Rallec.LSky
             if(m_RenderGalaxyBackground)
             {
                 galaxyBackground.SetParams(m_Resources.galaxyBackgroundMaterial, DeepSpaceExposure);
-
                 Graphics.DrawMesh(
                     m_Resources.sphereLOD3,
                     m_GalaxyBackgroundRef.transform.localToWorldMatrix,
@@ -374,7 +355,6 @@ namespace Rallec.LSky
             if(m_RenderStarsField)
             {
                 starsField.SetParams(m_Resources.starsFieldMaterial, DeepSpaceExposure);
-
                 Graphics.DrawMesh(
                     m_Resources.sphereLOD3,
                     m_StarsFieldRef.transform.localToWorldMatrix,
@@ -386,7 +366,6 @@ namespace Rallec.LSky
             if(m_RenderSun)
             {
                 sun.SetParams(m_Resources.sunMaterial);
-
                 Graphics.DrawMesh(
                     GetQuadMesh(),
                     m_SunRef.transform.localToWorldMatrix,
@@ -398,7 +377,6 @@ namespace Rallec.LSky
             if(m_RenderMoon)
             {
                 moon.SetParams(m_Resources.moonMaterial);
-
                 Graphics.DrawMesh(
                     GetSphereMesh(LSky_Quality4.Low),
                     m_MoonRef.transform.localToWorldMatrix,
@@ -486,7 +464,6 @@ namespace Rallec.LSky
                 m_DirLightRef.transform.LookAt(m_Transform);
                 m_DirLightRef.light.color = m_SunLightParams.color.Evaluate(SunEvaluateTime);
                 m_DirLightRef.light.intensity = m_SunLightParams.intensity;
-
             }
             else
             {
@@ -494,7 +471,6 @@ namespace Rallec.LSky
                 m_DirLightRef.transform.LookAt(m_Transform);
                 m_DirLightRef.light.color = m_MoonLightParams.color.Evaluate(MoonEvaluteTime);
                 m_DirLightRef.light.intensity = m_MoonLightParams.intensity * m_SunMoonLightFade.Evaluate(SunEvaluateTime);
-
             }
             m_DirLightRef.light.enabled = DirLightEnbled;
         }

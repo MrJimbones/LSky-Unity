@@ -18,6 +18,7 @@ namespace Rallec.LSky
 
         [SerializeField] private float m_Density = 0.01f;
         [SerializeField] private float m_RayleighDepthMultiplier = 1.0f, m_SunMiePhaseDepthMultiplier = 1.0f, m_MoonMiePhaseDepthMultiplier = 1.0f;
+        [SerializeField, Range(0.0f, 1.0f)] private float m_Haziness = 0.75f;
 
         [ImageEffectOpaque]
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -36,6 +37,7 @@ namespace Rallec.LSky
             FXMaterial.SetFloat("lsky_SunMiePhaseDepthMultiplier" , m_SunMiePhaseDepthMultiplier);
             FXMaterial.SetFloat("lsky_MoonMiePhaseDepthMultiplier" , m_MoonMiePhaseDepthMultiplier);
             FXMaterial.SetFloat("lsky_RayleighDepthMultiplier", m_RayleighDepthMultiplier);
+            FXMaterial.SetFloat("lsky_FogHaziness", m_Haziness);
 
             float densityExp = m_Density * 1.4426950408f;
 

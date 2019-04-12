@@ -17,10 +17,10 @@
     uniform sampler2D_float _CameraDepthTexture;
     float4 _MainTex_TexelSize;
 
-    float4x4 lsky_FrustumCorners;
-    float3 lsky_Camera;
+    uniform float4x4 lsky_FrustumCorners;
+    uniform float3 lsky_Camera;
 
-    float lsky_DensityExp;
+    uniform float lsky_DensityExp;
 
 
     inline float3 LSky_PPWorldPos(float3 viewDir)
@@ -48,7 +48,7 @@
     inline half LSky_FogExpFactor(float depth)
     {
         float res = LSky_FogDistance(depth);
-        res = lsky_DensityExp * depth;
+        res = lsky_DensityExp * res;
         return 1.0 - saturate(exp2(-res * res));
     }
 
@@ -86,7 +86,7 @@
         return o;
     }
 
-    half3 AtmosphereColor(float3 viewDir, float depth)
+    half3 AtmosphereColor(float3 viewDir, float depth, float dist)
     {
         half3 res = half3(0.0, 0.0, 0.0);
         float3 pos = normalize(viewDir.xyz);
@@ -94,7 +94,7 @@
         half3 SunMiePhase, MoonMiePhase;
 
         #ifdef LSKY_COMPUTE_MIE_PHASE
-            res = LSky_ComputeAtmosphere(pos, SunMiePhase, MoonMiePhase, depth);
+            res = LSky_ComputeAtmosphere(pos, SunMiePhase, MoonMiePhase, depth, dist);
         #endif
 
         return res;
@@ -108,11 +108,12 @@
         float depth = LSky_PPSceneDepth(i.uv_depth);
 
         float3 viewDir = (depth * i.interpolatedRay.xyz);
-        float3 viewPos = _WorldSpaceCameraPos + viewDir;
+        //float3 viewPos = _WorldSpaceCameraPos + viewDir;
+        
 
         float Fog = 0.0;
         Fog = LSky_FogExpFactor(depth) * (depth < 0.9999);
-        half4 scatter =  half4(AtmosphereColor(viewDir, Fog), 1.0);
+        half4 scatter =  half4(AtmosphereColor(viewDir, depth, Fog), 1.0);
 
         return lerp(half4(col.rgb,1.0), scatter, Fog);
     }
@@ -132,7 +133,7 @@
 
             #pragma vertex vert
             #pragma fragment frag 
-            #pragma target 3.0
+            #pragma target 4.0
             
             // Keywords
             #pragma multi_compile __ LSKY_APPLY_FAST_TONEMAPING
