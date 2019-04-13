@@ -58,6 +58,7 @@ inline void OpticalDepth(float y, inout float2 srm)
 // Optical depth with small changes for more customization.
 inline void CustomOpticalDepth(float y, inout float2 srm)
 {
+
     y = saturate(y * lsky_AtmosphereHaziness); 
 
     float zenith = acos(y);
@@ -108,6 +109,7 @@ inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMieP
     float3 sunBRMT = (sunBRT + sunBMT) / (lsky_BetaRay + lsky_BetaMie);
 
     half3 sunScatter = lsky_DayIntensity * (sunBRMT * ffex) * lsky_SunAtmosphereTint;
+   
 
     // Moon/Night.
     //------------------------------------------------------------------------------------

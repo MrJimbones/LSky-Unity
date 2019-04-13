@@ -15,7 +15,7 @@ using Rallec.LSky.Utility;
 namespace Rallec.LSky
 {
 
-    [Serializable] public struct LSky_SunParams
+    [Serializable] public class LSky_SunParams
     {
         // Coordinates.
         public LSky_CelestialsCoords coords;
@@ -28,23 +28,13 @@ namespace Rallec.LSky
         public Color tint;
         public float intensity;
         
-        public LSky_SunParams(LSky_CelestialsCoords _coords, float _size, Texture2D _tex, Color _tint, float _intensity)
-        {
-            this.coords    = _coords;
-            this.size      = _size;
-            this.tex       = _tex;
-            this.tint      = _tint;
-            this.intensity = _intensity;
-        }
-
         /// <summary></summary>
         public void Lerp(LSky_SunParams b, float time)
         {
             this.size = Mathf.Lerp(this.size, b.size, time);
             this.tint = Color.Lerp(this.tint, b.tint, time);
             this.intensity = Mathf.Lerp(this.intensity, b.intensity, time);
-        }
-        
+        }    
     }
 
     [Serializable] public class LSky_Sun

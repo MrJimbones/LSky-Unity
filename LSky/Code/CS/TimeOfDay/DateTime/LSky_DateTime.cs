@@ -40,21 +40,21 @@ namespace Rallec.LSky
 
         /// <summary>Get System.DateTime</summary>
         /// <param name="dateTime">System.DateTime</param>
-        public void GetSystemDateTime(System.DateTime dateTime)
+        public void SetSystemDateTime(System.DateTime dateTime)
         {
-            this.totalHours  = (float)dateTime.TimeOfDay.TotalHours;
-            this.hour        = dateTime.Hour;
-            this.minute      = dateTime.Minute;
-            this.second      = dateTime.Second;
-            this.millisecond = dateTime.Millisecond;
-            this.day         = dateTime.Day;
-            this.month       = dateTime.Month;
-            this.year        = dateTime.Year;
+            totalHours  = (float)dateTime.TimeOfDay.TotalHours;
+            hour        = dateTime.Hour;
+            minute      = dateTime.Minute;
+            second      = dateTime.Second;
+            millisecond = dateTime.Millisecond;
+            day         = dateTime.Day;
+            month       = dateTime.Month;
+            year        = dateTime.Year;
         }
 
         /// <summary> Convert System.DateTime in RGK_DateTime </summary>
         /// <param name="dateTime"> System.DateTime </param>
-        public LSky_DateTime DateTimeToRGKDateTime(System.DateTime dateTime)
+        public static LSky_DateTime DateTimeToRGKDateTime(System.DateTime dateTime)
         {
             return new LSky_DateTime
             {

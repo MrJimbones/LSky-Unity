@@ -118,7 +118,7 @@ namespace Rallec.LSky
         protected bool m_IsDay;
 
         /// <summary> Indicates if it is day based on System.DateTime. </summary>
-        public bool IsDay
+        public virtual bool IsDay
         {
             get
             {
@@ -172,7 +172,12 @@ namespace Rallec.LSky
 
         #region [Methods|Initialized]
 
-        public void Init()
+        protected virtual void Awake()
+        {
+            Init();
+        }
+
+        private void Init()
         {
 
             // Initialize timeline.

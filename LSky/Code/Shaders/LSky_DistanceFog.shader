@@ -13,6 +13,10 @@
     #include "LSky_Common.hlsl"
     #include "LSky_PreeHoffAtmosphericScatteringCommon.hlsl" 
 
+    // Keywords
+    #pragma multi_compile __ LSKY_APPLY_FAST_TONEMAPING
+    #pragma multi_compile __ LSKY_ENABLE_MOON_RAYLEIGH
+
     uniform sampler2D _MainTex;
     uniform sampler2D_float _CameraDepthTexture;
     float4 _MainTex_TexelSize;
@@ -21,6 +25,8 @@
     uniform float3 lsky_Camera;
 
     uniform float lsky_DensityExp;
+
+    uniform float2 lsky_LinearParams;
 
 
     inline float3 LSky_PPWorldPos(float3 viewDir)
@@ -39,13 +45,32 @@
         return Linear01Depth(depth);
     }
 
+    inline float LSky_FogLinearDistance(float3 viewPos)
+    {
+        float dist = length(viewPos) * _ProjectionParams.z;
+        return  dist - _ProjectionParams.y;
+    }
+
     inline float LSky_FogDistance(float depth)
     {
         float dist = depth * _ProjectionParams.z;
         return dist - _ProjectionParams.y;
     }
 
+    inline half LSky_FogLinearFactor(float depth)
+    {
+        float dist = LSky_FogDistance(depth);
+        dist =  (lsky_LinearParams.y - dist) / (lsky_LinearParams.y - lsky_LinearParams.x);
+        return   1.0 - saturate(dist);
+    }
+
     inline half LSky_FogExpFactor(float depth)
+    {
+        float dist = LSky_FogDistance(depth);
+        return 1.0 - saturate(exp2(-lsky_DensityExp * dist));
+    }
+
+    inline half LSky_FogExp2Factor(float depth)
     {
         float res = LSky_FogDistance(depth);
         res = lsky_DensityExp * res;
@@ -55,8 +80,7 @@
     struct v2f
     {
         float2 uv             : TEXCOORD0;
-        float2 uv_depth       : TEXCOORD1;
-        float4 interpolatedRay : TEXCOORD2;
+        float4 interpolatedRay : TEXCOORD1;
         float4 vertex         : SV_POSITION;
         UNITY_VERTEX_OUTPUT_STEREO
     };
@@ -71,7 +95,7 @@
         v.vertex.z = 0.1;
         o.vertex   = UnityObjectToClipPos(v.vertex);
         o.uv       = v.texcoord.xy;
-        o.uv_depth = v.texcoord.xy;
+        
 
         #if UNITY_UV_STARTS_AT_TOP
             if(_MainTex_TexelSize.y < 0)
@@ -100,19 +124,49 @@
         return res;
     }
 
-
-    half4 frag(v2f i) : SV_Target
+    half4 fragLinear(v2f i) : SV_Target
     {
 
         half4 col = LSky_PPSceneColor(_MainTex, i.uv);
-        float depth = LSky_PPSceneDepth(i.uv_depth);
+        float depth = LSky_PPSceneDepth(i.uv);
 
         float3 viewDir = (depth * i.interpolatedRay.xyz);
         //float3 viewPos = _WorldSpaceCameraPos + viewDir;
         
+        float Fog = LSky_FogLinearFactor(depth) * (depth < 0.9999);
+        half4 scatter =  half4(AtmosphereColor(viewDir, depth, Fog), 1.0);
 
+        return lerp(half4(col.rgb,1.0), scatter, Fog);
+    }
+
+    half4 fragExp(v2f i) : SV_Target
+    {
+
+        half4 col = LSky_PPSceneColor(_MainTex, i.uv);
+        float depth = LSky_PPSceneDepth(i.uv);
+
+        float3 viewDir = (depth * i.interpolatedRay.xyz);
+        //float3 viewPos = _WorldSpaceCameraPos + viewDir;
+        
         float Fog = 0.0;
         Fog = LSky_FogExpFactor(depth) * (depth < 0.9999);
+        half4 scatter =  half4(AtmosphereColor(viewDir, depth, Fog), 1.0);
+
+        return lerp(half4(col.rgb,1.0), scatter, Fog);
+    }
+
+
+    half4 fragExp2(v2f i) : SV_Target
+    {
+
+        half4 col = LSky_PPSceneColor(_MainTex, i.uv);
+        float depth = LSky_PPSceneDepth(i.uv);
+
+        float3 viewDir = (depth * i.interpolatedRay.xyz);
+        //float3 viewPos = _WorldSpaceCameraPos + viewDir;
+        
+        float Fog = 0.0;
+        Fog = LSky_FogExp2Factor(depth) * (depth < 0.9999);
         half4 scatter =  half4(AtmosphereColor(viewDir, depth, Fog), 1.0);
 
         return lerp(half4(col.rgb,1.0), scatter, Fog);
@@ -132,12 +186,38 @@
             CGPROGRAM
 
             #pragma vertex vert
-            #pragma fragment frag 
-            #pragma target 4.0
+            #pragma fragment fragLinear
+            #pragma target 3.0
             
-            // Keywords
-            #pragma multi_compile __ LSKY_APPLY_FAST_TONEMAPING
-            #pragma multi_compile __ LSKY_ENABLE_MOON_RAYLEIGH
+            ENDCG
+        }
+
+        Pass
+        {
+            Cull Off
+            ZWrite Off
+            ZTest Always
+
+            CGPROGRAM
+
+            #pragma vertex vert
+            #pragma fragment fragExp
+            #pragma target 3.0
+            
+            ENDCG
+        }
+
+        Pass
+        {
+            Cull Off
+            ZWrite Off
+            ZTest Always
+
+            CGPROGRAM
+
+            #pragma vertex vert
+            #pragma fragment fragExp2
+            #pragma target 3.0
             
             ENDCG
         }

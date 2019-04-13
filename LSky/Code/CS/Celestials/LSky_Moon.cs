@@ -15,7 +15,7 @@ namespace Rallec.LSky
 {
 
     /// <summary></summary>
-    [Serializable] public struct LSky_MoonParams
+    [Serializable] public class LSky_MoonParams
     {
 
         public LSky_CelestialsCoords coords;
@@ -26,17 +26,6 @@ namespace Rallec.LSky
         public Color tint;
         public float intensity;
         public float contrast;
-
-        public LSky_MoonParams(LSky_CelestialsCoords _coords, float _size, Texture2D _tex, Vector2 _texOffsets, Color _tint, float _intensity, float _contrast)
-        {
-            this.coords     = _coords;
-            this.size       = _size;
-            this.tex        = _tex;
-            this.texOffsets = _texOffsets;
-            this.tint       = _tint;
-            this.intensity  = _intensity;
-            this.contrast   = _contrast;
-        }
 
         /// <summary></summary>
         public void Lerp(LSky_MoonParams b, float time)

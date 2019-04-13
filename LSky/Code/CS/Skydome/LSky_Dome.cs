@@ -483,6 +483,19 @@ namespace Rallec.LSky
                 ambient.UpdateAmbient(SunEvaluateTime, false);
         }
 
+        public void SetOuterSpaceRotation(Quaternion rotation)
+        {
+            if(m_RenderStarsField)
+            {
+                m_StarsFieldRef.transform.localRotation = rotation;
+            }
+
+            if(m_RenderGalaxyBackground)
+            {
+                m_GalaxyBackgroundRef.transform.localRotation = rotation;
+            }
+        }
+
         #endregion
 
         #region [Methods|Mesh]

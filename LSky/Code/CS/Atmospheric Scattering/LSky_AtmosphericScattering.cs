@@ -55,12 +55,12 @@ namespace Rallec.LSky
         {
             get
             {
-                const float fac = 1e-9f;
+                const float m = 1e-9f;
                 Vector3 res;
                 {
-                    res.x = red   * fac;
-                    res.y = green * fac;
-                    res.z = blue  * fac;
+                    res.x = red   * m;
+                    res.y = green * m;
+                    res.z = blue  * m;
                 }
 
                 return res; 
@@ -98,7 +98,7 @@ namespace Rallec.LSky
     }
 
     /// <summary></summary>
-    [Serializable] public struct LSky_AtmosphericScatteringParams
+    [Serializable] public class LSky_AtmosphericScatteringParams
     {
 
         #region [Fields|General]
@@ -149,38 +149,6 @@ namespace Rallec.LSky
         public LSky_MiePhaseValues moonMie;
 
         #endregion
-
-
-        public LSky_AtmosphericScatteringParams(
-
-            bool _applyFastTonemaping,   float _contrast, 
-            Color _groundColor,          LSky_WavelengthParams _wavelength, 
-            float _scattering,           float _atmosphereHaziness,
-            float _atmosphereZenith,     float _rayleighZenithLength, 
-            float _sunBrightness,        Gradient _sunAtmosphereTint, 
-            float _moonContribution,     Color _moonAtmosphereTint,
-            float _turbidity,            float _mieZenithLength,
-            LSky_MiePhaseValues _sunMie, LSky_MiePhaseValues _moonMie
-        )
-        {
-            this.applyFastTonemaping  = _applyFastTonemaping;
-            this.contrast             = _contrast;
-            this.groundColor          = _groundColor;
-            this.wavelength           = _wavelength;
-            this.scattering           = _scattering;
-            this.atmosphereHaziness   = _atmosphereHaziness;
-            this.atmosphereZenith     = _atmosphereZenith;
-            this.rayleighZenithLength = _rayleighZenithLength;
-            this.sunBrightness        = _sunBrightness;
-            this.sunAtmosphereTint    = _sunAtmosphereTint;
-            this.moonContribution     = _moonContribution;
-            this.moonAtmosphereTint   = _moonAtmosphereTint;
-            this.turbidity            = _turbidity;
-            this.mieZenithLength      = _mieZenithLength;
-            this.sunMie               = _sunMie;
-            this.moonMie              = _moonMie;
-        }
-
     }
 
 

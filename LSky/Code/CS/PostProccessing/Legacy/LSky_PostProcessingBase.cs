@@ -63,9 +63,7 @@ namespace Rallec.LSky
             get
             {
 
-                // Depth mode.
-                m_Camera.depthTextureMode |= DepthTextureMode.Depth;
-
+               
                 // Check image effect support.
                 if(!SystemInfo.supportsImageEffects)
                     return false;

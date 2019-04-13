@@ -113,7 +113,8 @@ namespace Rallec.LSky
 
                     case UnityEngine.Rendering.AmbientMode.Skybox:
 
-                    DynamicGI.UpdateEnvironment(); // Is low.
+                    if(Application.isPlaying)
+                        DynamicGI.UpdateEnvironment(); // Is slow.
 
                     break;
 

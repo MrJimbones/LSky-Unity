@@ -17,7 +17,7 @@ namespace Rallec.LSky
 {
 
     /// <summary></summary>
-    public partial class LSky_PlanetaryPositions 
+    [Serializable] public partial class LSky_PlanetaryPositions 
     {
         
         // Date time.
@@ -103,7 +103,7 @@ namespace Rallec.LSky
 
                 // Normalize Mean Anomaly.
                 m_SunOE.M = LSky_Mathf.NormalizeDegrees(m_SunOE.M);
-
+               // Debug.Log(m_SunOE.N);
                 return m_SunOE;
             }
         }
