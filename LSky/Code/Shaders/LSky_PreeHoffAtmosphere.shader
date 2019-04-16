@@ -61,7 +61,7 @@
             col.rgb = i.scatter;
         #else
             i.nvertex.xyz = normalize(i.nvertex.xyz);
-            col.rgb = LSky_ComputeAtmosphere(i.nvertex.xyz, i.sunMiePhase, i.moonMiePhase.rgb, 1.0);
+            col.rgb = LSky_ComputeAtmosphere(i.nvertex.xyz, i.sunMiePhase, i.moonMiePhase.rgb, 1.0, 1.0);
         #endif
 
         return col;

@@ -12,7 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Rallec.LSky.Utility
+namespace LSky.Utility
 {
 
     public partial struct LSky_Mathf

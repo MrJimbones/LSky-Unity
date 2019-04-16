@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c75b0d96b3755b36bc879dad3fe4121, type: 3}
+  m_Script: {fileID: 11500000, guid: 2aaa71d2500b995508b2b2e3681c1b60, type: 3}
   m_Name: LSky_DomeResources
   m_EditorClassIdentifier: 
   sphereLOD0: {fileID: 4300000, guid: 411311cf3d1c11747bf38eee1b3fd3f7, type: 2}
@@ -18,13 +18,13 @@ MonoBehaviour:
   sphereLOD3: {fileID: 4300000, guid: 95183bccf1eebd840953facfaeed1317, type: 2}
   atmosphereLOD0: {fileID: 4300000, guid: 411311cf3d1c11747bf38eee1b3fd3f7, type: 2}
   atmosphereLOD1: {fileID: 4300000, guid: b250b63290f1a6248964185185ad678a, type: 2}
-  atmosphereLOD2: {fileID: 4300000, guid: 411311cf3d1c11747bf38eee1b3fd3f7, type: 2}
-  atmosphereLOD3: {fileID: 4300000, guid: b333cc565b9eeb646a2d89e7dffe55aa, type: 2}
+  atmosphereLOD2: {fileID: 4300000, guid: 3d8e5c91682d1276aa9524cbd925cc77, type: 3}
+  atmosphereLOD3: {fileID: 4300002, guid: 67c02f4b3084d5e63839c98e2e160588, type: 3}
   hemisphereLOD0: {fileID: 4300000, guid: 3d8e5c91682d1276aa9524cbd925cc77, type: 3}
   hemisphereLOD1: {fileID: 4300002, guid: 67c02f4b3084d5e63839c98e2e160588, type: 3}
   hemisphereLOD2: {fileID: 4300000, guid: a61674e7b75a25710b52e0534727817c, type: 3}
   hemisphereLOD3: {fileID: 4300000, guid: a61674e7b75a25710b52e0534727817c, type: 3}
-  QuadMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  QuadMesh: {fileID: 4300000, guid: 8498b9f208ecb054b8d707d3d7311441, type: 2}
   atmosphereShader: {fileID: 4800000, guid: 1f15922ba2efc4d52b1cb11a55f2c384, type: 3}
   galaxyBackgroundShader: {fileID: 4800000, guid: d77a0199e1c6ee13a82108dc38de3864,
     type: 3}

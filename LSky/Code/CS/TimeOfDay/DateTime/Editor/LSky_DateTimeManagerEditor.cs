@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using Rallec.LSky.Utility;
+using LSky.Utility;
 
-namespace Rallec.LSky
+namespace LSky
 {
 
 	[CustomEditor(typeof(LSky_DateTimeManager))]

@@ -10,10 +10,10 @@
 
 using System;
 using UnityEngine;
-using Rallec.LSky.Utility;
+using LSky.Utility;
 
 
-namespace Rallec.LSky
+namespace LSky
 {
 
    
@@ -207,118 +207,43 @@ namespace Rallec.LSky
         #region [PropertyIDs]
 
         // General.
-        private int m_ContrastID;
-        private int m_GroundColorID;
-
-        /// <summary></summary>
-        public int ContrastID{ get{ return m_ContrastID; } }
-
-        /// <summary></summary>
-        public int GroundColorID{ get{ return m_GroundColorID; } }
+        internal readonly int m_ContrastID = Shader.PropertyToID("lsky_AtmosphereContrast");
+        internal readonly int m_GroundColorID = Shader.PropertyToID("lsky_GroundColor");
 
         // Rayleigh.
-        //-------------------------------------------------------------------------------
-        // Wavelengh.
-        private int m_WavelegthRID, m_WavelegthGID, m_WavelegthBID;
+        internal readonly int m_WavelegthRID = Shader.PropertyToID("lsky_WavelegthR");
+        internal readonly int m_WavelegthGID = Shader.PropertyToID("lsky_WavelegthG");
+        internal readonly int m_WavelegthBID = Shader.PropertyToID("lsky_WavelegthB");
+        internal readonly int m_ScatteringID = Shader.PropertyToID("lsky_RayleighScattering");
+        internal readonly int m_SunBrightnessID  = Shader.PropertyToID("lsky_SunBrightness");
+        internal readonly int m_AtmosphereHazinessID    = Shader.PropertyToID("lsky_AtmosphereHaziness");
+        internal readonly int m_AtmosphereZenithID      = Shader.PropertyToID("lsky_AtmosphereZenith");
+        internal readonly int m_RayleighZenithLengthID  = Shader.PropertyToID("lsky_RayleighZenithLength");
+        internal readonly int m_BetaRayID               = Shader.PropertyToID("lsky_BetaRay");
+        internal readonly int m_SunsetDawnHorizonID     = Shader.PropertyToID("lsky_SunsetDawnHorizon");
+        internal readonly int m_DayIntensityID          = Shader.PropertyToID("lsky_DayIntensity");
+        internal readonly int m_NightIntensityID        = Shader.PropertyToID("lsky_NightIntensity");
+        internal readonly int m_SunAtmosphereTintID  = Shader.PropertyToID("lsky_SunAtmosphereTint");
+        internal readonly int m_MoonContributionID   = Shader.PropertyToID("lsky_MoonContribution");
+        internal readonly int m_MoonAtmosphereTintID = Shader.PropertyToID("lsky_MoonAtmosphereTint");
+        internal readonly int m_MoonRayleighModeID   = Shader.PropertyToID("lsky_MoonRayleighMode");
 
-        // Tickness.
-        private int m_ScatteringID;
+        // General.    
+        internal readonly int m_MieID = Shader.PropertyToID("lsky_Mie");
+        internal readonly int m_MieZenithLengthID = Shader.PropertyToID("lsky_MieZenithLength");
+        internal readonly int m_BetaMieID = Shader.PropertyToID("lsky_BetaMie");
 
-        // Oṕtical Depth.
-        private int m_AtmosphereHazinessID, m_AtmosphereZenithID, m_RayleighZenithID;
-        private int m_RayleighZenithLengthID;
+        // Sun.
+        internal readonly int m_SunMieTintID         = Shader.PropertyToID("lsky_SunMieTint");
+        internal readonly int m_SunMieAnisotropyID   = Shader.PropertyToID("lsky_SunMieAnisotropy");
+        internal readonly int m_SunMieScatteringID   = Shader.PropertyToID("lsky_SunMieScattering");
+        internal readonly int m_PartialSunMiePhaseID = Shader.PropertyToID("lsky_PartialSunMiePhase");
 
-        // Rayleigh.
-        private int m_BetaRayID, m_SunsetDawnHorizonID, m_DayIntensityID, m_NightIntensityID;
-        private int m_SunBrightnessID, m_SunAtmosphereTintID;
-        private int m_MoonContributionID, m_MoonAtmosphereTintID, m_MoonRayleighModeID;
-
-        /// <summary></summary>
-        public int WavelegthRID{ get{ return m_WavelegthRID; } }
-
-        /// <summary></summary>
-        public int WavelegthGID{ get{ return m_WavelegthGID; } }
-
-        /// <summary></summary>
-        public int WavelegthBID{ get{ return m_WavelegthBID; } }
-
-        /// <summary></summary>
-        public int ScatteringID{ get{ return m_ScatteringID; } }
-
-        /// <summary></summary>
-        public int SunBrightnessID{ get{ return m_SunBrightnessID; } }
-
-        /// <summary></summary>
-        public int AtmosphereHazinessID{ get{ return m_AtmosphereHazinessID; } }
-
-        /// <summary></summary>
-        public int AtmosphereZenithID{ get{ return m_AtmosphereZenithID; } }
-
-        /// <summary></summary>
-        public int RayleighZenithLengthID{ get{ return m_RayleighZenithLengthID; } }
-
-        /// <summary></summary>
-        public int BetaRayID{ get{ return m_BetaRayID; } }
-
-        /// <summary></summary>
-        public int SunsetDawnHorizonID{ get{ return m_SunsetDawnHorizonID; } }
-
-        /// <summary></summary>
-        public int DayIntensityPropertyID{ get{ return m_DayIntensityID; } }
-
-        /// <summary></summary>
-        public int NightIntensityPropertyID{ get{ return m_NightIntensityID; } }
-
-        /// <summary></summary>
-        public int SunAtmosphereTintID{ get{ return m_SunAtmosphereTintID; } }
-
-        /// <summary></summary>
-        public int MoonContributionID{ get{ return m_MoonContributionID; } }
-
-        /// <summary></summary>
-        public int MoonAtmosphereTintID{ get{ return m_MoonAtmosphereTintID; } }
-
-        /// <summary></summary>
-        public int MoonRayleighModeID{ get{ return m_MoonRayleighModeID; } }
-
-        // Mie.
-        private int m_MieID;
-        private int m_SunMieTintID, m_SunMieAnisotropyID, m_SunMieScatteringID, m_PartialSunMiePhaseID;
-        private int m_MoonMieTintID, m_MoonMieAnisotropyID, m_MoonMieScatteringID, m_PartialMoonMiePhaseID;
-        private int m_MieZenithLengthID, m_BetaMieID;
-
-        /// <summary></summary>
-        public int MieID{ get{ return m_MieID; } }
-
-        /// <summary></summary>
-        public int MieZenithLengthID{ get{ return m_MieZenithLengthID; } }
-
-        /// <summary></summary>
-        public int BetaMieID{ get{ return m_BetaMieID; } }
-
-        /// <summary></summary>
-        public int SunMieTintID{ get{ return m_SunMieTintID;} }
-
-        /// <summary></summary>
-        public int SunMieAnisotropyID{ get{ return m_SunMieAnisotropyID; } }
-
-        /// <summary></summary>
-        public int SunMieScatteringID{ get{ return m_SunMieScatteringID; } }
-
-        /// <summary></summary>
-        public int PartialSunMiePhaseID{ get{ return m_PartialSunMiePhaseID; } }
-
-        /// <summary></summary>
-        public int MoonMieTintID{ get{ return m_MoonMieTintID; } }
-
-        /// <summary></summary>
-        public int MoonMieAnisotropyID{ get{ return m_MoonMieAnisotropyID; } }
-
-        /// <summary></summary>
-        public int MoonMieScatteringID{ get{ return m_MoonMieScatteringID; } }
-
-        /// <summary></summary>
-        public int PartialMoonMiePhaseID{ get{ return m_PartialMoonMiePhaseID; } }
+        // Moon.
+        internal readonly int m_MoonMieTintID         = Shader.PropertyToID("lsky_MoonMieTint");
+        internal readonly int m_MoonMieAnisotropyID   = Shader.PropertyToID("lsky_MoonMieAnisotropy");
+        internal readonly int m_MoonMieScatteringID   = Shader.PropertyToID("lsky_MoonMieScattering");
+        internal readonly int m_PartialMoonMiePhaseID = Shader.PropertyToID("lsky_PartialMoonMiePhase"); 
 
         #endregion
 
@@ -341,24 +266,14 @@ namespace Rallec.LSky
         #region [Properties]
 
         /// <summary> Simple Day Intensity No physically based. </summary>
-        public float DayIntensity
-        {
-            get{ return (LSky_Mathf.Saturate(sunDir.y + 0.40f) * parameters.sunBrightness); }
-        }
-
+        public float DayIntensity => (LSky_Mathf.Saturate(sunDir.y + 0.40f) * parameters.sunBrightness); 
         
         /// <summary> Sunset/Dawn atmosphere horizon. </summary>
-        public float SunsetDawnHorizon
-        {
-            get{ return LSky_Mathf.Saturate(Mathf.Clamp(1.0f - (sunDir.y), 0.0f, 1f)); }
-        }
-
+        public float SunsetDawnHorizon => LSky_Mathf.Saturate(Mathf.Clamp(1.0f - (sunDir.y), 0.0f, 1f)); 
+        
         /// <summary></summary>
-        public float MoonPhasesIntensityMultiplier
-        {
-            get{ return Mathf.Clamp01(Vector3.Dot(-sunDir, moonDir) + 0.45f); }
-        }
-
+        public float MoonPhasesIntensityMultiplier => Mathf.Clamp01(Vector3.Dot(-sunDir, moonDir) + 0.45f); 
+        
         /// <summary> Night intensity(No physically based) </summary>
         public float NightIntensity
         {
@@ -396,23 +311,15 @@ namespace Rallec.LSky
         }
 
         /// <summary> One part of Mie Phase </summary>
-        public Vector3 PartialSunMiePhase
-        {
-            get{ return PartialMiePhase(parameters.sunMie.anisotropy); }
-        }
+        public Vector3 PartialSunMiePhase => PartialMiePhase(parameters.sunMie.anisotropy); 
+        
 
         /// <summary> One part of HenyeyGreenstein for moon. </summary>
-        public Vector3 PartialMoonMiePhase
-        {
-            get{ return PartialMiePhase(parameters.moonMie.anisotropy); }
-        }
+        public Vector3 PartialMoonMiePhase => PartialMiePhase(parameters.moonMie.anisotropy); 
+        
 
         /// <summary> One part of Low Quality HenyeyGreenstein for moon. </summary>
-        public Vector3 PartialMoonMiePhaseSimplifield
-        {
-            get{ return PartialHenyeyGreenstein(parameters.moonMie.anisotropy); }
-        }
-
+        public Vector3 PartialMoonMiePhaseSimplifield => PartialHenyeyGreenstein(parameters.moonMie.anisotropy); 
         
         /// <summary></summary>
         public LSky_AtmosphericScatteringParams Parameters
@@ -431,49 +338,6 @@ namespace Rallec.LSky
         #endregion
 
         #region [Methods|Initialize]
-
-        /// <summary></summary>
-        public void InitPropertyIDs()
-        {
-            // General.
-            m_ContrastID = Shader.PropertyToID("lsky_AtmosphereContrast");
-            m_GroundColorID = Shader.PropertyToID("lsky_GroundColor");
-
-            // Rayleigh.
-            m_WavelegthRID = Shader.PropertyToID("lsky_WavelegthR");
-            m_WavelegthGID = Shader.PropertyToID("lsky_WavelegthG");
-            m_WavelegthBID = Shader.PropertyToID("lsky_WavelegthB");
-            m_ScatteringID = Shader.PropertyToID("lsky_RayleighScattering");
-            m_SunBrightnessID  = Shader.PropertyToID("lsky_SunBrightness");
-            m_AtmosphereHazinessID    = Shader.PropertyToID("lsky_AtmosphereHaziness");
-            m_AtmosphereZenithID      = Shader.PropertyToID("lsky_AtmosphereZenith");
-            m_RayleighZenithLengthID  = Shader.PropertyToID("lsky_RayleighZenithLength");
-            m_BetaRayID               = Shader.PropertyToID("lsky_BetaRay");
-            m_SunsetDawnHorizonID     = Shader.PropertyToID("lsky_SunsetDawnHorizon");
-            m_DayIntensityID          = Shader.PropertyToID("lsky_DayIntensity");
-            m_NightIntensityID        = Shader.PropertyToID("lsky_NightIntensity");
-            m_SunAtmosphereTintID  = Shader.PropertyToID("lsky_SunAtmosphereTint");
-            m_MoonContributionID   = Shader.PropertyToID("lsky_MoonContribution");
-            m_MoonAtmosphereTintID = Shader.PropertyToID("lsky_MoonAtmosphereTint");
-            m_MoonRayleighModeID   = Shader.PropertyToID("lsky_MoonRayleighMode");
-
-            // General.    
-            m_MieID = Shader.PropertyToID("lsky_Mie");
-            m_MieZenithLengthID = Shader.PropertyToID("lsky_MieZenithLength");
-            m_BetaMieID = Shader.PropertyToID("lsky_BetaMie");
-
-            // Sun.
-            m_SunMieTintID         = Shader.PropertyToID("lsky_SunMieTint");
-            m_SunMieAnisotropyID   = Shader.PropertyToID("lsky_SunMieAnisotropy");
-            m_SunMieScatteringID   = Shader.PropertyToID("lsky_SunMieScattering");
-            m_PartialSunMiePhaseID = Shader.PropertyToID("lsky_PartialSunMiePhase");
-
-            // Moon.
-            m_MoonMieTintID         = Shader.PropertyToID("lsky_MoonMieTint");
-            m_MoonMieAnisotropyID   = Shader.PropertyToID("lsky_MoonMieAnisotropy");
-            m_MoonMieScatteringID   = Shader.PropertyToID("lsky_MoonMieScattering");
-            m_PartialMoonMiePhaseID = Shader.PropertyToID("lsky_PartialMoonMiePhase");  
-        }
 
         /// <summary></summary>
         public void Initialize()
@@ -511,12 +375,12 @@ namespace Rallec.LSky
             }
 
             // Exṕonent Fade(Contrast).
-            Shader.SetGlobalFloat(ContrastID, parameters.contrast);
-            Shader.SetGlobalColor(GroundColorID, parameters.groundColor);
+            Shader.SetGlobalFloat(m_ContrastID, parameters.contrast);
+            Shader.SetGlobalColor(m_GroundColorID, parameters.groundColor);
 
             // Rayleigh.
             //-------------------------------------------------------------------------------------------------------------------------
-            Shader.SetGlobalColor(SunAtmosphereTintID, parameters.sunAtmosphereTint.Evaluate(sunEvaluateTime)); // Set day atmosphere tint.
+            Shader.SetGlobalColor(m_SunAtmosphereTintID, parameters.sunAtmosphereTint.Evaluate(sunEvaluateTime)); // Set day atmosphere tint.
 
             switch(moonRayleighMode)
             {
@@ -540,7 +404,7 @@ namespace Rallec.LSky
 
             Shader.SetGlobalColor
             (
-                MoonAtmosphereTintID, 
+                m_MoonAtmosphereTintID, 
                 parameters.moonAtmosphereTint * 
                 NightIntensityMultiplier
             );
@@ -548,24 +412,24 @@ namespace Rallec.LSky
             // Mie Phase.
             //--------------------------------------------------------------------------------------------------
             // Sun
-            Shader.SetGlobalColor(SunMieTintID, parameters.sunMie.tint);
-            Shader.SetGlobalFloat(SunMieAnisotropyID, parameters.sunMie.anisotropy);
-            Shader.SetGlobalFloat(SunMieScatteringID, parameters.sunMie.scattering);
-            Shader.SetGlobalVector(PartialSunMiePhaseID, PartialSunMiePhase);
+            Shader.SetGlobalColor(m_SunMieTintID, parameters.sunMie.tint);
+            Shader.SetGlobalFloat(m_SunMieAnisotropyID, parameters.sunMie.anisotropy);
+            Shader.SetGlobalFloat(m_SunMieScatteringID, parameters.sunMie.scattering);
+            Shader.SetGlobalVector(m_PartialSunMiePhaseID, PartialSunMiePhase);
 
             // Moon
-            Shader.SetGlobalColor(MoonMieTintID, parameters.moonMie.tint);
-            Shader.SetGlobalFloat(MoonMieAnisotropyID, parameters.moonMie.anisotropy);
-            Shader.SetGlobalFloat(MoonMieScatteringID, parameters.moonMie.scattering * MoonPhasesIntensityMultiplier);
-            Shader.SetGlobalVector(PartialMoonMiePhaseID, PartialMoonMiePhaseSimplifield);
+            Shader.SetGlobalColor(m_MoonMieTintID, parameters.moonMie.tint);
+            Shader.SetGlobalFloat(m_MoonMieAnisotropyID, parameters.moonMie.anisotropy);
+            Shader.SetGlobalFloat(m_MoonMieScatteringID, parameters.moonMie.scattering * MoonPhasesIntensityMultiplier);
+            Shader.SetGlobalVector(m_PartialMoonMiePhaseID, PartialMoonMiePhaseSimplifield);
 
             // Set optical depth params.
             //------------------------------------------------------------------------------------
-            Shader.SetGlobalFloat(AtmosphereHazinessID, parameters.atmosphereHaziness);
-            Shader.SetGlobalFloat(AtmosphereZenithID, parameters.atmosphereZenith);
-            Shader.SetGlobalFloat(SunsetDawnHorizonID, SunsetDawnHorizon);
-            Shader.SetGlobalFloat(RayleighZenithLengthID, parameters.rayleighZenithLength);
-            Shader.SetGlobalFloat(MieZenithLengthID, parameters.mieZenithLength);
+            Shader.SetGlobalFloat(m_AtmosphereHazinessID, parameters.atmosphereHaziness);
+            Shader.SetGlobalFloat(m_AtmosphereZenithID, parameters.atmosphereZenith);
+            Shader.SetGlobalFloat(m_SunsetDawnHorizonID, SunsetDawnHorizon);
+            Shader.SetGlobalFloat(m_RayleighZenithLengthID, parameters.rayleighZenithLength);
+            Shader.SetGlobalFloat(m_MieZenithLengthID, parameters.mieZenithLength);
 
             if(betaRayUpdate == LSky_UpdateType.Realtime)
                 GetBetaRay();
@@ -573,11 +437,11 @@ namespace Rallec.LSky
             if(betaMieUpdate == LSky_UpdateType.Realtime)
                 GetBetaMie();
 
-            Shader.SetGlobalVector(BetaRayID, betaRay * parameters.scattering);
-            Shader.SetGlobalVector(BetaMieID, betaMie);
+            Shader.SetGlobalVector(m_BetaRayID, betaRay * parameters.scattering);
+            Shader.SetGlobalVector(m_BetaMieID, betaMie);
 
-            Shader.SetGlobalFloat(DayIntensityPropertyID, DayIntensity);
-            Shader.SetGlobalFloat(NightIntensityPropertyID, NightIntensity);
+            Shader.SetGlobalFloat(m_DayIntensityID, DayIntensity);
+            Shader.SetGlobalFloat(m_NightIntensityID, NightIntensity);
 
         }
 
@@ -601,12 +465,12 @@ namespace Rallec.LSky
             }
 
             // Exṕonent Fade(Contrast).
-            material.SetFloat(ContrastID, parameters.contrast);
-            material.SetColor(GroundColorID, parameters.groundColor);
+            material.SetFloat(m_ContrastID, parameters.contrast);
+            material.SetColor(m_GroundColorID, parameters.groundColor);
 
             // Rayleigh.
             //-------------------------------------------------------------------------------------------------------------------------
-            material.SetColor(SunAtmosphereTintID, parameters.sunAtmosphereTint.Evaluate(sunEvaluateTime)); // Set day atmosphere tint.
+            material.SetColor(m_SunAtmosphereTintID, parameters.sunAtmosphereTint.Evaluate(sunEvaluateTime)); // Set day atmosphere tint.
 
             switch(moonRayleighMode)
             {
@@ -630,7 +494,7 @@ namespace Rallec.LSky
 
             material.SetColor
             (
-                MoonAtmosphereTintID, 
+                m_MoonAtmosphereTintID, 
                 parameters.moonAtmosphereTint * 
                 NightIntensityMultiplier
             );
@@ -638,24 +502,24 @@ namespace Rallec.LSky
             // Mie Phase.
             //--------------------------------------------------------------------------------------------------
             // Sun
-            material.SetColor(SunMieTintID, parameters.sunMie.tint);
-            material.SetFloat(SunMieAnisotropyID, parameters.sunMie.anisotropy);
-            material.SetFloat(SunMieScatteringID, parameters.sunMie.scattering);
-            material.SetVector(PartialSunMiePhaseID, PartialSunMiePhase);
+            material.SetColor(m_SunMieTintID, parameters.sunMie.tint);
+            material.SetFloat(m_SunMieAnisotropyID, parameters.sunMie.anisotropy);
+            material.SetFloat(m_SunMieScatteringID, parameters.sunMie.scattering);
+            material.SetVector(m_PartialSunMiePhaseID, PartialSunMiePhase);
 
             // Moon
-            material.SetColor(MoonMieTintID, parameters.moonMie.tint);
-            material.SetFloat(MoonMieAnisotropyID, parameters.moonMie.anisotropy);
-            material.SetFloat(MoonMieScatteringID, parameters.moonMie.scattering * MoonPhasesIntensityMultiplier);
-            material.SetVector(PartialMoonMiePhaseID, PartialMoonMiePhaseSimplifield);
+            material.SetColor(m_MoonMieTintID, parameters.moonMie.tint);
+            material.SetFloat(m_MoonMieAnisotropyID, parameters.moonMie.anisotropy);
+            material.SetFloat(m_MoonMieScatteringID, parameters.moonMie.scattering * MoonPhasesIntensityMultiplier);
+            material.SetVector(m_PartialMoonMiePhaseID, PartialMoonMiePhaseSimplifield);
 
             // Set optical depth params.
             //------------------------------------------------------------------------------------
-            material.SetFloat(AtmosphereHazinessID, parameters.atmosphereHaziness);
-            material.SetFloat(AtmosphereZenithID, parameters.atmosphereZenith);
-            material.SetFloat(SunsetDawnHorizonID, SunsetDawnHorizon);
-            material.SetFloat(RayleighZenithLengthID, parameters.rayleighZenithLength);
-            material.SetFloat(MieZenithLengthID, parameters.mieZenithLength);
+            material.SetFloat(m_AtmosphereHazinessID, parameters.atmosphereHaziness);
+            material.SetFloat(m_AtmosphereZenithID, parameters.atmosphereZenith);
+            material.SetFloat(m_SunsetDawnHorizonID, SunsetDawnHorizon);
+            material.SetFloat(m_RayleighZenithLengthID, parameters.rayleighZenithLength);
+            material.SetFloat(m_MieZenithLengthID, parameters.mieZenithLength);
 
             if(betaRayUpdate == LSky_UpdateType.Realtime)
                 GetBetaRay();
@@ -663,11 +527,11 @@ namespace Rallec.LSky
             if(betaMieUpdate == LSky_UpdateType.Realtime)
                 GetBetaMie();
 
-            material.SetVector(BetaRayID, betaRay * parameters.scattering);
-            material.SetVector(BetaMieID,betaMie);
+            material.SetVector(m_BetaRayID, betaRay * parameters.scattering);
+            material.SetVector(m_BetaMieID,betaMie);
 
-            material.SetFloat(DayIntensityPropertyID, DayIntensity);
-            material.SetFloat(NightIntensityPropertyID, NightIntensity);
+            material.SetFloat(m_DayIntensityID, DayIntensity);
+            material.SetFloat(m_NightIntensityID, NightIntensity);
         }
 
         public void GetBetaRay()

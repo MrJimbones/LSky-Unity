@@ -10,9 +10,9 @@
 
 using System;
 using UnityEngine;
-using Rallec.LSky.Utility;
+using LSky.Utility;
 
-namespace Rallec.LSky
+namespace LSky
 {
     [RequireComponent(typeof(LSky_Dome)), ExecuteInEditMode]
     public class LSky_TimeOfDay : LSky_DateTimeManager
@@ -51,8 +51,8 @@ namespace Rallec.LSky
             m_Planetary.ComputeSunCoords();
             m_Planetary.ComputeMoonCoords();
 
-            m_Dome.sun.Parameters.coords = m_Planetary.SunCoords;
-            m_Dome.moon.Parameters.coords = m_Planetary.MoonCoords;
+            m_Dome.SunCoords  = m_Planetary.SunCoords;
+            m_Dome.MoonCoords = m_Planetary.MoonCoords;
 
             m_Dome.SetOuterSpaceRotation(OuterSpaceRotation);
         }

@@ -9,7 +9,7 @@
 using System;
 using UnityEngine;
 
-namespace Rallec.LSky
+namespace LSky
 {
 
     /// <summary></summary>

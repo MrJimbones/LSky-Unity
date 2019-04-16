@@ -12,7 +12,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Rallec.LSky.Utility
+namespace LSky.Utility
 {
     [ExecuteInEditMode]
     public class LSky_RefreshReflectionProbe : LSky_Refresh

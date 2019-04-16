@@ -11,9 +11,9 @@
 
 using System;
 using UnityEngine;
-using Rallec.LSky.Utility;
+using LSky.Utility;
 
-namespace Rallec.LSky
+namespace LSky
 {
 
     /// <summary></summary>

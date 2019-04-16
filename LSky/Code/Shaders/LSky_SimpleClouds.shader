@@ -66,9 +66,10 @@
         
         col.a = saturate(coverage * lsky_CloudsDensity * i.col.a);
 
-        //col = LSky_FastTonemaping(col, LSKY_GLOBALEXPOSURE);
+        col = LSky_FastTonemaping(col, 1.0);
+       // col.a += col.a;
         //col.a += col.a;
-        //col.a = saturate(col.a);
+       // col.a = saturate(col.a);
 
         col.rgb *= i.col.rgb;
     

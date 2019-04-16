@@ -11,10 +11,10 @@
 using System.IO;
 using UnityEngine;
 
-namespace Rallec.LSky
+namespace LSky
 {
 
-    [CreateAssetMenu(fileName = "LSky_DomeResources", menuName = "Rallec/LSky/Skydome/Resources", order = 1)]
+    [CreateAssetMenu(fileName = "LSky_DomeResources", menuName = "LSky/Skydome/Resources", order = 1)]
     public partial class LSky_DomeResources : ScriptableObject
     {
 

@@ -8,12 +8,12 @@
 
 using System;
 using UnityEngine;
-using Rallec.LSky.Utility;
+using LSky.Utility;
 
-namespace Rallec.LSky
+namespace LSky
 {
     /// <summary></summary>
-    [Serializable] public struct LSky_CloudsParams
+    [Serializable] public class LSky_CloudsParams
     {
         // Texture.
         public Texture2D tex;
@@ -29,25 +29,6 @@ namespace Rallec.LSky
         [Range(0.0f, 1.0f)] public float coverage;
 
         public float speed, speed2;
-
-        public LSky_CloudsParams(
-            Texture2D _tex, Vector2 _texSize, Vector2 _texOffset, Gradient _tint, Gradient _moonTint,
-            float _intensity, float _density, float _coverage, float _speed, float _speed2)
-        {
-
-            this.tex       = _tex;
-            this.texSize   = _texSize;
-            this.texOffset = _texOffset;
-            this.tint      = _tint;
-            this.moonTint  = _moonTint;
-            this.intensity = _intensity;
-            this.density   = _density;
-            this.coverage  = _coverage;
-            this.speed     = _speed;
-            this.speed2    = _speed2;
-            
-        }
-
     }
 
     /// <summary></summary>
@@ -68,47 +49,14 @@ namespace Rallec.LSky
             speed2    = 0.05f
         };
 
-        #region [PropertyIDs]
-
-        private int m_TexID, m_TintID, m_IntensityID, m_DensityID, m_CoverageID, m_SpeedID, m_Speed2ID;
-
-        /// <summary></summary>
-        public int TexID{ get{ return m_TexID; } }
-
-        /// <summary></summary>
-        public int TintID{ get{ return m_TintID; } }
-
-        /// <summary></summary>
-        public int IntensityID{ get{ return m_IntensityID; } }
-
-        /// <summary></summary>
-        public int DensityID{ get{ return m_DensityID; } }
-
-        /// <summary></summary>
-        public int CoverageID{ get{ return m_CoverageID; } }
-
-        /// <summary></summary>
-        public int SpeedID{ get{ return m_SpeedID; } }
-
-        /// <summary></summary>
-        public int Speed2ID{ get{ return m_Speed2ID; } }
-
-        /// <summary></summary>
-        public void InitPropertyIDs()
-        {
-            m_TexID       = Shader.PropertyToID("lsky_CloudsTex");
-            m_TintID      = Shader.PropertyToID("lsky_CloudsTint");
-            m_IntensityID = Shader.PropertyToID("lsky_CloudsIntensity");
-            m_DensityID   = Shader.PropertyToID("lsky_CloudsDensity");
-            m_CoverageID  = Shader.PropertyToID("lsky_CloudsCoverage");
-            m_SpeedID    = Shader.PropertyToID("lsky_CloudsSpeed");
-            m_Speed2ID    = Shader.PropertyToID("lsky_CloudsSpeed2");
-        }
-
-        #endregion
-
-        #region [SetParams]
-
+        internal readonly int m_TexID       = Shader.PropertyToID("lsky_CloudsTex");
+        internal readonly int m_TintID      = Shader.PropertyToID("lsky_CloudsTint");
+        internal readonly int m_IntensityID = Shader.PropertyToID("lsky_CloudsIntensity");
+        internal readonly int m_DensityID   = Shader.PropertyToID("lsky_CloudsDensity");
+        internal readonly int m_CoverageID  = Shader.PropertyToID("lsky_CloudsCoverage");
+        internal readonly int m_SpeedID     = Shader.PropertyToID("lsky_CloudsSpeed");
+        internal readonly int m_Speed2ID    = Shader.PropertyToID("lsky_CloudsSpeed2");
+        
         public void SetParams(Material material, float evaluateTime, bool evaluateMoon, float moonEvaluateTime = 1.0f)
         {
             material.SetTexture(m_TexID, m_Parameters.tex);
@@ -127,7 +75,5 @@ namespace Rallec.LSky
             material.SetFloat(m_SpeedID, m_Parameters.speed);
             material.SetFloat(m_Speed2ID, m_Parameters.speed2);
         }
-
-        #endregion
     } 
 }

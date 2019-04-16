@@ -12,7 +12,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 
-namespace Rallec.LSky.Utility
+namespace LSky.Utility
 {
     public abstract class LSky_CommonEditor : Editor
     {

@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-namespace Rallec.LSky.Utility
+namespace LSky.Utility
 {
     /// <summary> Range values for animation curves </summary>
     public class LSky_AnimationCurveRange : PropertyAttribute

@@ -11,7 +11,7 @@
 using System;
 using UnityEngine;
 
-namespace Rallec.LSky
+namespace LSky
 {
     /// <summary></summary>
     [Serializable] public class LSky_BasicObjectInstantiate : LSky_EmptyObjectInstantiate

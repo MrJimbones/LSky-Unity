@@ -7,19 +7,17 @@
 ///----------------------------------------------
 /// Description: Moon
 /////////////////////////////////////////////////
+
 using System;
 using UnityEngine;
-using Rallec.LSky.Utility;
+using LSky.Utility;
 
-namespace Rallec.LSky
+namespace LSky
 {
 
     /// <summary></summary>
     [Serializable] public class LSky_MoonParams
     {
-
-        public LSky_CelestialsCoords coords;
-        public float size;
 
         public Texture2D tex;
         public Vector2 texOffsets;
@@ -30,7 +28,6 @@ namespace Rallec.LSky
         /// <summary></summary>
         public void Lerp(LSky_MoonParams b, float time)
         {
-            this.size = Mathf.Lerp(this.size, b.size, time);
             this.tint = Color.Lerp(this.tint, b.tint, time);
             this.intensity = Mathf.Lerp(this.intensity, b.intensity, time);
             this.contrast = Mathf.Lerp(this.contrast, b.contrast, time);
@@ -41,79 +38,31 @@ namespace Rallec.LSky
     [Serializable] public class LSky_Moon
     {
         
-        [SerializeField] private LSky_MoonParams m_Parameters = new LSky_MoonParams
+        public LSky_MoonParams parameters = new LSky_MoonParams
         {
-            coords = LSky_CelestialsCoords.Zero,
-            size   = 0.3f,
-            tex    = null,
+            tex        = null,
             texOffsets = Vector2.zero,
             tint       = Color.white,
             intensity  = 1.0f,
             contrast   = 0.3f
         };
 
+        internal readonly int m_TexID       = Shader.PropertyToID("lsky_MoonTex");
+        internal readonly int m_TintID      = Shader.PropertyToID("lsky_MoonTint");
+        internal readonly int m_IntensityID = Shader.PropertyToID("lsky_MoonIntensity");
+        internal readonly int m_ContrastID  = Shader.PropertyToID("lsky_MoonContrast");
+        
         /// <summary></summary>
-        public Vector3 MoonPosition
-        { 
-            get
-            { 
-                return LSky_Mathf.SphericalToCartesian(m_Parameters.coords.altitude, m_Parameters.coords.azimuth);
-            }
-        } 
-
-        #region [PropertyIDs]
-
-        private int m_TexID, m_TexOffsetID, m_TintID, m_IntensityID, m_ContrastID;
-
-        /// <summary></summary>
-        public int TexID{ get{ return m_TexID; } }
-
-        /// <summary></summary>
-        public int TintID{ get{ return m_TintID; } }
-
-        /// <summary></summary>
-        public int IntensityID{ get{ return m_IntensityID; } }
-
-        /// <summary></summary>
-        public int ContrastID{ get{ return m_ContrastID; } }
-
-        /// <summary></summary>
-        public void InitPropertyIDs()
-        {
-            m_TexID       = Shader.PropertyToID("lsky_MoonTex");
-            m_TintID      = Shader.PropertyToID("lsky_MoonTint");
-            m_IntensityID = Shader.PropertyToID("lsky_MoonIntensity");
-            m_ContrastID  = Shader.PropertyToID("lsky_MoonContrast");
-        }
-
-        #endregion
-
-        #region [SetParams]
-
         public void SetParams(Material material)
         {
-            material.SetTexture(m_TexID, m_Parameters.tex);
-            material.SetTextureOffset(m_TexID, m_Parameters.texOffsets);
-            material.SetColor(m_TintID, m_Parameters.tint);
-            material.SetFloat(m_IntensityID, m_Parameters.intensity);
-            material.SetFloat(m_ContrastID, m_Parameters.contrast);
+            material.SetTexture(m_TexID, parameters.tex);
+            material.SetTextureOffset(m_TexID, parameters.texOffsets);
+            material.SetColor(m_TintID, parameters.tint);
+            material.SetFloat(m_IntensityID, parameters.intensity);
+            material.SetFloat(m_ContrastID, parameters.contrast);
         }
 
-        #endregion
-
-        #region [Accessors]
-
-        /// <summary></summary>
-        public LSky_MoonParams Parameters
-        {
-            get{ return m_Parameters; }
-            set{ m_Parameters = value; }
-        }
-
-        #endregion
 
     }
-
-
     
 }

@@ -3,17 +3,17 @@
 ///----------------------------------------------
 /// Dome.
 ///----------------------------------------------
-/// Description: Skydome Manager.
+/// Description: Skydome.
 /////////////////////////////////////////////////
 
 using System;
 using UnityEngine;
-using Rallec.LSky.Utility;
+using LSky.Utility;
 
-namespace Rallec.LSky
+namespace LSky
 {
     [ExecuteInEditMode]
-    public class LSky_Dome : MonoBehaviour
+    public partial class LSky_Dome : MonoBehaviour
     {
 
         #region [Resources]
@@ -79,71 +79,62 @@ namespace Rallec.LSky
                 return true;
             }
         }
-
         #endregion
 
-        #region [Fields]
+        [Header("SKY DOME SETTINGS")]
 
-        [Header("Global")]
+        #region [General Dome Settings]
 
-        // Skydome.
         [SerializeField] private float m_DomeRadius = 10000f;
         private float m_OldDomeRadius;
 
-        // Global.
-        public LSky_Global global = new LSky_Global();
+        #endregion
 
-        [Header("Deep Space")]
-        [LSky_AnimationCurveRange(0.0f, 0.0f, 1.0f, 1.0f, 6)]
-        [SerializeField] private AnimationCurve m_DeepSpaceExposure = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 1.0f);
+        #region [Deep Space]
 
-        // Galaxy background.
+        [Header("Dome: Deep Space")]
         [SerializeField] private bool m_RenderGalaxyBackground = false;
         [SerializeField] private int m_GalaxyBackgroundLayerIndex = 0;
-        public LSky_GalaxyBackground galaxyBackground = new LSky_GalaxyBackground();
 
-        // Stars field.
         [SerializeField] private bool m_RenderStarsField = true;
         [SerializeField] private int m_StarsFieldLayerIndex = 0;
-        public LSky_StarsFieldCubemap starsField = new LSky_StarsFieldCubemap();
 
-        [Header("Near Space")]
-        // Sun.
+        #endregion
+
+        #region [Near Space]
+
+        [Header("Dome: Near Space")]
         [SerializeField] private bool m_RenderSun = true;
         [SerializeField] private int m_SunLayerIndex = 0;
-        public LSky_Sun sun = new LSky_Sun();
+        [SerializeField] private LSky_CelestialsCoords m_SunCoords = LSky_CelestialsCoords.Zero;
+        [SerializeField] private float m_SunMeshSize = 0.005f;
 
-        // Moon.
         [SerializeField] private bool m_RenderMoon = true;
         [SerializeField] private int m_MoonLayerIndex = 0;
-        public LSky_Moon moon = new LSky_Moon();
+        [SerializeField] private LSky_CelestialsCoords m_MoonCoords = LSky_CelestialsCoords.Zero;
+        [SerializeField] private float m_MoonMeshSize = 0.05f;
 
         private Vector3 m_OldSunPos, m_OldMoonPos;
 
-        [Header("Atmosphere")]
+        #endregion
+
+        #region [Atmosphere]
+
+        [Header("Dome: Atmosphere")]
         [SerializeField] private bool m_RenderAtmosphere = true;
         [SerializeField] private LSky_Quality4 m_AtmosphereMeshQuality = LSky_Quality4.High;
         [SerializeField] private int m_AtmosphereLayerIndex = 0;
-        [SerializeField] private bool m_SetGlobalAtmosphereParams = true;
-        public LSky_AtmosphericScattering atmosphere = new LSky_AtmosphericScattering();
 
-        [Header("Clouds")]
+        #endregion
+
+        #region [Clouds]
+
+        [Header("Dome: Clouds")]
         [SerializeField] private bool m_RenderClouds = true;
         [SerializeField] private int m_CloudsLayerIndex = 0;
         [SerializeField, Range(0.0f, 1.0f)] private float m_CloudsDomeHeight = 1.0f;
         [SerializeField] private float m_CloudsDomeYPos = 0.0f;
         [SerializeField] private float m_CloudsOrientation = 3f;
-        public LSky_Clouds clouds = new LSky_Clouds();
-        
-        [Header("Lighting")]
-        [SerializeField] private bool m_SendSkybox = false;
-        [SerializeField] private LSky_DirLightParams m_SunLightParams = new LSky_DirLightParams();
-        [SerializeField] private LSky_DirLightParams m_MoonLightParams = new LSky_DirLightParams();
-        [LSky_AnimationCurveRange(0.0f, 0.0f, 1.0f, 1.0f, 6)]
-        [SerializeField] private AnimationCurve m_SunMoonLightFade = AnimationCurve.Linear(0.0f, 1.0f, 1.0f, 1.0f);
-        private float SunEvaluateTime{ get{ return (1.0f -SunDirection.y) * 0.5f; } }
-        private float MoonEvaluteTime{ get { return (1.0f -MoonDirection.y) * 0.5f; } }
-        public LSky_Ambient ambient = new LSky_Ambient();
 
         #endregion
 
@@ -180,34 +171,26 @@ namespace Rallec.LSky
         #region [Properties]
 
         /// <summary></summary>
-        public Vector3 DomeRadius3D{ get{ return Vector3.one * m_DomeRadius; } }
+        public Vector3 DomeRadius3D => Vector3.one * m_DomeRadius;
+
+        /// <summary> Get sun direction: SunMatrix * Vector3.forward. </summary>
+        public Vector3 SunDirection => -m_SunRef.transform.forward;
+
+        /// <summary> Get moon direction: MoonMatrix * Vector3.forward. </summary>
+        public Vector3 MoonDirection => -m_MoonRef.transform.forward;
 
         /// <summary></summary>
-        public Vector3 SunDirection
-        {
-            get
-            { 
-                // -(SunMatrix.rotation * Vector3.forward)
-                return -m_SunRef.transform.forward;
-            }
-        }
+        public Vector3 SunPosition => LSky_Mathf.SphericalToCartesian(m_SunCoords.altitude, m_SunCoords.azimuth);
 
         /// <summary></summary>
-        public Vector3 MoonDirection
+        public Vector3 MoonPosition => LSky_Mathf.SphericalToCartesian(m_MoonCoords.altitude, m_MoonCoords.azimuth);
+        
+        /// <summary></summary>
+        public bool IsDay 
         {
             get
             {
-                // - MoonMatrix.rotation * Vector3.forward.
-                return -m_MoonRef.transform.forward;
-            }
-        }
-
-        /// <summary></summary>
-        public bool IsDay
-        { 
-            get
-            {
-                if(Mathf.Abs(sun.Parameters.coords.altitude) > 1.7f)
+                if(Mathf.Abs(m_SunCoords.altitude) > 1.7f)
                     return false;
 
                 return true;
@@ -219,25 +202,20 @@ namespace Rallec.LSky
         {
             get
             {
-                if(!IsDay && (Mathf.Abs(moon.Parameters.coords.altitude) > 1.7f))
+                if(!IsDay && (Mathf.Abs(m_MoonCoords.altitude) > 1.7f))
                     return false;
 
                 return true;
             }
         }
-
-        /// <summary></summary>
-        public float DeepSpaceExposure{ get{ return m_DeepSpaceExposure.Evaluate(SunEvaluateTime); } }
-
         #endregion
 
-        #region [Methods|Initialize]
 
-        private void Awake()
+        #region [Initialize]
+
+        private void Initialize()
         {
-
             m_Transform = this.transform;
-
             if(!CheckResources)
             {
                 enabled = false;
@@ -252,22 +230,7 @@ namespace Rallec.LSky
             {
                 BuildDome();
             }
-        }
-
-        private void Start()
-        {
-
             ScaleDome();
-            atmosphere.Initialize();
-
-            // Initialize property ID's.
-            global.InitializePropertyIDs();
-            galaxyBackground.InitializePropertyIDs();
-            starsField.InitializeṔropertyIDs();
-            sun.InitProperyIDs();
-            moon.InitPropertyIDs();
-            atmosphere.InitPropertyIDs();
-            clouds.InitPropertyIDs();
         }
 
         private void SetShadersToMaterials()
@@ -307,140 +270,45 @@ namespace Rallec.LSky
         }
         #endregion
 
-        #region [Methods|Render]
 
-        private void LateUpdate()
-        { 
-            UpdateDome();
+        #region [Transform]
+
+        private void ScaleDome()
+        {
+            m_Transform.localScale = DomeRadius3D;
         }
 
-        public void UpdateDome()
+        private void UpdateCelestialsTransform()
         {
-            if(!m_IsReady) return;
-
-            if(m_SendSkybox)
+            if(m_OldSunPos != SunPosition)
             {
-                UnityEngine.RenderSettings.skybox = m_Resources.ambientSkyboxMaterial;
-                m_SendSkybox = false;
+                m_SunRef.transform.localPosition = SunPosition;
+                m_SunRef.transform.LookAt(m_Transform, Vector3.forward);
+                m_OldSunPos = SunPosition;
             }
+            m_SunRef.transform.localScale = m_SunMeshSize * Vector3.one;
 
-            UpdateCelestialsTransform();
-            UpdateCloudsTransform();
-            RenderDome();
-            UpdateLight();
-            UpdateAmbient();
+            if(m_OldMoonPos != MoonPosition)
+            {
+                m_MoonRef.transform.localPosition = MoonPosition;
+                m_MoonRef.transform.LookAt(m_Transform, Vector3.forward);
+                m_OldMoonPos = MoonPosition;
+            }
+            m_MoonRef.transform.localScale = m_MoonMeshSize * Vector3.one;
         }
 
-        public void RenderDome()
+        /// <summary></summary>
+        public void SetOuterSpaceRotation(Quaternion rotation)
         {
-
-            if(m_OldDomeRadius != m_DomeRadius)
+            if(m_RenderStarsField)
             {
-                ScaleDome();
-                m_OldDomeRadius = m_DomeRadius;
+                m_StarsFieldRef.transform.localRotation = rotation;
             }
-
-            global.SetParams(m_Transform, SunDirection, MoonDirection);
 
             if(m_RenderGalaxyBackground)
             {
-                galaxyBackground.SetParams(m_Resources.galaxyBackgroundMaterial, DeepSpaceExposure);
-                Graphics.DrawMesh(
-                    m_Resources.sphereLOD3,
-                    m_GalaxyBackgroundRef.transform.localToWorldMatrix,
-                    m_Resources.galaxyBackgroundMaterial, m_GalaxyBackgroundLayerIndex
-                );
+                m_GalaxyBackgroundRef.transform.localRotation = rotation;
             }
-
-            if(m_RenderStarsField)
-            {
-                starsField.SetParams(m_Resources.starsFieldMaterial, DeepSpaceExposure);
-                Graphics.DrawMesh(
-                    m_Resources.sphereLOD3,
-                    m_StarsFieldRef.transform.localToWorldMatrix,
-                    m_Resources.starsFieldMaterial,
-                    m_StarsFieldLayerIndex
-                );
-            }
-
-            if(m_RenderSun)
-            {
-                sun.SetParams(m_Resources.sunMaterial);
-                Graphics.DrawMesh(
-                    GetQuadMesh(),
-                    m_SunRef.transform.localToWorldMatrix,
-                    m_Resources.sunMaterial,
-                    m_SunLayerIndex
-                );
-            }
-
-            if(m_RenderMoon)
-            {
-                moon.SetParams(m_Resources.moonMaterial);
-                Graphics.DrawMesh(
-                    GetSphereMesh(LSky_Quality4.Low),
-                    m_MoonRef.transform.localToWorldMatrix,
-                    m_Resources.moonMaterial,
-                    m_MoonLayerIndex
-                );
-
-            }
-
-            if(m_RenderAtmosphere)
-            {
-
-                atmosphere.sunDir  = SunDirection;
-                atmosphere.moonDir = MoonDirection;
-
-                if(m_SetGlobalAtmosphereParams)
-                    atmosphere.SetGlobalParams(SunEvaluateTime);
-                else
-                    atmosphere.SetParams(m_Resources.atmosphereMaterial, SunEvaluateTime);
-
-                Graphics.DrawMesh(
-                    GetAtmosphereMesh(m_AtmosphereMeshQuality),
-                    m_AtmosphereRef.transform.localToWorldMatrix,
-                    m_Resources.atmosphereMaterial,
-                    m_AtmosphereLayerIndex
-                );
-            }
-
-            if(m_RenderClouds)
-            {
-                
-                if(atmosphere.moonRayleighMode == LSky_CelestialRayleighMode.CelestialContribution)
-                    clouds.SetParams(m_Resources.cloudsMaterial, SunEvaluateTime, true, MoonEvaluteTime);
-                else
-                    clouds.SetParams(m_Resources.cloudsMaterial, SunEvaluateTime, false);
-
-                Graphics.DrawMesh(
-                    GetHemisphereMesh(LSky_Quality4.Low),
-                    m_CloudsRef.transform.localToWorldMatrix,
-                    m_Resources.cloudsMaterial,
-                    m_CloudsLayerIndex
-                );
-
-            }
-        }
-
-        
-        private void UpdateCelestialsTransform()
-        {
-            if(m_OldSunPos != sun.SunPosition)
-            {
-                m_SunRef.transform.localPosition = sun.SunPosition;
-                m_SunRef.transform.LookAt(m_Transform, Vector3.forward);
-                m_OldSunPos = sun.SunPosition;
-            }
-            m_SunRef.transform.localScale = sun.Parameters.size * Vector3.one;
-
-            if(m_OldMoonPos != moon.MoonPosition)
-            {
-                m_MoonRef.transform.localPosition = moon.MoonPosition;
-                m_MoonRef.transform.LookAt(m_Transform, Vector3.forward);
-                m_OldMoonPos = moon.MoonPosition;
-            }
-            m_MoonRef.transform.localScale = moon.Parameters.size * Vector3.one;
         }
 
         private void UpdateCloudsTransform()
@@ -456,49 +324,87 @@ namespace Rallec.LSky
             );
         }
 
-        private void UpdateLight()
-        {
-            if(IsDay)
-            {
-                m_DirLightRef.transform.localPosition = sun.SunPosition;
-                m_DirLightRef.transform.LookAt(m_Transform);
-                m_DirLightRef.light.color = m_SunLightParams.color.Evaluate(SunEvaluateTime);
-                m_DirLightRef.light.intensity = m_SunLightParams.intensity;
-            }
-            else
-            {
-                m_DirLightRef.transform.localPosition = moon.MoonPosition;
-                m_DirLightRef.transform.LookAt(m_Transform);
-                m_DirLightRef.light.color = m_MoonLightParams.color.Evaluate(MoonEvaluteTime);
-                m_DirLightRef.light.intensity = m_MoonLightParams.intensity * m_SunMoonLightFade.Evaluate(SunEvaluateTime);
-            }
-            m_DirLightRef.light.enabled = DirLightEnbled;
-        }
+        #endregion
 
-        private void UpdateAmbient()
-        {
-            if(atmosphere.moonRayleighMode == LSky_CelestialRayleighMode.CelestialContribution)
-                ambient.UpdateAmbient(SunEvaluateTime, true, MoonEvaluteTime);
-            else
-                ambient.UpdateAmbient(SunEvaluateTime, false);
-        }
+        #region [Render]
 
-        public void SetOuterSpaceRotation(Quaternion rotation)
+        private void RenderDome()
         {
-            if(m_RenderStarsField)
+            if(m_OldDomeRadius != m_DomeRadius)
             {
-                m_StarsFieldRef.transform.localRotation = rotation;
+                ScaleDome();
+                m_OldDomeRadius = m_DomeRadius;
             }
 
             if(m_RenderGalaxyBackground)
             {
-                m_GalaxyBackgroundRef.transform.localRotation = rotation;
+                
+                Graphics.DrawMesh(
+                    m_Resources.sphereLOD3,
+                    m_GalaxyBackgroundRef.transform.localToWorldMatrix,
+                    m_Resources.galaxyBackgroundMaterial, m_GalaxyBackgroundLayerIndex
+                );
+            }
+
+            if(m_RenderStarsField)
+            {
+                Graphics.DrawMesh(
+                    m_Resources.sphereLOD3,
+                    m_StarsFieldRef.transform.localToWorldMatrix,
+                    m_Resources.starsFieldMaterial,
+                    m_StarsFieldLayerIndex
+                );
+            }
+
+            if(m_RenderSun)
+            {
+                
+                Graphics.DrawMesh(
+                    GetQuadMesh(),
+                    m_SunRef.transform.localToWorldMatrix,
+                    m_Resources.sunMaterial,
+                    m_SunLayerIndex
+                );
+            }
+
+            if(m_RenderMoon)
+            {
+                
+                Graphics.DrawMesh(
+                    GetSphereMesh(LSky_Quality4.Low),
+                    m_MoonRef.transform.localToWorldMatrix,
+                    m_Resources.moonMaterial,
+                    m_MoonLayerIndex
+                );
+            }
+
+            if(m_RenderAtmosphere)
+            {
+
+                Graphics.DrawMesh(
+                    GetAtmosphereMesh(m_AtmosphereMeshQuality),
+                    m_AtmosphereRef.transform.localToWorldMatrix,
+                    m_Resources.atmosphereMaterial,
+                    m_AtmosphereLayerIndex
+                );
+            }
+
+            if(m_RenderClouds)
+            {
+                
+                Graphics.DrawMesh(
+                    GetHemisphereMesh(LSky_Quality4.Low),
+                    m_CloudsRef.transform.localToWorldMatrix,
+                    m_Resources.cloudsMaterial,
+                    m_CloudsLayerIndex
+                );
+
             }
         }
 
         #endregion
 
-        #region [Methods|Mesh]
+        #region [Mesh]
 
         private Mesh GetSphereMesh(LSky_Quality4 quality)
         {
@@ -557,17 +463,24 @@ namespace Rallec.LSky
             return null;
         }
 
-        private Mesh GetQuadMesh()
+        private Mesh GetQuadMesh() => m_Resources.QuadMesh;
+
+        #endregion
+
+        #region [Accessors]
+
+        public LSky_CelestialsCoords SunCoords
         {
-            return m_Resources.QuadMesh;
+            get{ return m_SunCoords; }
+            set{ m_SunCoords = value; }
         }
 
-        private void ScaleDome()
+        public LSky_CelestialsCoords MoonCoords
         {
-            m_Transform.localScale = DomeRadius3D;
+            get{ return m_MoonCoords; }
+            set{ m_MoonCoords = value; }
         }
 
         #endregion
     }
 }
-

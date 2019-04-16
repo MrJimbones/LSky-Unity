@@ -12,11 +12,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
-using Rallec.LSky.Utility;
+using LSky.Utility;
 
-namespace Rallec.LSky
+namespace LSky
 {
-    [ExecuteInEditMode][AddComponentMenu("Rallec/LSky/TimeOfDay/DateTime/DateTime Manager")]
+    [ExecuteInEditMode][AddComponentMenu("LSky/TimeOfDay/DateTime/DateTime Manager")]
     public class LSky_DateTimeManager : MonoBehaviour
     {
 

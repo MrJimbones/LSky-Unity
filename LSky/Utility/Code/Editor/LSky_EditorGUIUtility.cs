@@ -13,7 +13,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Rallec.LSky.Utility
+namespace LSky.Utility
 {
     public enum LSky_ShurikenStyle{ TitleHeader, Title, Tab }
     
@@ -61,8 +61,6 @@ namespace Rallec.LSky.Utility
         #endregion
 
         #region [Header]
-
-        
 
         static readonly GUIStyle ShurikenStyleTitleHeader = new GUIStyle("ShurikenModuleTitle")
         {

@@ -9,9 +9,9 @@
 using System;
 using UnityEngine;
 
-namespace Rallec.LSky
+namespace LSky
 {
-    [Serializable] public struct LSky_StarsFieldParams
+    [Serializable] public class LSky_StarsFieldParams
     {
 
         // Cubemaps.
@@ -25,16 +25,6 @@ namespace Rallec.LSky
         // Sincillation.
         [Range(0.0f, 1.0f)] public float scintillation;
         public float scintillationSpeed;
-
-        public LSky_StarsFieldParams(Cubemap _cubemap, Cubemap _noiseCubemap, Color _tint, float _intensity, float _scintillation, float _scintillationSpeed)
-        {
-            this.cubemap       = _cubemap;
-            this.noiseCubemap  = _noiseCubemap;
-            this.tint          = _tint;
-            this.intensity     = _intensity;
-            this.scintillation = _scintillation;
-            this.scintillationSpeed = _scintillationSpeed;
-        }
 
         /// <summary></summary>
         public void Lerp(LSky_StarsFieldParams b, float time)
@@ -51,7 +41,7 @@ namespace Rallec.LSky
     [Serializable] public class LSky_StarsFieldCubemap
     {
         
-        [SerializeField] private LSky_StarsFieldParams m_Parameters = new LSky_StarsFieldParams
+        public LSky_StarsFieldParams parameters = new LSky_StarsFieldParams
         {
             cubemap            = null,
             noiseCubemap       = null,
@@ -61,94 +51,30 @@ namespace Rallec.LSky
             scintillationSpeed = 25f
         };
 
-        /// <summary></summary>
-        public LSky_StarsFieldParams Parameters
-        {
-            get{ return m_Parameters; }
-            set{ m_Parameters = value; }
-        }
-      
-        #region [PropertyIDs]
-
-        private int m_TintID;
-        private int m_IntensityID;
-        private int m_ContrastID;
-        private int m_ScintillationID;
-        private int m_ScintillationSpeedID;
-
-        private int m_CubemapID;
-        private int m_NoiseCubemapID;
-        private int m_NoiseMatrixID;
-
-        /// <summary></summary>
-        public int CubemapID{ get{ return m_CubemapID; } }
-
-        /// <summary></summary>
-        public int NoiseCubemapID{ get{ return m_NoiseCubemapID; } }
-
-        /// <summary></summary>
-        public int NoiseMatrixID{ get{ return m_NoiseMatrixID; } }
-        
-        /// <summary></summary>
-        public int TintID{ get{ return m_TintID; } }
-
-        /// <summary></summary>
-        public int IntensityID{ get{ return m_IntensityID; } }
-
-        /// <summary></summary>
-        public int ContrastID{ get{ return m_ContrastID; } }
-
-        /// <summary></summary>
-        public int ScitillationID{ get{ return m_ScintillationID; } }
-
-        /// <summary></summary>
-        public int ScintillationSpeedID{ get{ return m_ScintillationSpeedID; } }
-
-        #endregion
-
         private float m_StarsFieldNoiseXAngle;
 
-        /// <summary></summary>
-        public void InitializeṔropertyIDs()
-        {
-            m_CubemapID      = Shader.PropertyToID("lsky_StarsFieldCubemap");
-            m_NoiseCubemapID = Shader.PropertyToID("lsky_StarsFieldNoiseCubemap");
-            m_NoiseMatrixID  = Shader.PropertyToID("lsky_StarsFieldNoiseMatrix");
-            m_TintID         = Shader.PropertyToID("lsky_StarsFieldTint");
-            m_IntensityID    = Shader.PropertyToID("lsky_StarsFieldIntensity");
-            m_ContrastID     = Shader.PropertyToID("lsky_StarsFieldContrast");
-            m_ScintillationID = Shader.PropertyToID("lsky_StarsFieldScintillation");
-            m_ScintillationSpeedID = Shader.PropertyToID("lsky_StarsFieldScintillationSpeed");
-        }
-
+        internal readonly int m_CubemapID      = Shader.PropertyToID("lsky_StarsFieldCubemap");
+        internal readonly int m_NoiseCubemapID = Shader.PropertyToID("lsky_StarsFieldNoiseCubemap");
+        internal readonly int m_NoiseMatrixID  = Shader.PropertyToID("lsky_StarsFieldNoiseMatrix");
+        internal readonly int m_TintID         = Shader.PropertyToID("lsky_StarsFieldTint");
+        internal readonly int m_IntensityID    = Shader.PropertyToID("lsky_StarsFieldIntensity");
+        internal readonly int m_ContrastID     = Shader.PropertyToID("lsky_StarsFieldContrast");
+        internal readonly int m_ScintillationID = Shader.PropertyToID("lsky_StarsFieldScintillation");
+        internal readonly int m_ScintillationSpeedID = Shader.PropertyToID("lsky_StarsFieldScintillationSpeed");
+        
         /// <summary></summary>
         public void SetParams(Material material, float intensity = 1.0f)
         {
-            // Set cubemap.
-            material.SetTexture(m_CubemapID, m_Parameters.cubemap);
 
-            // Set Noise Cubemap.
-            material.SetTexture(m_NoiseCubemapID, m_Parameters.noiseCubemap);
-
-            // Set color.
-            material.SetColor(m_TintID, m_Parameters.tint);
-
-            // Set intensity
-            material.SetFloat(m_IntensityID, m_Parameters.intensity*intensity);
-
-            // Set contrast.
-            //material.SetFloat(m_ContrastID, m_Parameters.contrast);
-
-            // Set Scintillation.
-            material.SetFloat(m_ScintillationID, m_Parameters.scintillation);
-
-            // Set Scintillation Speed.
-            material.SetFloat(m_ScintillationSpeedID, m_Parameters.scintillationSpeed);
+            material.SetTexture(m_CubemapID, parameters.cubemap);
+            material.SetTexture(m_NoiseCubemapID, parameters.noiseCubemap);
+            material.SetColor(m_TintID, parameters.tint);
+            material.SetFloat(m_IntensityID, parameters.intensity*intensity);
+            material.SetFloat(m_ScintillationID, parameters.scintillation);
+            material.SetFloat(m_ScintillationSpeedID, parameters.scintillationSpeed);
 
             // Scroll the x Axis of the noise cubemap.
-            m_StarsFieldNoiseXAngle += Time.deltaTime * m_Parameters.scintillationSpeed;
-
-            // Set noise matrix.
+            m_StarsFieldNoiseXAngle += Time.deltaTime * parameters.scintillationSpeed;
             Matrix4x4 starsFieldNoiseMatrix = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(m_StarsFieldNoiseXAngle, 0.0f, 0.0f), Vector3.one);
             material.SetMatrix(m_NoiseMatrixID, starsFieldNoiseMatrix);
         }

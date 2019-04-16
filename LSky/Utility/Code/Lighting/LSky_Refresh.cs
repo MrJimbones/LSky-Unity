@@ -12,7 +12,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Rallec.LSky.Utility
+namespace LSky.Utility
 {
 
     public abstract class LSky_Refresh : MonoBehaviour

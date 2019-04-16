@@ -11,7 +11,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Rallec.LSky.Utility
+namespace LSky.Utility
 {
     [CustomPropertyDrawer(typeof(LSky_AnimationCurveRange))]
     public class LSky_AnimationCurveRangeDrawer: PropertyDrawer

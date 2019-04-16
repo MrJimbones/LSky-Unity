@@ -11,7 +11,7 @@
 using System;
 using UnityEngine;
 
-namespace Rallec.LSky.Utility
+namespace LSky.Utility
 {
     /// <summary></summary>
     public enum LSky_UpdateType
