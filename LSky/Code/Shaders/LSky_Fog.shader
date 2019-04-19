@@ -1,7 +1,6 @@
-﻿Shader "Rallec/LSky/Post FX/Distance Fog"
+﻿Shader "LSky/Post FX/Fog"
 {
-    Properties{}
-
+    //Properties{}
     CGINCLUDE
 
     #define LSKY_COMPUTE_MIE_PHASE 1
@@ -25,9 +24,7 @@
     uniform float3 lsky_Camera;
 
     uniform float lsky_DensityExp;
-
     uniform float2 lsky_LinearParams;
-
 
     inline float3 LSky_PPWorldPos(float3 viewDir)
     {
@@ -79,9 +76,9 @@
 
     struct v2f
     {
-        float2 uv             : TEXCOORD0;
+        float2 uv              : TEXCOORD0;
         float4 interpolatedRay : TEXCOORD1;
-        float4 vertex         : SV_POSITION;
+        float4 vertex          : SV_POSITION;
         UNITY_VERTEX_OUTPUT_STEREO
     };
 
@@ -96,27 +93,25 @@
         o.vertex   = UnityObjectToClipPos(v.vertex);
         o.uv       = v.texcoord.xy;
         
-
         #if UNITY_UV_STARTS_AT_TOP
             if(_MainTex_TexelSize.y < 0)
             o.uv.y = 1-o.uv.y;
         #endif
 
         int index = v.texcoord.x + (2.0 * o.uv.y);
-        o.interpolatedRay = lsky_FrustumCorners[index];
+        o.interpolatedRay     = lsky_FrustumCorners[index];
         o.interpolatedRay.xyz = mul((float3x3)lsky_WorldToObject, o.interpolatedRay.xyz);
-        o.interpolatedRay.w = index;	
+        o.interpolatedRay.w   = index;	
 
         return o;
     }
 
     half3 AtmosphereColor(float3 viewDir, float depth, float dist)
     {
-        half3 res = half3(0.0, 0.0, 0.0);
+        half3 res  = half3(0.0, 0.0, 0.0);
         float3 pos = normalize(viewDir.xyz);
 
         half3 SunMiePhase, MoonMiePhase;
-
         #ifdef LSKY_COMPUTE_MIE_PHASE
             res = LSky_ComputeAtmosphere(pos, SunMiePhase, MoonMiePhase, depth, dist);
         #endif

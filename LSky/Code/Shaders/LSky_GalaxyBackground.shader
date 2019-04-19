@@ -1,4 +1,4 @@
-﻿Shader "Rallec/LSky/Deep Space/Galaxy Background"
+﻿Shader "LSky/Deep Space/Galaxy Background"
 {
 
     Properties{}
@@ -7,9 +7,57 @@
 
     #include "UnityCG.cginc"
     #include "LSky_Common.hlsl"
-    #include "LSky_DeepSpaceCommon.hlsl"
+    //-------------------------------------------------
 
-    #define LSKY_CUBE_HDR 0
+
+    //-------------------------------------------------
+
+    uniform samplerCUBE lsky_GalaxyBackgroundCubemap;
+    half4 lsky_GalaxyBackgroundCubemap_HDR;
+    //-------------------------------------------------
+
+    uniform half3 lsky_GalaxyBackgroundTint;
+    uniform half  lsky_GalaxyBackgroundIntensity;
+    uniform half  lsky_GalaxyBackgroundContrast;
+    //-------------------------------------------------
+
+    struct v2f
+    {
+        float4 vertex    : SV_POSITION;
+        float3 texcoord  : TEXCOORD0;
+        half3  col       : TEXCOORD2;
+        UNITY_VERTEX_OUTPUT_STEREO
+    };
+
+    v2f vert(appdata_base v)
+    {
+        v2f o;
+        UNITY_INITIALIZE_OUTPUT(v2f, o);
+
+        UNITY_SETUP_INSTANCE_ID(v);
+        UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
+        o.vertex = LSky_DomeToClipPos(v.vertex);
+        o.texcoord = v.vertex.xyz;
+        o.col.rgb = LSKY_HORIZON_FADE(v.vertex) * LSKY_GLOBALEXPOSURE;
+
+        return o;
+    }
+
+    half4 frag(v2f i) : SV_Target
+    {
+        half4 res = half4(0.0, 0.0, 0.0, 1.0);
+
+        #ifdef LSKY_CUBE_HDR
+            res.rgb = LSky_CUBE(lsky_GalaxyBackgroundCubemap, lsky_GalaxyBackgroundCubemap_HDR, lsky_GalaxyBackgroundContrast, i.texcoord.xyz);
+        #else
+            res.rgb = LSky_CUBE(lsky_GalaxyBackgroundCubemap, lsky_GalaxyBackgroundContrast, i.texcoord.xyz);
+        #endif
+
+        res.rgb *= lsky_GalaxyBackgroundTint.rgb * i.col.rgb * lsky_GalaxyBackgroundIntensity;
+
+        return res;
+    }
 
     ENDCG
 
@@ -26,9 +74,11 @@
 
             CGPROGRAM
 
-            #pragma vertex galaxy_background_vert
-            #pragma fragment galaxy_background_frag
+            #pragma vertex vert
+            #pragma fragment frag
             #pragma target 2.0
+
+            #define LSKY_CUBE_HDR 0
 
             ENDCG
         }

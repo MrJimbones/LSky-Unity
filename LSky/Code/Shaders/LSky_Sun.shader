@@ -1,4 +1,4 @@
-﻿Shader "Rallec/LSky/Near Space/Sun"
+﻿Shader "LSky/Near Space/Sun"
 {
 
     //Properties{}
@@ -23,12 +23,10 @@
         UNITY_VERTEX_OUTPUT_STEREO
     };
 
-    // Texture.
     uniform sampler2D lsky_StarTex;
 
-    // Color.
     uniform half4 lsky_StarTint;
-    uniform half lsky_StarIntensity;
+    uniform half  lsky_StarIntensity;
 
     v2f vert(appdata v)
     {
@@ -38,10 +36,10 @@
         UNITY_SETUP_INSTANCE_ID(v);
         UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
-        o.vertex = UnityObjectToClipPos(v.vertex);
+        o.vertex   = UnityObjectToClipPos(v.vertex);
         o.worldPos = LSKY_WORLD_POS(v.vertex);
         o.texcoord = v.texcoord;
-             
+
         o.col.rgb = lsky_StarTint.rgb * lsky_StarIntensity * LSKY_GLOBALEXPOSURE;
 
         return o;
@@ -50,10 +48,8 @@
     half4 frag(v2f i) : SV_TARGET
     {
         half4 col = half4(0.0, 0.0, 0.0, 1.0);
-
-        col.rgb = tex2D(lsky_StarTex, i.texcoord).rgb;
-        col.rgb *= i.col.rgb * LSKY_WORLD_HORIZON_FADE(i.worldPos);
-
+        col.rgb   = tex2D(lsky_StarTex, i.texcoord).rgb;
+        col.rgb  *= i.col.rgb * LSKY_WORLD_HORIZON_FADE(i.worldPos);
         return col;
     }
 
@@ -61,9 +57,7 @@
 
     SubShader
     {
-        
         Tags{ "Queue"="Background+1545" "RenderType"="Background" "IgnoreProjector"="true" }
-
         Pass
         {
 

@@ -481,6 +481,12 @@ namespace LSky
             set{ m_MoonCoords = value; }
         }
 
+        public Transform _Transform
+        {
+            get => m_Transform;
+            set => m_Transform = value;
+        }
+
         #endregion
     }
 }

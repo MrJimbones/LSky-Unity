@@ -10,17 +10,6 @@
 /// Naty Hoffman and Arcot. J. Preetham papers.
 //////////////////////////////////////////////////
 
-//------------------------------------------- Def Const --------------------------------------------
-//==================================================================================================
-
-#ifndef LSKY_RAYLEIGH_ZENITH_LENGTH
-    #define LSKY_RAYLEIGH_ZENITH_LENGTH lsky_RayleighZenithLength
-#endif
-
-#ifndef LSKY_MIE_ZENITH_LENGTH
-    #define LSKY_MIE_ZENITH_LENGTH lsky_MieZenithLength
-#endif
-
 
 //--------------------------------------------- Params ---------------------------------------------
 //==================================================================================================
@@ -42,19 +31,6 @@ uniform half lsky_NightIntensity;
 //------------------------------------------- Scattering -------------------------------------------
 //==================================================================================================
 
-// Defautl optical depth.
-inline void OpticalDepth(float y, inout float2 srm)
-{
-
-    y = saturate(y); 
-    float zenith = acos(y);
-    zenith = cos(zenith) + 0.15 * pow(93.885 - ((zenith * 180) / UNITY_PI), -1.253);
-    zenith = 1.0/zenith;
-
-    srm.x = zenith * LSKY_RAYLEIGH_ZENITH_LENGTH;
-    srm.y = zenith * LSKY_MIE_ZENITH_LENGTH;
-}
-
 // Optical depth with small changes for more customization.
 inline void CustomOpticalDepth(float y, inout float2 srm)
 {
@@ -65,8 +41,8 @@ inline void CustomOpticalDepth(float y, inout float2 srm)
     zenith = cos(zenith) + 0.15 * pow(93.885 - ((zenith * 180) / UNITY_PI), -1.253);
     zenith = 1.0/(zenith + lsky_AtmosphereZenith);
 
-    srm.x = zenith * LSKY_RAYLEIGH_ZENITH_LENGTH;
-    srm.y = zenith * LSKY_MIE_ZENITH_LENGTH;
+    srm.x = zenith * lsky_RayleighZenithLength;
+    srm.y = zenith * lsky_MieZenithLength;
 }
 
 // Optimized for mobile devices.
@@ -74,22 +50,10 @@ inline void OptimizedOpticalDepth(float y, inout float2 srm)
 {
     y = saturate(y * lsky_AtmosphereHaziness);
     y = 1.0 / (y + lsky_AtmosphereZenith);
-    srm.x = y * LSKY_RAYLEIGH_ZENITH_LENGTH;
-    srm.y = y * LSKY_MIE_ZENITH_LENGTH;
+    srm.x = y * lsky_RayleighZenithLength;
+    srm.y = y * lsky_MieZenithLength;
 }
 
-/*
-// Based in Nielsen paper
-inline void NielsenOpticalDepth(float y, inout float2 srm)
-{
-    y = saturate(y);
-    float f = pow(y, lsky_AtmosphereHaziness); // h 1 / 5.0 0.25
-    float t = (1.05 - f) * 190000;
-	
-    srm.x = t + f * (LSKY_RAYLEIGH_ZENITH_LENGTH - t);
-    srm.y = t + f * (LSKY_MIE_ZENITH_LENGTH - t);
-}
-*/
 
 inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMiePhase, float3 moonMiePhase, float depth)
 {
@@ -134,11 +98,18 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth, float dist)
     // sR, sM
     float2 srm;
 
-    // Get uo side mask.
-    fixed skyMask = 1.0;
+
+    // x = SunMiePhaseMul, y = MoonMiePhaseMul, z = Upside Mask;
+    half3 multParams = half3(1.0, 1.0, 1.0);
     
     #ifndef LSKY_ENABLE_POST_FX
-    skyMask = 1.0-LSky_GroundMask(pos.y);
+    multParams.x = 1.0;
+    multParams.y = 1.0;
+    multParams.z = 1.0-LSky_GroundMask(pos.y);
+    #else
+    multParams.x = lsky_FogSunMiePhaseMult;
+    multParams.y = lsky_FogMoonMiePhaseMult;
+    multParams.z = 1.0;
     #endif
 
     // Get dot product of the sun and moon.
@@ -146,10 +117,12 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth, float dist)
 
     #ifdef LSKY_COMPUTE_MIE_PHASE
     // Compute sun mie phase in up side.
-    sunMiePhase = (depth*LSKY_SUNMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.x, lsky_PartialSunMiePhase, lsky_SunMieScattering) * lsky_SunMieTint.rgb * skyMask;
+    sunMiePhase = (depth*LSKY_SUNMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.x, lsky_PartialSunMiePhase, lsky_SunMieScattering);
+    sunMiePhase *= multParams.x * lsky_SunMieTint.rgb * multParams.z;
 
     // Compute moon mie phase in up side.
-    moonMiePhase = (depth*LSKY_MOONMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering) * lsky_MoonMieTint.rgb * skyMask; 
+    moonMiePhase = (depth*LSKY_MOONMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering);
+    moonMiePhase *= multParams.y * lsky_MoonMieTint.rgb * multParams.z; 
    
     #endif
 
@@ -168,10 +141,8 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth, float dist)
         // Compute atmospheric scattering.
         col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, sunMiePhase, moonMiePhase, dist);
     #else
-
         fixed3 mp = fixed3(0.0, 0.0, 0.0);
         col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, mp, mp, dist);
-
     #endif
 
     // Apply color correction.
@@ -182,7 +153,6 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth, float dist)
     col.rgb = applyGroundColor(pos.y, col.rgb);
     #endif
 
-    // return final color.
     return col;
 }
 

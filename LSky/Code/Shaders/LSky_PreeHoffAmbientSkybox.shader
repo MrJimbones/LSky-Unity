@@ -1,4 +1,4 @@
-﻿Shader "Rallec/LSky/Skybox/Preetham And Hoffman Ambient Skybox"
+﻿Shader "LSky/Skybox/Preetham And Hoffman Ambient Skybox"
 {
     Properties{}
 
@@ -12,8 +12,6 @@
     #include "LSky_Common.hlsl"
     #include "LSky_PreeHoffAtmosphericScatteringCommon.hlsl" 
    
-    
-
     struct appdata
     {
         float4 vertex : POSITION;
@@ -22,9 +20,9 @@
 
     struct v2f
     {
-        float3 nvertex : TEXCOORD0; // pos
-        half3 scatter: TEXCOORD1;
-        float4 vertex : SV_POSITION;
+        float3 nvertex : TEXCOORD0; 
+        half3 scatter  : TEXCOORD1;
+        float4 vertex  : SV_POSITION;
         UNITY_VERTEX_OUTPUT_STEREO
     };
     
@@ -39,10 +37,10 @@
         o.vertex = UnityObjectToClipPos(v.vertex);
         o.nvertex = normalize(v.vertex.xyz);
 
-        fixed3 _one = fixed3(0.0, 0.0, 0.0);
+        const fixed _one = 1.0;
 
         #ifndef LSKY_COMPUTE_MIE_PHASE
-        o.scatter.rgb = LSky_ComputeAtmosphere(o.nvertex.xyz, 1.0, 1.0);
+        o.scatter.rgb = LSky_ComputeAtmosphere(o.nvertex.xyz, _one, _one);
         #endif
         
         return o;
@@ -64,8 +62,6 @@
         {
             
             ZWrite Off
-            //ZTest LEqual
-            //Blend One One
             Fog{ Mode Off }
             //----------------------
 

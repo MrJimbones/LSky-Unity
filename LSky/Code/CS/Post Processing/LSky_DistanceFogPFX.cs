@@ -22,6 +22,7 @@ namespace LSky
         [SerializeField] private float m_StartDistance = 0.0f, m_EndDistance = 300f;
         [SerializeField] private float m_RayleighDepthMultiplier = 1.0f, m_SunMiePhaseDepthMultiplier = 1.0f, m_MoonMiePhaseDepthMultiplier = 1.0f;
         [SerializeField, Range(0.0f, 1.0f)] private float m_Haziness = 0.75f;
+        [SerializeField] private float m_SunMiePhaseMult = 5.0f, m_MoonMiePhaseMult = 5.0f;
 
         internal readonly int m_FrustumCornersID = Shader.PropertyToID("lsky_FrustumCorners");
         internal readonly int m_CameraPositionID = Shader.PropertyToID("lsky_CameraPosition");
@@ -29,6 +30,8 @@ namespace LSky
         internal readonly int m_MoonMiePhaseDepthMultiplierID = Shader.PropertyToID("lsky_MoonMiePhaseDepthMultiplier");
         internal readonly int m_RayleighDepthMultiplierID = Shader.PropertyToID("lsky_RayleighDepthMultiplier");
         internal readonly int m_FogHazinessID = Shader.PropertyToID("lsky_FogHaziness");
+        internal readonly int m_FogSunMiePhaseMultID = Shader.PropertyToID("lsky_FogSunMiePhaseMult");
+        internal readonly int m_FogMoonMiePhaseMultID = Shader.PropertyToID("lsky_FogMoonMiePhaseMult");
 
         protected override void Start()
         {
@@ -55,6 +58,8 @@ namespace LSky
             FXMaterial.SetFloat(m_MoonMiePhaseDepthMultiplierID , m_MoonMiePhaseDepthMultiplier);
             FXMaterial.SetFloat(m_RayleighDepthMultiplierID, m_RayleighDepthMultiplier);
             FXMaterial.SetFloat(m_FogHazinessID, m_Haziness);
+            FXMaterial.SetFloat(m_FogSunMiePhaseMultID, m_SunMiePhaseMult);
+            FXMaterial.SetFloat(m_FogMoonMiePhaseMultID, m_MoonMiePhaseMult);
 
             int pass = 0;
 

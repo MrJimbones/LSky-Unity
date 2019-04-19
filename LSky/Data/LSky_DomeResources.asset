@@ -25,14 +25,14 @@ MonoBehaviour:
   hemisphereLOD2: {fileID: 4300000, guid: a61674e7b75a25710b52e0534727817c, type: 3}
   hemisphereLOD3: {fileID: 4300000, guid: a61674e7b75a25710b52e0534727817c, type: 3}
   QuadMesh: {fileID: 4300000, guid: 8498b9f208ecb054b8d707d3d7311441, type: 2}
-  atmosphereShader: {fileID: 4800000, guid: 1f15922ba2efc4d52b1cb11a55f2c384, type: 3}
-  galaxyBackgroundShader: {fileID: 4800000, guid: d77a0199e1c6ee13a82108dc38de3864,
+  atmosphereShader: {fileID: 4800000, guid: 927bf6150e50d49cc8d7c53465d6a059, type: 3}
+  galaxyBackgroundShader: {fileID: 4800000, guid: 802649f717a3630ceb495efede689cf8,
     type: 3}
-  starsFieldShader: {fileID: 4800000, guid: ad0bb1eb0203afa0a81b3539e43d14be, type: 3}
-  sunShader: {fileID: 4800000, guid: db14857841d4c0661829f03ceb81bd4e, type: 3}
-  moonShader: {fileID: 4800000, guid: f4d150da204c8a34c848775b0065de99, type: 3}
-  cloudsShader: {fileID: 4800000, guid: 70b36c90ab3399d37a224c436b4254fc, type: 3}
-  ambientSkyboxShader: {fileID: 4800000, guid: 926eadc368ba42dd8a50c83f7e5daf7a, type: 3}
+  starsFieldShader: {fileID: 4800000, guid: 32e8a640a5eac29839b0630a3a759c57, type: 3}
+  sunShader: {fileID: 4800000, guid: 168f01f116c6e0fbfa49b793d296b790, type: 3}
+  moonShader: {fileID: 4800000, guid: fed67f007f76821ea8adeda528512a3b, type: 3}
+  cloudsShader: {fileID: 4800000, guid: 0a12bce120e21e3e0a5a2a3e67032f2a, type: 3}
+  ambientSkyboxShader: {fileID: 4800000, guid: 6036e0960b3ebed54b501bba326e48ab, type: 3}
   atmosphereMaterial: {fileID: 2100000, guid: b8f0c5d98d28700b092c3575edece165, type: 2}
   galaxyBackgroundMaterial: {fileID: 2100000, guid: e2c45858d4e98a1ba89da0e75209be65,
     type: 2}

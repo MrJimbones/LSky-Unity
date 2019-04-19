@@ -1,4 +1,4 @@
-﻿Shader "Rallec/LSky/Skydome/Preetham And Hoffman Atmosphere"
+﻿Shader "LSky/Skydome/Preetham And Hoffman Atmosphere"
 {
     Properties{}
 
@@ -9,6 +9,7 @@
     #define LSKY_MOONMIEPHASEDEPTHMULTIPLIER 1
     #define LSKY_RAYLEIGHDEPTHMULTIPLIER 1
     //#define LSKY_ENABLE_POST_FX 0
+    
     // Includes.
     #include "UnityCG.cginc"
     #include "LSky_Common.hlsl"
@@ -23,11 +24,14 @@
     struct v2f
     {
         float3 nvertex : TEXCOORD0; // pos
+
         #ifndef LSKY_PER_PIXEL_ATMOSPHERE
-        half3 scatter: TEXCOORD1;
+        half3 scatter : TEXCOORD1;
         #endif
+
         half3 sunMiePhase : TEXCOORD2;
         half4 moonMiePhase: TEXCOORD3;
+
         float4 vertex : SV_POSITION;
         UNITY_VERTEX_OUTPUT_STEREO
     };

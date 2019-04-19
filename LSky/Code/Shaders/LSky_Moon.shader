@@ -1,18 +1,12 @@
-﻿Shader "Rallec/LSky/Near Space/Moon"
+﻿Shader "LSky/Near Space/Moon"
 {
-
-    Properties{}
-
-    //CGINCLUDE
-    //ENDCG
-
+    //Properties{}
     SubShader
     {
-        Tags{ "Queue"="Background+1555" "RenderType"="Background" "IgnoreProjector"= "true" }
+        Tags{ "Queue"="Background+1555" "RenderType"="Background" "IgnoreProjector"="true" }
 
         Pass
         {
-            //Cull Back
             ZWrite Off
             ZTest Lequal
             Blend One One
@@ -22,16 +16,21 @@
 
             #include "UnityCG.cginc"
             #include "LSky_Common.hlsl"
+            //--------------------------------
  
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 2.0
+            //--------------------------------
 
             uniform sampler2D lsky_MoonTex;
             float4 lsky_MoonTex_ST;
-            uniform half lsky_MoonIntensity;
+            //--------------------------------
+
+            uniform half  lsky_MoonIntensity;
             uniform half3 lsky_MoonTint;
-            uniform half lsky_MoonContrast;
+            uniform half  lsky_MoonContrast;
+            //--------------------------------
 
             struct v2f
             {

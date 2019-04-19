@@ -2,28 +2,24 @@
 #ifndef LSKY_ATMOSPHERIC_SCATTERING_COMMON
 #define LSKY_ATMOSPHERIC_SCATTERING_COMMON
 
-// Include.
-//---------------------------
-//#include "LSky_Common.hlsl"
-
 
 //------------------------------------------- Def Const --------------------------------------------
 //==================================================================================================
 
-/////////////////////////////////////////////////////////
-/// Based on Naty Hoffman and Arcot. J. Preetham papers.
-/////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+/// Values Based on Naty Hoffman and Arcot. J. Preetham papers.
+//////////////////////////////////////////////////////////////////
 
 // Mie Phase
 //-------------------------------------------------
 #ifndef LSKY_MIE_PHASE_MULTIPLIER
-#   define LSKY_MIE_PHASE_MULTIPLIER LSKY_INVPI4 
+    #define LSKY_MIE_PHASE_MULTIPLIER LSKY_INVPI4 
 #endif
 
 // Rayleigh Phase.
 //------------------------------------------------
 #ifndef LSKY_RAYLEIGH_PHASE_MULTIPLIER
-#   define LSKY_RAYLEIGH_PHASE_MULTIPLIER LSKY_3PI16
+    #define LSKY_RAYLEIGH_PHASE_MULTIPLIER LSKY_3PI16
 #endif
 
 //----------------------------------------- Rayleigh Phase -----------------------------------------
@@ -46,7 +42,7 @@ inline float3 LSky_PartialMiePhase(float g)
 inline float LSky_MiePhase(float cosTheta, float g, half scattering)
 {
     float3 PHG = LSky_PartialMiePhase(g);
-    return(LSKY_MIE_PHASE_MULTIPLIER * PHG.x * ((1.0 + cosTheta * cosTheta) * pow(PHG.y - (PHG.z * cosTheta), -1.5))) * scattering;
+    return (LSKY_MIE_PHASE_MULTIPLIER * PHG.x * ((1.0 + cosTheta * cosTheta) * pow(PHG.y - (PHG.z * cosTheta), -1.5))) * scattering;
 }
 
 inline float LSky_PartialMiePhase(float cosTheta, float3 partialMiePhase, half scattering)

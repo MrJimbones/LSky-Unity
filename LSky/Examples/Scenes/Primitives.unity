@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5165237, g: 0.59066194, b: 0.6845481, a: 1}
+  m_IndirectSpecularColor: {r: 0.44911224, g: 0.5527497, b: 0.66648394, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -136,8 +136,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 17995923}
-  m_LocalRotation: {x: -0.4113859, y: 0.5427721, z: -0.34601393, w: -0.6453174}
-  m_LocalPosition: {x: 0.41582993, y: 0.9065623, z: -0.072320245}
+  m_LocalRotation: {x: -0.40302685, y: 0.56441337, z: -0.36689577, w: -0.61999553}
+  m_LocalPosition: {x: 0.40412983, y: 0.9139114, z: -0.038013935}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2016754268}
@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 97817961}
   - component: {fileID: 97817960}
   - component: {fileID: 97817963}
+  - component: {fileID: 97817964}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -248,7 +249,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -261,7 +262,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 100000
+  far clip plane: 10000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -287,13 +288,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 97817959}
-  m_LocalRotation: {x: 0.012478812, y: 0, z: 0, w: 0.9999222}
-  m_LocalPosition: {x: -60.64, y: -3.17, z: 62.1}
+  m_LocalRotation: {x: -0.059219267, y: 0, z: 0, w: 0.99824506}
+  m_LocalPosition: {x: -60.64, y: -3.39, z: 58.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 1.43, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -6.79, y: 0, z: 0}
 --- !u!114 &97817963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,16 +307,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dc120fd73f144e1bbf189f6a1724c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Shader: {fileID: 4800000, guid: a79cee82c7b1acac1b7fdf081a541e12, type: 3}
+  m_Shader: {fileID: 4800000, guid: c02ffa558c43e5baea735c6b5b0df4a0, type: 3}
   m_IsReady: 1
-  m_FogMode: 1
+  m_FogMode: 3
   m_Density: 0.01
   m_StartDistance: 0
   m_EndDistance: 243.6
   m_RayleighDepthMultiplier: 0.9
-  m_SunMiePhaseDepthMultiplier: 1
-  m_MoonMiePhaseDepthMultiplier: 1
+  m_SunMiePhaseDepthMultiplier: 5
+  m_MoonMiePhaseDepthMultiplier: 5
   m_Haziness: 1
+  m_SunMiePhaseMult: 100
+  m_MoonMiePhaseMult: 5
+--- !u!114 &97817964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97817959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5fc1b68f9f82a6b8e692f03303008f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Dome: {fileID: 2016754267}
 --- !u!1 &296013596
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,9 +635,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 370961813}
-  m_LocalRotation: {x: 0, y: 0.026176948, z: 0, w: 0.99965733}
+  m_LocalRotation: {x: 0, y: -0.2773985, z: 0, w: 0.960755}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.209, z: 1}
+  m_LocalScale: {x: 1, y: 0.214, z: 1}
   m_Children: []
   m_Father: {fileID: 2016754268}
   m_RootOrder: 5
@@ -714,8 +730,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638623712}
-  m_LocalRotation: {x: 0.5621332, y: 0.3845077, z: -0.6277296, w: 0.37698233}
-  m_LocalPosition: {x: 0.41582993, y: 0.9065623, z: -0.072320245}
+  m_LocalRotation: {x: 0.5665743, y: 0.39998326, z: -0.618012, w: 0.3702272}
+  m_LocalPosition: {x: 0.40412983, y: 0.9139114, z: -0.038013935}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 2016754268}
@@ -744,8 +760,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 756259942}
-  m_LocalRotation: {x: -0.12396774, y: 0.56054205, z: -0.46139473, w: 0.6764167}
-  m_LocalPosition: {x: -0.8727161, y: 0.3495546, z: -0.340849}
+  m_LocalRotation: {x: 0.646825, y: 0.34538198, z: 0.5820784, w: -0.35144487}
+  m_LocalPosition: {x: -0.51024014, y: -0.85672545, z: 0.0753426}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 2016754268}
@@ -1143,23 +1159,23 @@ MonoBehaviour:
   m_RenderSun: 1
   m_SunLayerIndex: 0
   m_SunCoords:
-    azimuth: 1.7429918
-    altitude: 0.43572962
+    azimuth: 1.664584
+    altitude: 0.4179784
   m_SunMeshSize: 0.05
   m_RenderMoon: 1
   m_MoonLayerIndex: 0
   m_MoonCoords:
-    azimuth: 4.340046
-    altitude: 1.2137007
+    azimuth: 4.8589907
+    altitude: 2.5996833
   m_MoonMeshSize: 0.05
   m_RenderAtmosphere: 1
   m_AtmosphereMeshQuality: 3
   m_AtmosphereLayerIndex: 0
   m_RenderClouds: 1
   m_CloudsLayerIndex: 0
-  m_CloudsDomeHeight: 0.209
+  m_CloudsDomeHeight: 0.214
   m_CloudsDomeYPos: 0
-  m_CloudsOrientation: 3
+  m_CloudsOrientation: -32.21
   global:
     m_GlobalExposure: 1.3
   m_DeepSpaceExposure:
@@ -1247,15 +1263,15 @@ MonoBehaviour:
     betaMieUpdate: 2
     parameters:
       applyFastTonemaping: 1
-      contrast: 0.5
-      groundColor: {r: 0.38679248, g: 0.33531547, b: 0.3028658, a: 1}
+      contrast: 1
+      groundColor: {r: 0.6320754, g: 0.5327187, b: 0.4710751, a: 0.7647059}
       wavelength:
-        red: 650
+        red: 680
         green: 570
         blue: 475
       scattering: 1
       atmosphereHaziness: 1
-      atmosphereZenith: 0.0156
+      atmosphereZenith: 0.025
       rayleighZenithLength: 8400
       sunBrightness: 60
       sunAtmosphereTint:
@@ -1288,21 +1304,21 @@ MonoBehaviour:
         m_NumColorKeys: 7
         m_NumAlphaKeys: 2
       moonContribution: 0.5
-      moonAtmosphereTint: {r: 0.5188679, g: 0.5833962, b: 1, a: 1}
+      moonAtmosphereTint: {r: 0.4528302, g: 0.5284555, b: 1, a: 1}
       turbidity: 0.01
       mieZenithLength: 1250
       sunMie:
-        tint: {r: 1, g: 0.7254524, b: 0.5660378, a: 1}
+        tint: {r: 1, g: 0.7029417, b: 0.5, a: 1}
         anisotropy: 0.75
-        scattering: 2
+        scattering: 1
       moonMie:
         tint: {r: 0.5, g: 0.71669614, b: 1, a: 1}
         anisotropy: 0.8
         scattering: 0.02
-    betaRay: {x: 0.0000069556327, y: 0.000011762257, z: 0.000024390221}
-    betaMie: {x: 0.0000016816924, y: 0.0000019880663, z: 0.000001908544}
-    sunDir: {x: 0.037197508, y: 0.9065624, z: 0.42043003}
-    moonDir: {x: 0.41282758, y: 0.34955457, z: -0.84106183}
+    betaRay: {x: 0.0000058070354, y: 0.000011762257, z: 0.000024390221}
+    betaMie: {x: 0.0000015365812, y: 0.0000019880663, z: 0.000001908544}
+    sunDir: {x: 0.0039931824, y: 0.91391146, z: 0.40589467}
+    moonDir: {x: -0.03229271, y: -0.8567255, z: -0.5147608}
   clouds:
     m_Parameters:
       tex: {fileID: 2800000, guid: c4321831d463a0444a69c79b792889a5, type: 3}
@@ -1312,7 +1328,7 @@ MonoBehaviour:
         serializedVersion: 2
         key0: {r: 0.8666209, g: 0.9101091, b: 0.9179217, a: 0.63529414}
         key1: {r: 0.8666209, g: 0.9101091, b: 0.9179217, a: 0.5411765}
-        key2: {r: 1, g: 0.6600124, b: 0.37647057, a: 1}
+        key2: {r: 1, g: 0.5889, b: 0.34901965, a: 1}
         key3: {r: 0.1476504, g: 0.15395826, b: 0.1981132, a: 0}
         key4: {r: 0, g: 0.035172045, b: 0.30189976, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -1368,9 +1384,9 @@ MonoBehaviour:
         m_NumAlphaKeys: 2
       intensity: 1.5
       density: 2.67
-      coverage: 0.771
-      speed: 0.01
-      speed2: 0.05
+      coverage: 0.703
+      speed: 0.16
+      speed2: 0.11
   m_SendSkybox: 0
   m_SunLightParams:
     intensity: 1
@@ -1672,7 +1688,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2016754266}
   m_LocalRotation: {x: 0, y: -0.73615617, z: 0, w: 0.6768118}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -59.64, y: -2.2787833, z: 59.754757}
   m_LocalScale: {x: 10000, y: 10000, z: 10000}
   m_Children:
   - {fileID: 849751347}
@@ -1697,8 +1713,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a340e2d80df3fc9912ef3ce9751a07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AllowProgressTime: 1
-  m_TotalHours: 9.53
+  m_AllowProgressTime: 0
+  m_TotalHours: 9.56
   m_Hour: 7
   m_Minute: 30
   m_Second: 0
@@ -1708,7 +1724,7 @@ MonoBehaviour:
   m_DayRange: {x: 4.5, y: 19}
   m_DayLength: 15
   m_NightLength: 7.5
-  m_Day: 10
+  m_Day: 15
   m_Month: 3
   m_Year: 2019
   m_SyncWithThisSystem: 0
@@ -1744,11 +1760,11 @@ MonoBehaviour:
     longitude: 0
     uTC: 0
     m_SunCoords:
-      azimuth: 1.7429918
-      altitude: 0.43572962
+      azimuth: 1.664584
+      altitude: 0.4179784
     m_MoonCoords:
-      azimuth: 4.340046
-      altitude: 1.2137007
+      azimuth: 4.8589907
+      altitude: 2.5996833
 --- !u!1 &2054065166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1863,7 +1879,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2118114097}
-  m_LocalRotation: {x: 0.6757219, y: -0.20832647, z: -0.20832647, w: 0.6757219}
+  m_LocalRotation: {x: 0.68475455, y: -0.17638385, z: -0.17638385, w: 0.68475455}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

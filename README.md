@@ -1,16 +1,13 @@
 # LSky Dynamic Skydome for Unity Engine.
 -------------
-- This system is being built based on my previous assets LSky v3.0 and CSky, but looking for it to be more solid.
-- I will support this asset in my spare time, until 2019.3 is available, since I will be using it for prototypes while I build a more complete system(Celeste Sky).
-
-- If there is an error, there will be a new issue.
+>I am using this asset for prototypes, I will try to support it in my spare time.
 --------------
 
 Status:
 -------------
 
-- Status: WIP.
-- Support: Built in Render/Monobehaviour, 2017-2018.
+>- Status: 3.2.0.
+>- Support: Built in Render/Monobehaviour.
 -------------
 
 Features:
@@ -27,7 +24,8 @@ Atmosphere:
 --------------
 - Atmospheric scattering based on Preetham and Hoffman papers.
 - Night support.
-- Artistic control.
+- Semi Artistic control.
+- Fog tinted with sky color.
 --------------
 Clouds:
 --------------
