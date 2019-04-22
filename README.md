@@ -1,6 +1,6 @@
 # LSky Dynamic Skydome for Unity Engine.
 -------------
->I am using this asset for prototypes, I will try to support it in my spare time.
+> I am using this asset for prototypes, I will try to support it in my spare time.
 --------------
 
 Status:
@@ -8,6 +8,11 @@ Status:
 
 >- Status: 3.2.0.
 >- Support: Built in Render/Monobehaviour.
+-------------
+
+Known Issues
+-------------
+>- Preprocessor: Apply Fast Tonemaping Keyword no work in skydome.
 -------------
 
 Features:

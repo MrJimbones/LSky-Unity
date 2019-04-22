@@ -3,18 +3,19 @@
     //Properties{}
     CGINCLUDE
 
+
+    // Keywords
+    #pragma multi_compile __ LSKY_APPLY_FAST_TONEMAPING
+    #pragma multi_compile __ LSKY_ENABLE_MOON_RAYLEIGH
+
     #define LSKY_COMPUTE_MIE_PHASE 1
-    #define LSKY_PER_PIXEL_ATMOSPHERE 1
     #define LSKY_ENABLE_POST_FX 1
+
 
     // Includes.
     #include "UnityCG.cginc"
     #include "LSky_Common.hlsl"
     #include "LSky_PreeHoffAtmosphericScatteringCommon.hlsl" 
-
-    // Keywords
-    #pragma multi_compile __ LSKY_APPLY_FAST_TONEMAPING
-    #pragma multi_compile __ LSKY_ENABLE_MOON_RAYLEIGH
 
     uniform sampler2D _MainTex;
     uniform sampler2D_float _CameraDepthTexture;
@@ -189,12 +190,13 @@
 
         Pass
         {
+
             Cull Off
             ZWrite Off
             ZTest Always
 
             CGPROGRAM
-
+           
             #pragma vertex vert
             #pragma fragment fragExp
             #pragma target 3.0
@@ -204,6 +206,7 @@
 
         Pass
         {
+
             Cull Off
             ZWrite Off
             ZTest Always

@@ -18,10 +18,6 @@ uniform half3 lsky_MoonAtmosphereTint;
 // Depth
 uniform half lsky_RayleighDepthMultiplier;
 
-#ifndef LSKY_RAYLEIGHDEPTHMULTIPLIER 
-    #define LSKY_RAYLEIGHDEPTHMULTIPLIER lsky_RayleighDepthMultiplier
-#endif
-
 
 // Mie.
 //-------------------------------------------------
@@ -39,10 +35,6 @@ uniform float3 lsky_PartialMoonMiePhase;
 // Depth
 uniform half lsky_SunMiePhaseDepthMultiplier;
 
-#ifndef LSKY_SUNMIEPHASEDEPTHMULTIPLIER 
-    #define LSKY_SUNMIEPHASEDEPTHMULTIPLIER lsky_SunMiePhaseDepthMultiplier
-#endif
-
 
 // Moon
 uniform float lsky_MoonMieAnisotropy;
@@ -51,10 +43,6 @@ uniform half  lsky_MoonMieScattering;
 
 // Depth.
 uniform half lsky_MoonMiePhaseDepthMultiplier;
-
-#ifndef LSKY_MOONMIEPHASEDEPTHMULTIPLIER 
-    #define LSKY_MOONMIEPHASEDEPTHMULTIPLIER lsky_MoonMiePhaseDepthMultiplier
-#endif
 
 uniform float lsky_FogHaziness;
 uniform half lsky_FogSunMiePhaseMult;

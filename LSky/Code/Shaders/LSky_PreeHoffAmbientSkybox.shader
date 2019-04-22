@@ -4,13 +4,14 @@
 
     CGINCLUDE
 
-    #define LSKY_SUNMIEPHASEDEPTHMULTIPLIER 1
-    #define LSKY_RAYLEIGHDEPTHMULTIPLIER 1
-    #define LSKY_ENABLE_GROUND 1
+    //#undef LSKY_COMPUTE_MIE_PHASE 
+
     // Includes.
     #include "UnityCG.cginc"
     #include "LSky_Common.hlsl"
     #include "LSky_PreeHoffAtmosphericScatteringCommon.hlsl" 
+
+    
    
     struct appdata
     {
@@ -39,9 +40,9 @@
 
         const fixed _one = 1.0;
 
-        #ifndef LSKY_COMPUTE_MIE_PHASE
+        //#ifndef LSKY_COMPUTE_MIE_PHASE
         o.scatter.rgb = LSky_ComputeAtmosphere(o.nvertex.xyz, _one, _one);
-        #endif
+        //#endif
         
         return o;
     }
@@ -70,9 +71,7 @@
             #pragma vertex vert
             #pragma fragment frag 
             #pragma target 2.0
-            #define LSKY_COMPUTE_MIE_PHASE 0
-            
-            // Keywords
+
             #pragma multi_compile __ LSKY_APPLY_FAST_TONEMAPING
             #pragma multi_compile __ LSKY_PER_PIXEL_ATMOSPHERE
             #pragma multi_compile __ LSKY_ENABLE_MOON_RAYLEIGH

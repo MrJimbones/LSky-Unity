@@ -68,7 +68,12 @@ inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMieP
 
     // Sun/Day.
     //-------------------------------------------------------------------------------------
-    float3 sunBRT  = lsky_BetaRay * sunRayleighPhase * (depth * LSKY_RAYLEIGHDEPTHMULTIPLIER);
+    float3 sunBRT  = lsky_BetaRay * sunRayleighPhase;
+
+    #ifdef LSKY_ENABLE_POST_FX
+        sunBRT *= (depth * lsky_RayleighDepthMultiplier);
+    #endif
+
     float3 sunBMT  = sunMiePhase * lsky_BetaMie;
     float3 sunBRMT = (sunBRT + sunBMT) / (lsky_BetaRay + lsky_BetaMie);
 
@@ -78,8 +83,14 @@ inline half3 AtmosphericScattering(float2 srm, float sunCosTheta, float3 sunMieP
     // Moon/Night.
     //------------------------------------------------------------------------------------
     #ifdef LSKY_ENABLE_MOON_RAYLEIGH
-        half3 moonScatter = lsky_NightIntensity.x * (1.0-fex) * lsky_MoonAtmosphereTint * (depth * LSKY_RAYLEIGHDEPTHMULTIPLIER); // Simple night rayleigh.
+        half3 moonScatter = lsky_NightIntensity.x * (1.0-fex) * lsky_MoonAtmosphereTint; // Simple night rayleigh.
+
+        #ifdef LSKY_ENABLE_POST_FX
+            moonScatter *= (depth * lsky_RayleighDepthMultiplier);
+        #endif
+
         moonScatter += moonMiePhase;
+
         return sunScatter + moonScatter; // Return day scattering + nigth scattering.
     #else
         return sunScatter + moonMiePhase;
@@ -103,13 +114,13 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth, float dist)
     half3 multParams = half3(1.0, 1.0, 1.0);
     
     #ifndef LSKY_ENABLE_POST_FX
-    multParams.x = 1.0;
-    multParams.y = 1.0;
-    multParams.z = 1.0-LSky_GroundMask(pos.y);
+        multParams.x = 1.0;
+        multParams.y = 1.0;
+        multParams.z = 1.0-LSky_GroundMask(pos.y);
     #else
-    multParams.x = lsky_FogSunMiePhaseMult;
-    multParams.y = lsky_FogMoonMiePhaseMult;
-    multParams.z = 1.0;
+        multParams.x = lsky_FogSunMiePhaseMult * (depth*lsky_SunMiePhaseDepthMultiplier);
+        multParams.y = lsky_FogMoonMiePhaseMult * (depth*lsky_MoonMiePhaseDepthMultiplier);
+        multParams.z = 1.0;
     #endif
 
     // Get dot product of the sun and moon.
@@ -117,17 +128,16 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth, float dist)
 
     #ifdef LSKY_COMPUTE_MIE_PHASE
     // Compute sun mie phase in up side.
-    sunMiePhase = (depth*LSKY_SUNMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.x, lsky_PartialSunMiePhase, lsky_SunMieScattering);
+    sunMiePhase =  LSky_PartialMiePhase(cosTheta.x, lsky_PartialSunMiePhase, lsky_SunMieScattering);
     sunMiePhase *= multParams.x * lsky_SunMieTint.rgb * multParams.z;
 
     // Compute moon mie phase in up side.
-    moonMiePhase = (depth*LSKY_MOONMIEPHASEDEPTHMULTIPLIER) * LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering);
-    moonMiePhase *= multParams.y * lsky_MoonMieTint.rgb * multParams.z; 
-   
+    moonMiePhase =  LSky_PartialMiePhase(cosTheta.y, lsky_PartialMoonMiePhase, lsky_MoonMieScattering);
+    moonMiePhase *= multParams.y * lsky_MoonMieTint.rgb * multParams.z;
     #endif
 
     #ifdef LSKY_ENABLE_POST_FX
-    pos = saturate(pos*lsky_FogHaziness);
+        pos.y = lerp(saturate(depth+1.0), saturate(pos.y), lsky_FogHaziness);
     #endif
 
     // Get optical depth.
@@ -138,10 +148,9 @@ inline half3 LSky_ComputeAtmosphere(float3 pos, float depth, float dist)
     #endif
 
     #ifdef LSKY_COMPUTE_MIE_PHASE
-        // Compute atmospheric scattering.
         col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, sunMiePhase, moonMiePhase, dist);
     #else
-        fixed3 mp = fixed3(0.0, 0.0, 0.0);
+        const fixed3 mp = fixed3(0.0, 0.0, 0.0);
         col.rgb = AtmosphericScattering(srm.xy, cosTheta.x, mp, mp, dist);
     #endif
 
